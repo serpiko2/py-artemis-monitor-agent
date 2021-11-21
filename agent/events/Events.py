@@ -1,10 +1,4 @@
-class Subscriber:
-
-    def __init__(self, name):
-        self.name = name
-
-    def update(self, message):
-        print('{} got message "{}"'.format(self.name, message))
+from abc import ABC, abstractmethod
 
 class Publisher:
 
@@ -17,9 +11,9 @@ class Publisher:
     def get_subscribers(self, event):
         return self.events[event]
 
-    def subscribe(self, event, who, callback=None):
+    def register(self, event, who, callback=None):
         if callback is None:
-            callback = getattr(who, 'update')
+            callback = lambda message: print('{} got message "{}"'.format(who, message))
         self.get_subscribers(event)[who] = callback
 
     def unregister(self, event, who):
@@ -28,3 +22,16 @@ class Publisher:
     def publish(self, event, message):
         for subscriber, callback in self.get_subscribers(event).items():
             callback(message)
+
+
+class Subscriber(ABC):
+
+    def __init__(self, name):
+        self.name = name
+
+    @abstractmethod
+    def update(self, message):
+        print('{} got message "{}"'.format(self.name, message))
+
+    def subscribe(self, event, publisher: Publisher, callback):
+        publisher.register(event, self, callback=callback)
