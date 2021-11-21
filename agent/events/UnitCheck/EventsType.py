@@ -1,5 +1,5 @@
 class EventsType:
-    LoadStateRead = 1
-    ActiveStateRead = 2
-    ExecStartInfoRead = 3
-    RestartService = 4
+    LoadStateRead = "LoadStateRead".encode('utf-8')
+    ActiveStateRead = "ActiveStateRead".encode('utf-8')
+    ExecStartInfoRead = "ExecStartInfoRead".encode('utf-8')
+    ReadsDone = "ReadsDone".encode('utf-8')
