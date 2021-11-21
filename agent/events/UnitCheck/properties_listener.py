@@ -1,6 +1,5 @@
 import dbus
-
-from .event import subscribe
+from agent.events.EventCore import subscribe
 from .EventsType import Events
 
 
@@ -27,7 +26,7 @@ def setup_dbus_monitor_events(load_state_fun,
 
 
 def setup_dbus_monitor_events_default():
-    __subscribe_this__default__()
+    __subscribe_this_default__()
 
 
 def __subscribe_this__(load_state_fun,
@@ -38,7 +37,7 @@ def __subscribe_this__(load_state_fun,
     subscribe(Events.ExecStartInfoRead, handle_exec_start_info_read, exec_start_fun)
 
 
-def __subscribe_this__default__():
+def __subscribe_this_default__():
     subscribe(Events.LoadStateRead, handle_load_state_read, print_response)
     subscribe(Events.ActiveStateRead, handle_active_state_read, print_response)
     subscribe(Events.ExecStartInfoRead, handle_exec_start_info_read, print_response)
