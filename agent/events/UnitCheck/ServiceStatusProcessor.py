@@ -89,6 +89,7 @@ class ServiceStatusProcessor:
                                                "ActiveState":self.active_state,
                                                "ExecStart":self.exec_start})
 
+
     def handle_raise_error(self, e):
         print(f"async client {self} status: ExceptionRaise {e}")
         # if an error happens on read i don't need to quit

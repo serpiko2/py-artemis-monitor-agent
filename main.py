@@ -11,7 +11,7 @@ from agent.scheduler import Scheduler
 if __name__ == '__main__':
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     pub = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead, EventsType.ExecStartInfoRead, EventsType.ReadsDone])
-    status_sink = RestartServiceSink(pub)
+    status_sink = RestartServiceSink(pub, "artemis.service")
     service_processor = ServiceStatusProcessor(pub)
     job = ServiceStatusJob("artemis.service",
                            service_processor)
