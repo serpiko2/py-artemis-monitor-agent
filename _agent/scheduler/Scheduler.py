@@ -1,18 +1,20 @@
 import traceback
-from abc import ABC, abstractmethod
 
 from gi.repository import GLib
 
 
-class Job(ABC):
+class Job:
 
-    def __init__(self, func, delay:int):
+    def __init__(self, func, delay:int, *args):
         self.func = func
         self.delay = delay
+        self.args = args
 
-    @abstractmethod
-    def schedule(self, *args):
-        schedule_function(self.func, self.delay, args)
+    def schedule(self):
+        # hack for args always being an object when passed as argument
+        schedule_function(self.func, self.delay, self.args) \
+            if len(self.args) != 0 else schedule_function(self.func, self.delay)
+
 
 def schedule_function(job, delay:int=0, *args):
     GLib.timeout_add(delay, job, *args)

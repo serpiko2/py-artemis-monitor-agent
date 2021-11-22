@@ -1,21 +1,23 @@
-from agent.events.UnitCheck.RestartServiceSink import RestartServiceSink
-from agent.ServiceStatusJob import ServiceStatusProcessor, ServiceStatusJob
+from _agent.events.UnitCheck.RestartServiceSink import RestartServiceSink
+from _agent.ServiceStatusJob import ServiceStatusProcessor, ServiceStatusJob
 import dbus.mainloop.glib
 import sys
 
 
-from agent.events.Events import Publisher
-from agent.events.UnitCheck.EventsType import EventsType
-from agent.scheduler import Scheduler
+from _agent.events.Events import Publisher
+from _agent.events.UnitCheck.EventsType import EventsType
+from _agent.scheduler import Scheduler
+from _utils import JobsConfig
 
 if __name__ == '__main__':
+    print(JobsConfig.get("Jobs", "job.name"))
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    pub = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead, EventsType.ExecStartInfoRead, EventsType.ReadsDone])
+    pub = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
+                     EventsType.ExecStartInfoRead, EventsType.ReadsDone])
     status_sink = RestartServiceSink(pub, "artemis.service")
     service_processor = ServiceStatusProcessor(pub)
-    job = ServiceStatusJob("artemis.service",
-                           service_processor)
-    job.schedule()
+    job = ServiceStatusJob("artemis.service", service_processor)
+    Scheduler.schedule_jobs(job)
     Scheduler.run_loop()
 
 

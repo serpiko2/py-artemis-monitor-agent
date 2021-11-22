@@ -1,8 +1,8 @@
 from dbus import Interface
-from agent.events.Events import Subscriber
-from agent.events.UnitCheck.EventsType import EventsType
-from agent.manager.DbusManager import get_sysd_object, get_sys_bus
-from agent.scheduler import Scheduler
+from _agent.events.Events import Subscriber
+from _agent.events.UnitCheck.EventsType import EventsType
+from _agent.manager.DbusManager import get_sysd_object, get_sys_bus
+from _agent.scheduler import Scheduler
 
 
 class UnitNotFoundException(Exception):

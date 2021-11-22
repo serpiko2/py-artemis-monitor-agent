@@ -1,6 +1,6 @@
-from agent.RestartServiceJob import RestartServiceJob
-from agent.events.Events import Subscriber
-from agent.events.UnitCheck.EventsType import EventsType
+from _agent.RestartServiceJob import RestartServiceJob
+from _agent.events.Events import Subscriber
+from _agent.events.UnitCheck.EventsType import EventsType
 
 class RestartServiceSink:
 

@@ -1,6 +1,6 @@
-from agent.manager.DbusManager import get_sysd_manager, get_sys_bus
-from agent.scheduler import Scheduler
-from agent.scheduler.Scheduler import Job
+from _agent.manager.DbusManager import get_sysd_manager, get_sys_bus
+from _agent.scheduler import Scheduler
+from _agent.scheduler.Scheduler import Job
 
 
 class RestartServiceJob(Job):
@@ -11,8 +11,11 @@ class RestartServiceJob(Job):
         self.service_name = service_name
         self.mode = mode
 
-    def schedule(self):
-        Scheduler.schedule_function(self.func)
+    def _restart_unit(self):
+        get_sysd_manager(bus=get_sys_bus()).RestartUnit(self.service_name, self.mode,
+                                                        reply_handler=lambda job: print(job),
+                                                        error_handler=lambda e: print(e))
+        return self.loop
 
     def check_status(self, context):
         load_state = context["LoadState"]
@@ -26,8 +29,3 @@ class RestartServiceJob(Job):
                 Scheduler.schedule_function(self.func)
 
 
-    def _restart_unit(self):
-        get_sysd_manager(bus=get_sys_bus()).RestartUnit(self.service_name, self.mode,
-                                                        reply_handler=lambda job: print(job),
-                                                        error_handler=lambda e: print(e))
-        return self.loop

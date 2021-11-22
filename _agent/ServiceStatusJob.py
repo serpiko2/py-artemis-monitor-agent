@@ -1,7 +1,6 @@
-from agent.events.UnitCheck.ServiceStatusProcessor import ServiceStatusProcessor
-from agent.manager.DbusManager import get_sys_bus, get_sysd_manager
-from agent.scheduler import Scheduler
-from agent.scheduler.Scheduler import Job
+from _agent.events.UnitCheck.ServiceStatusProcessor import ServiceStatusProcessor
+from _agent.manager.DbusManager import get_sys_bus, get_sysd_manager
+from _agent.scheduler.Scheduler import Job
 
 class ServiceStatusJob(Job):
 
@@ -10,9 +9,6 @@ class ServiceStatusJob(Job):
         self.processor = processor
         self.loop = loop
         self.service_name = service_name
-
-    def schedule(self):
-        Scheduler.schedule_function(self.func)
 
     def _find_service_unit(self):
         """Find the service unit by it's name.
