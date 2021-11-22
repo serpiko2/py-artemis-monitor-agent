@@ -9,13 +9,13 @@ from _utils import JobsConfig
 
 
 if __name__ == '__main__':
-    print(JobsConfig.get("Jobs", "job.name"))
+    service_name = JobsConfig.get("Jobs", "job.service.name")
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     pub = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
                      EventsType.ExecStartInfoRead, EventsType.ReadsDone])
-    status_sink = RestartServiceSink(pub, "artemis.service")
+    status_sink = RestartServiceSink(pub, service_name)
     service_processor = ServiceStatusProcessor(pub)
-    job = ServiceStatusJob("artemis.service", service_processor)
+    job = ServiceStatusJob(service_name, service_processor)
     Scheduler.schedule_jobs(job)
     Scheduler.run_loop()
 
