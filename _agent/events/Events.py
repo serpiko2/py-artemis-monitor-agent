@@ -11,9 +11,7 @@ class Publisher:
     def get_subscribers(self, event):
         return self.events[event]
 
-    def register(self, event, who, callback=None):
-        if callback is None:
-            callback = lambda message: print('{} got message "{}" for event {}'.format(who, message, event))
+    def register(self, event, who, callback):
         self.get_subscribers(event)[who] = callback
 
     def unregister(self, event, who):
