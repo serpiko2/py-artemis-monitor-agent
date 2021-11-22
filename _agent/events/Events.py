@@ -28,6 +28,7 @@ class _Subscriber(ABC):
     def __init__(self, name):
         self.name = name
 
+    @abstractmethod
     def _update(self, message):
         print('{} got message "{}"'.format(self.name, message))
 
