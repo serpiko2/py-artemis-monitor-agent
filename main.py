@@ -1,3 +1,5 @@
+import logging
+
 from _agent.events.UnitCheck.RestartServiceSink import RestartServiceSink
 from _agent.ServiceStatusJob import ServiceStatusProcessor, ServiceStatusJob
 import dbus.mainloop.glib
@@ -5,12 +7,17 @@ import sys
 from _agent.events.Events import Publisher
 from _agent.events.UnitCheck.EventsType import EventsType
 from _agent.scheduler import Scheduler
-from _utils import JobsConfig
+from _utils import JobsConfig, Logger
 
+Logger.configure_logger()
+logger = logging.getLogger("main")
 
 if __name__ == '__main__':
+    logger.info("Starting monitor agent")
     service_name = JobsConfig.get("Jobs", "job.service.name")
+    logger.info(f"Monitor for service={service_name}")
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+    logger.info(f"Glib set as main loop for dbus")
     pub = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
                      EventsType.ExecStartInfoRead, EventsType.ReadsDone])
     status_sink = RestartServiceSink(pub, service_name)

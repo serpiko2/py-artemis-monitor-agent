@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 
 
@@ -18,7 +19,7 @@ class Publisher:
         del self.get_subscribers(event)[who]
 
     def publish(self, event, message):
-        print(f"publishing event {event} with message {message}")
+        logging.debug(f"publishing event {event} with message {message}")
         for subscriber, callback in self.get_subscribers(event).items():
             callback(message)
 
