@@ -19,7 +19,7 @@ class Job:
 
 
 def schedule_function(job, args: tuple = None, delay: int = 0):
-    print(f"{job}, schedule_function args", args)
+    print(f"scheduled: {job}, schedule_function args", args)
     GLib.timeout_add(delay, job, *args)
 
 
