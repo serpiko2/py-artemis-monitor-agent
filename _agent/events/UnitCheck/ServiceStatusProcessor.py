@@ -60,6 +60,7 @@ class ServiceStatusProcessor:
     """
     # START Callbacks for asynchronous calls
     """
+
     def handle_get_unit_callback(self, unit):
         """handle the get unit callback for monitoring.
             :param:
@@ -68,15 +69,18 @@ class ServiceStatusProcessor:
         if unit:
             unit_object = get_sysd_object(unit, bus=get_sys_bus())
             service_properties = Interface(unit_object, dbus_interface='org.freedesktop.DBus.Properties')
-            Scheduler.schedule_function(self._retrieve_status, 0, service_properties,
-                                        'org.freedesktop.systemd1.Unit', 'ActiveState',
-                                        EventsType.ActiveStateRead)
-            Scheduler.schedule_function(self._retrieve_status, 0, service_properties,
-                                        'org.freedesktop.systemd1.Unit', 'LoadState',
-                                        EventsType.LoadStateRead)
-            Scheduler.schedule_function(self._retrieve_status, 0, service_properties,
-                                        'org.freedesktop.systemd1.Service', 'ExecStart',
-                                        EventsType.ExecStartInfoRead)
+            Scheduler.schedule_function(self._retrieve_status, delay=0,
+                                        args=(service_properties,
+                                              'org.freedesktop.systemd1.Unit', 'ActiveState',
+                                              EventsType.ActiveStateRead))
+            Scheduler.schedule_function(self._retrieve_status, delay=0,
+                                        args=(service_properties,
+                                              'org.freedesktop.systemd1.Unit', 'LoadState',
+                                              EventsType.LoadStateRead))
+            Scheduler.schedule_function(self._retrieve_status, delay=0,
+                                        args=(service_properties,
+                                              'org.freedesktop.systemd1.Service', 'ExecStart',
+                                              EventsType.ExecStartInfoRead))
         else:
             raise UnitNotFoundException(self.__hash__())
 
@@ -93,6 +97,7 @@ class ServiceStatusProcessor:
         print(f"async client {self} status: ExceptionRaise {e}")
         # if an error happens on read i don't need to quit
         # loop.quit()
+
     """
     # END Callbacks for asynchronous calls
     """
