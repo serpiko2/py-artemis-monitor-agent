@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
+
 class Publisher:
 
     def __init__(self, events):
         # maps event names to subscribers
         # str -> dict
-        self.events = { event : dict()
-                          for event in events }
+        self.events = {event: dict() for event in events}
 
     def get_subscribers(self, event):
         return self.events[event]

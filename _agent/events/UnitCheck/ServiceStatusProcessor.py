@@ -21,11 +21,11 @@ class ServiceStatusProcessor:
         properties_listener.subscribe(EventsType.LoadStateRead,
                                       publisher,
                                       callback=lambda message:
-                                        self.handle_update_status(message, self._set_load_state))
+                                      self.handle_update_status(message, self._set_load_state))
         properties_listener.subscribe(EventsType.ExecStartInfoRead,
-                                       publisher,
-                                       callback=lambda message:
-                                        self.handle_update_status(message, self._set_exec_start))
+                                      publisher,
+                                      callback=lambda message:
+                                      self.handle_update_status(message, self._set_exec_start))
         return properties_listener
 
     def _retrieve_status(self, service_properties, interface, name, event: EventsType):
@@ -69,14 +69,14 @@ class ServiceStatusProcessor:
             unit_object = get_sysd_object(unit, bus=get_sys_bus())
             service_properties = Interface(unit_object, dbus_interface='org.freedesktop.DBus.Properties')
             Scheduler.schedule_function(self._retrieve_status, 0, service_properties,
-                             'org.freedesktop.systemd1.Unit', 'ActiveState',
+                                        'org.freedesktop.systemd1.Unit', 'ActiveState',
                                         EventsType.ActiveStateRead)
             Scheduler.schedule_function(self._retrieve_status, 0, service_properties,
-                             'org.freedesktop.systemd1.Unit', 'LoadState',
-                             EventsType.LoadStateRead)
+                                        'org.freedesktop.systemd1.Unit', 'LoadState',
+                                        EventsType.LoadStateRead)
             Scheduler.schedule_function(self._retrieve_status, 0, service_properties,
-                             'org.freedesktop.systemd1.Service', 'ExecStart',
-                             EventsType.ExecStartInfoRead)
+                                        'org.freedesktop.systemd1.Service', 'ExecStart',
+                                        EventsType.ExecStartInfoRead)
         else:
             raise UnitNotFoundException(self.__hash__())
 
@@ -85,10 +85,9 @@ class ServiceStatusProcessor:
         if self._are_checks_done():
             print("checks done")
             self.properties_publisher.publish(EventsType.ReadsDone,
-                                              {"LoadState":self.load_state,
-                                               "ActiveState":self.active_state,
-                                               "ExecStart":self.exec_start})
-
+                                              {"LoadState": self.load_state,
+                                               "ActiveState": self.active_state,
+                                               "ExecStart": self.exec_start})
 
     def handle_raise_error(self, e):
         print(f"async client {self} status: ExceptionRaise {e}")

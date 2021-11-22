@@ -5,7 +5,7 @@ from _agent.scheduler.Scheduler import Job
 
 class RestartServiceJob(Job):
 
-    def __init__(self, service_name, mode='replace', delay: int=0, loop=False):
+    def __init__(self, service_name, mode='replace', delay: int = 0, loop=False):
         super().__init__(self._restart_unit, delay)
         self.loop = loop
         self.service_name = service_name
@@ -27,5 +27,3 @@ class RestartServiceJob(Job):
         if load_state == 'loaded' and active_state == 'inactive':
             if status_code == 143:
                 Scheduler.schedule_function(self.func)
-
-

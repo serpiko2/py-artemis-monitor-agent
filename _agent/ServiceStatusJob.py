@@ -2,6 +2,7 @@ from _agent.events.UnitCheck.ServiceStatusProcessor import ServiceStatusProcesso
 from _agent.manager.DbusManager import get_sys_bus, get_sysd_manager
 from _agent.scheduler.Scheduler import Job
 
+
 class ServiceStatusJob(Job):
 
     def __init__(self, service_name, processor: ServiceStatusProcessor, delay: int=0, loop=False):

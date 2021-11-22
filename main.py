@@ -2,12 +2,11 @@ from _agent.events.UnitCheck.RestartServiceSink import RestartServiceSink
 from _agent.ServiceStatusJob import ServiceStatusProcessor, ServiceStatusJob
 import dbus.mainloop.glib
 import sys
-
-
 from _agent.events.Events import Publisher
 from _agent.events.UnitCheck.EventsType import EventsType
 from _agent.scheduler import Scheduler
 from _utils import JobsConfig
+
 
 if __name__ == '__main__':
     print(JobsConfig.get("Jobs", "job.name"))

@@ -1,5 +1,4 @@
 import traceback
-
 from gi.repository import GLib
 
 
@@ -19,9 +18,11 @@ class Job:
 def schedule_function(job, delay:int=0, *args):
     GLib.timeout_add(delay, job, *args)
 
+
 def schedule_jobs(*jobs: Job):
     for job in jobs:
         job.schedule()
+
 
 def run_loop():
     loop = GLib.MainLoop()
