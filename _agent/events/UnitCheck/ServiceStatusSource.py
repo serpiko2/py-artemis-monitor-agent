@@ -10,52 +10,18 @@ class UnitNotFoundException(Exception):
         self.obj = obj
 
 
-class ServiceStatusProcessor:
-
-    def _setup_listener(self, publisher, name='PropertiesListener'):
-        properties_listener = Subscriber(name)
-        properties_listener.subscribe(EventsType.ActiveStateRead,
-                                      publisher,
-                                      callback=lambda message:
-                                      self.handle_update_status(message, self._set_active_state))
-        properties_listener.subscribe(EventsType.LoadStateRead,
-                                      publisher,
-                                      callback=lambda message:
-                                      self.handle_update_status(message, self._set_load_state))
-        properties_listener.subscribe(EventsType.ExecStartInfoRead,
-                                      publisher,
-                                      callback=lambda message:
-                                      self.handle_update_status(message, self._set_exec_start))
-        return properties_listener
+class ServiceStatusSource:
 
     def _retrieve_status(self, service_properties, interface, name, event: EventsType):
         service_properties.Get(
             interface, name,
-            reply_handler=lambda data: self.properties_publisher.publish(event, data),
+            reply_handler=lambda data: self.publisher.publish(event, data),
             error_handler=self.handle_raise_error
         )
         return False
 
     def __init__(self, publisher):
-        self.properties_publisher = publisher
-        self.properties_listener = self._setup_listener(publisher)
-        self.active_state = None
-        self.load_state = None
-        self.exec_start = None
-
-    def _set_active_state(self, data):
-        self.active_state = data
-
-    def _set_load_state(self, data):
-        self.load_state = data
-
-    def _set_exec_start(self, data):
-        self.exec_start = data
-
-    def _are_checks_done(self):
-        if self.exec_start and self.load_state and self.active_state:
-            return True
-        return False
+        self.publisher = publisher
 
     """
     # START Callbacks for asynchronous calls
@@ -83,15 +49,6 @@ class ServiceStatusProcessor:
                                               EventsType.ExecStartInfoRead))
         else:
             raise UnitNotFoundException(self.__hash__())
-
-    def handle_update_status(self, data, update):
-        update(data)
-        if self._are_checks_done():
-            print("checks done")
-            self.properties_publisher.publish(EventsType.ReadsDone,
-                                              {"LoadState": self.load_state,
-                                               "ActiveState": self.active_state,
-                                               "ExecStart": self.exec_start})
 
     def handle_raise_error(self, e):
         print(f"async client {self} status: ExceptionRaise {e}")

@@ -1,7 +1,7 @@
 import logging
 
 from _agent.events.UnitCheck.RestartServiceSink import RestartServiceSink
-from _agent.ServiceStatusJob import ServiceStatusProcessor, ServiceStatusJob
+from _agent.ServiceStatusJob import ServiceStatusSource, ServiceStatusJob
 import dbus.mainloop.glib
 import sys
 from _agent.events.Events import Publisher
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     pub = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
                      EventsType.ExecStartInfoRead, EventsType.ReadsDone])
     status_sink = RestartServiceSink(pub, service_name)
-    service_processor = ServiceStatusProcessor(pub)
+    service_processor = ServiceStatusSource(pub)
     job = ServiceStatusJob(service_name, service_processor)
     Scheduler.schedule_jobs(job)
     Scheduler.run_loop()
