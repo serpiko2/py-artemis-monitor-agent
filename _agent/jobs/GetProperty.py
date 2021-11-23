@@ -4,6 +4,17 @@ from _agent.models.PropertiesServiceParameters import PropertiesServiceParameter
 from _agent.scheduler.Job import Job
 
 
+class Interfaces:
+    Unit = 'org.freedesktop.systemd1.Unit'
+    Service = 'org.freedesktop.systemd1.Service'
+
+
+class Properties:
+    ActiveState = 'ActiveState'
+    LoadState = 'LoadState'
+    ExecStart = 'ExecStart'
+
+
 class GetPropertyJob(Job):
 
     @staticmethod

@@ -1,6 +1,7 @@
 import traceback
 
 from gi.repository import GLib
+from gi.repository import Gio
 
 from _agent.scheduler.Job import Job
 

@@ -27,12 +27,33 @@ if __name__ == '__main__':
     sub.subscribe(EventsType.RestartJobQueued, Publishers.get_publisher("test publisher"), callback=lambda reply:
                   print(reply, EventsType.RestartJobQueued))
     params = RestartServiceParameters(service_name)
-    restart_job = RestartUnitJob(params=params,
-                                 publisher=Publishers.get_publisher("test publisher"))
     processor = StatusAwareProcessor(publisher=Publishers.get_publisher("test publisher"),
                                      listener=sub,
                                      service_name=service_name)
-    get_service_job = FindPropertiesJob(service_name=service_name,
-                                        publisher=pub)
+    get_service_job = FindPropertiesJob(service_name=service_name, publisher=pub)
     Scheduler.schedule_job(get_service_job)
     Scheduler.run_loop()
+#     read_properties_publisher = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
+#                      EventsType.ExecStartInfoRead, EventsType.ReadsDone])
+#     logger.info(f"properties_publisher setup:{read_properties_publisher}")
+#     unit_event_publisher = Publisher([EventsType.UnitFound, EventsType.UnitFound])
+#     status_sink = RestartServiceSink(read_properties_publisher, service_name)
+#     service_processor = ServiceStatusProcessor(read_properties_publisher)
+#     job = ServiceStatusJob(service_name, service_processor)
+#     Scheduler.schedule_jobs(job)
+#     Scheduler.run_loop()
+
+
+# def wip():
+#     service_name = str(sys.argv[1]) if str(sys.argv[1]).endswith('.service') else '{0}.service'.format(
+#         str(sys.argv[1])) if len(sys.argv) > 2 else "artemis"
+#     print(f"service name: {service_name}")
+#     service_unit = service_name if service_name.endswith('.service') else get_sysd_object.GetUnit(
+#         '{0}.service'.format(service_name))
+#     print(f"service unit: {service_unit}")
+#     service_load_state = ""
+#     service_active_state = "active"
+#     if service_load_state == 'loaded' and service_active_state == 'active':
+#         print('service_running = True')
+#     else:
+#         print('SERVICE NOT RUN')
