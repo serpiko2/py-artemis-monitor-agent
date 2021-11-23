@@ -1,7 +1,7 @@
 import logging
 import time
 import os
-
+import asyncio
 
 logger = logging.getLogger("TailFile")
 
@@ -17,3 +17,5 @@ def follow(file, callback=log_line):
         if not line:
             continue
         callback(line)
+
+# mmap - load file in mem

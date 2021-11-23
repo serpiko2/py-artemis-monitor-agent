@@ -1,6 +1,6 @@
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
-from _agent.jobs.GetProperty import GetPropertyJob
+from _agent.jobs.GetProperty import GetPropertyJob, Properties, Interfaces
 from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
 from _agent.scheduler import Scheduler
 
@@ -10,21 +10,24 @@ def _schedule_retrieves(publisher, service_properties):
             publisher=publisher,
             event=EventsType.ActiveStateRead,
             params=PropertiesServiceParameters(service_properties,
-                                               'org.freedesktop.systemd1.Unit', 'ActiveState'),
+                                               Interfaces.Unit,
+                                               Properties.ActiveState),
             delay=0,
             loop=False)
     load_state_job = GetPropertyJob(
             publisher=publisher,
             event=EventsType.LoadStateRead,
             params=PropertiesServiceParameters(service_properties,
-                                               'org.freedesktop.systemd1.Unit', 'LoadState'),
+                                               Interfaces.Unit,
+                                               Properties.LoadState),
             delay=0,
             loop=False)
     exec_start_job = GetPropertyJob(
             publisher=publisher,
             event=EventsType.ExecStartRead,
             params=PropertiesServiceParameters(service_properties,
-                                               'org.freedesktop.systemd1.Service', 'ExecStart'),
+                                               Interfaces.Service,
+                                               Properties.ExecStart),
             delay=0,
             loop=False)
     Scheduler.schedule_jobs(active_state_job, load_state_job, exec_start_job)
@@ -87,18 +90,17 @@ class StatusAwareProcessor:
     def _are_checks_done(self):
         if self.exec_start and self.load_state and self.active_state:
             self.publisher.publish(EventsType.ReadsDone,
-                                   {"LoadState": self.load_state,
-                                    "ActiveState": self.active_state,
-                                    "ExecStart": self.exec_start})
+                                   {Properties.LoadState: self.load_state,
+                                    Properties.ActiveState: self.active_state,
+                                    Properties.ExecStart: self.exec_start})
 
     def check_status(self, context):
-        print("check status")
         load_state = context["LoadState"]
         active_state = context["ActiveState"]
         exec_start = context["ExecStart"]
         status_code = exec_start[0][9]
-        print(f"service:, load_state:{load_state}, "
-              f"active_state:{active_state}, status_code:{status_code}")
+        print(f"service={self.service_name}, status=[load_state={load_state}, "
+              f"active_state={active_state}, status_code={status_code}]")
         if load_state == 'loaded' and active_state == 'inactive':
             if status_code == 143:
                 self.publisher.publish(EventsType.TriggerRestart, self.service_name)

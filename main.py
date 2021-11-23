@@ -27,7 +27,6 @@ if __name__ == '__main__':
     sub.subscribe(EventsType.RestartJobQueued, Publishers.get_publisher("test publisher"), callback=lambda reply:
                   print(reply, EventsType.RestartJobQueued))
     params = RestartServiceParameters(service_name)
-    restart_job = RestartUnitJob(params=params, publisher=Publishers.get_publisher("test publisher"))
     processor = StatusAwareProcessor(publisher=Publishers.get_publisher("test publisher"),
                                      listener=sub,
                                      service_name=service_name)
