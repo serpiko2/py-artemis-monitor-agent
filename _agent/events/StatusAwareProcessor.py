@@ -22,7 +22,7 @@ def _schedule_retrieves(publisher, service_properties):
             loop=False)
     exec_start_job = GetPropertyJob(
             publisher=publisher,
-            event=EventsType.ExecStartInfoRead,
+            event=EventsType.ExecStartRead,
             params=PropertiesServiceParameters(service_properties,
                                                'org.freedesktop.systemd1.Service', 'ExecStart'),
             delay=0,
@@ -57,12 +57,12 @@ class StatusAwareProcessor:
             self._set_active_state(message)._are_checks_done()
         )
         self.listener.subscribe(
-            EventsType.ActiveStateRead, self.publisher,
+            EventsType.LoadStateRead, self.publisher,
             callback=lambda message:
             self._set_load_state(message)._are_checks_done()
         )
         self.listener.subscribe(
-            EventsType.ActiveStateRead, self.publisher,
+            EventsType.ExecStartRead, self.publisher,
             callback=lambda message:
             self._set_exec_start(message)._are_checks_done()
         )

@@ -2,8 +2,10 @@ import logging
 
 import dbus.mainloop.glib
 
+from _agent import Publishers
 from _agent.events.Events import Publisher, Subscriber
-from _agent.events.EventsType import EventsType
+from _agent.events.EventsType import EventsType, get_events
+from _agent.events.StatusAwareProcessor import StatusAwareProcessor
 from _agent.jobs.RestartUnit import RestartUnitJob
 from _agent.models.RestartServiceParameters import RestartServiceParameters
 from _agent.scheduler import Scheduler
@@ -18,10 +20,16 @@ if __name__ == '__main__':
     print(f"Monitor for service={service_name}")
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     print(f"Glib set as main loop for dbus")
-    pub = Publisher([EventsType.RestartDone, EventsType.UnitFound])
+    pub = Publisher(get_events(), "test_publisher")
+    Publishers.add_publisher("test publisher", pub)
     sub = Subscriber("find_service")
+    sub.subscribe(EventsType.RestartJobQueued, Publishers.get_publisher("test publisher"), callback=lambda reply:
+                  print(reply, EventsType.RestartJobQueued))
     params = RestartServiceParameters(service_name)
-    restart_job = RestartUnitJob(params=params, publisher=pub)
+    restart_job = RestartUnitJob(params=params, publisher=Publishers.get_publisher("test publisher"))
+    processor = StatusAwareProcessor(publisher=Publishers.get_publisher("test publisher"),
+                                     listener=sub,
+                                     service_name=service_name)
     Scheduler.schedule_job(restart_job)
     Scheduler.run_loop()
 #     read_properties_publisher = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,

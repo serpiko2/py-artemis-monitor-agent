@@ -12,7 +12,7 @@ class GetPropertyJob(Job):
                  params: PropertiesServiceParameters,
                  delay: int = 0,
                  loop=False):
-        super().__init__(GetPropertyJob.execute, delay, loop, params)
+        super().__init__(delay, loop, params)
         self.publisher = publisher
         self.event = event
 

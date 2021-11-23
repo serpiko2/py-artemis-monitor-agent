@@ -13,11 +13,10 @@ class RestartUnitJob(Job):
                  delay: int = 0,
                  loop: bool = False):
         self.publisher = publisher
-        super().__init__(RestartUnitJob.execute,
-                         delay, loop, params)
+        super().__init__(delay, loop, params)
 
     def callback(self, reply):
-        self.publisher.publish(EventsType.RestartDone, reply)
+        self.publisher.publish(EventsType.RestartJobQueued, reply)
 
     def fallback(self, error):
         print(error)

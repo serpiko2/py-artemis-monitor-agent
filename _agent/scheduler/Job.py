@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 class Job(ABC):
 
-    def __init__(self, func: callable, delay: int = 0, loop: bool = False, *params):
-        self.func = func
+    def __init__(self, delay: int = 0, loop: bool = False, *params):
+        self.func = self.execute
         self.delay = delay
         self.loop = loop
         self.args = (self.callback, self.fallback) + params

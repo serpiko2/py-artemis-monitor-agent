@@ -3,7 +3,13 @@ class EventsType:
     UnitFound = "UnitFound"
     LoadStateRead = "LoadStateRead"
     ActiveStateRead = "ActiveStateRead"
-    ExecStartInfoRead = "ExecStartInfoRead"
+    ExecStartRead = "ExecStartRead"
     ReadsDone = "ReadsDone"
     TriggerRestart = "TriggerRestart"
-    RestartDone = "RestartDone"
+    RestartJobQueued = "RestartJobQueued"
+
+
+def get_events():
+    return EventsType.__dict__.values()
+
+    #TODO: separate the list, create a base class and take this out

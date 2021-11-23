@@ -19,8 +19,7 @@ class FindPropertiesJob(Job):
                  service_name: str,
                  delay: int = 0,
                  loop: bool = False):
-        super().__init__(FindPropertiesJob.execute,
-                         delay, loop, service_name)
+        super().__init__(delay, loop, service_name)
         self.service_name = service_name
         self.publisher = publisher
 
