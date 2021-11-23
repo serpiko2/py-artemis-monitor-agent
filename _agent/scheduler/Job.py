@@ -19,6 +19,3 @@ class Job(ABC):
     @abstractmethod
     def fallback(self, error):
         pass
-
-    def schedule(self):
-        pass

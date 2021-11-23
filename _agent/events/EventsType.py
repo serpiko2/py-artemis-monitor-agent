@@ -5,4 +5,5 @@ class EventsType:
     ActiveStateRead = "ActiveStateRead"
     ExecStartInfoRead = "ExecStartInfoRead"
     ReadsDone = "ReadsDone"
+    TriggerRestart = "TriggerRestart"
     RestartDone = "RestartDone"

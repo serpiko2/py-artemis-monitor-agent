@@ -1,6 +1,6 @@
 from _agent.events.EventsType import EventsType
 from _agent.manager import Sysd
-from _agent.jobs.scheduler import Job
+from _agent.scheduler import Job
 from _agent.models.RestartServiceParameters import RestartServiceParams
 
 

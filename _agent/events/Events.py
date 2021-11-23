@@ -23,6 +23,12 @@ class Publisher:
             callback(message)
 
 
+class Subscription:
+    def __init__(self, events, publisher):
+        self.events = events
+        self.publisher = publisher
+
+
 class _Subscriber:
 
     def __init__(self, name):
@@ -36,6 +42,10 @@ class _Subscriber:
 
 
 class Subscriber(_Subscriber):
+
+    def __init__(self, name, subscription: Subscription):
+        super().__init__(name)
+        self.subscription = subscription
 
     def update(self, message):
         super()._update(message)

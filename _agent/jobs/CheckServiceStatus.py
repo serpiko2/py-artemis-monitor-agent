@@ -1,85 +1,101 @@
-from _agent.manager import Sysd
-from _agent.jobs.scheduler import Job
+from _agent.events.Events import Publisher, Subscriber
+from _agent.events.EventsType import EventsType
+from _agent.jobs.PropertiesService import RetrievePropertyJob
+from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
+from _agent.scheduler import Scheduler
 
 
-def entrypoint(loop: bool, callback: callable, fallback: callable, items):
-    """entry_point placeholder.
-    """
-    Sysd.get_manager().GetUnit(
-        items,
-        reply_handler=callback,
-        error_handler=fallback
-    )
-    # return false to not loop
-    return loop
+def _schedule_retrieves(publisher, service_properties):
+    active_state_job = RetrievePropertyJob(
+            publisher=publisher,
+            event=EventsType.ActiveStateRead,
+            params=PropertiesServiceParameters(service_properties,
+                                               'org.freedesktop.systemd1.Unit', 'ActiveState'),
+            delay=0,
+            loop=False)
+    load_state_job = RetrievePropertyJob(
+            publisher=publisher,
+            event=EventsType.LoadStateRead,
+            params=PropertiesServiceParameters(service_properties,
+                                               'org.freedesktop.systemd1.Unit', 'LoadState'),
+            delay=0,
+            loop=False)
+    exec_start_job = RetrievePropertyJob(
+            publisher=publisher,
+            event=EventsType.ExecStartInfoRead,
+            params=PropertiesServiceParameters(service_properties,
+                                               'org.freedesktop.systemd1.Service', 'ExecStart'),
+            delay=0,
+            loop=False)
+    Scheduler.schedule_jobs(active_state_job, load_state_job, exec_start_job)
 
 
-class CheckServiceStatusJob(Job):
+class CheckServiceStatusProcessor:
 
     def __init__(self,
                  service_name: str,
-                 delay: int = 0,
-                 loop=False):
-        super().__init__(entrypoint, delay, loop)
-        self._add_args(service_name)
-        self.success = None
-        self.failed = None
+                 publisher: Publisher,
+                 listener: Subscriber
+                 ):
+        self.service_name = service_name
+        self.listener = listener
+        self.publisher = publisher
+        self.active_state = None
+        self.load_state = None
+        self.exec_start = None
+        self._setup_subscriber()
+
+    def _setup_subscriber(self):
+        self.listener.subscribe(
+            EventsType.UnitFound, self.publisher,
+            callback=lambda message:
+            _schedule_retrieves(self.publisher, message)
+        )
+        self.listener.subscribe(
+            EventsType.ActiveStateRead, self.publisher,
+            callback=lambda message:
+            self._set_active_state(message)._are_checks_done()
+        )
+        self.listener.subscribe(
+            EventsType.ActiveStateRead, self.publisher,
+            callback=lambda message:
+            self._set_load_state(message)._are_checks_done()
+        )
+        self.listener.subscribe(
+            EventsType.ActiveStateRead, self.publisher,
+            callback=lambda message:
+            self._set_exec_start(message)._are_checks_done()
+        )
+        self.listener.subscribe(
+            EventsType.ReadsDone, self.publisher,
+            callback=lambda message:
+            self.check_status(message)
+        )
 
     def callback(self, reply):
-
-        print(f"{reply}")
-        self.success = True
-        pass
+        self.publisher.publish(reply.event, reply.data)
 
     def fallback(self, error):
         print(f"{error}")
-        self.failed = True
-        pass
 
     def _set_active_state(self, data):
         self.active_state = data
+        return self
 
     def _set_load_state(self, data):
         self.load_state = data
+        return self
 
     def _set_exec_start(self, data):
         self.exec_start = data
+        return self
 
     def _are_checks_done(self):
         if self.exec_start and self.load_state and self.active_state:
-            return True
-        return False
-
-    def _schedule_retrieves(self, service_properties):
-        Scheduler.schedule_function(self._retrieve_status, delay=0,
-                                    args=(service_properties,
-                                          'org.freedesktop.systemd1.Unit', 'ActiveState',
-                                          EventsType.ActiveStateRead))
-        Scheduler.schedule_function(self._retrieve_status, delay=0,
-                                    args=(service_properties,
-                                          'org.freedesktop.systemd1.Unit', 'LoadState',
-                                          EventsType.LoadStateRead))
-        Scheduler.schedule_function(self._retrieve_status, delay=0,
-                                    args=(service_properties,
-                                          'org.freedesktop.systemd1.Service', 'ExecStart',
-                                          EventsType.ExecStartInfoRead))
-
-    def _handle_update_status(self, publisher, data, update):
-        update(data)
-        if self._are_checks_done():
-            publisher(EventsType.ReadsDone,
+            self.publisher.publish(EventsType.ReadsDone,
                                    {"LoadState": self.load_state,
                                     "ActiveState": self.active_state,
                                     "ExecStart": self.exec_start})
-
-
-    def _retrieve_status(self, service_properties, interface, name, event: EventsType):
-        service_properties.Get(
-            interface, name,
-            reply_handler=lambda data: self.publisher.publish(event, data),
-            error_handler=self.handle_raise_error
-        )
-        return False
 
     def check_status(self, context):
         print("check status")
@@ -91,4 +107,4 @@ class CheckServiceStatusJob(Job):
               f"active_state:{active_state}, status_code:{status_code}")
         if load_state == 'loaded' and active_state == 'inactive':
             if status_code == 143:
-                self.schedule()
+                self.publisher.publish(EventsType.TriggerRestart, self.service_name)

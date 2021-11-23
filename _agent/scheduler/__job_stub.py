@@ -1,4 +1,4 @@
-from _agent.jobs.scheduler import Job
+from _agent.scheduler import Job
 
 
 def entrypoint(loop: bool, callback: callable, fallback: callable, items):

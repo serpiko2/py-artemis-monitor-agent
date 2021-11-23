@@ -5,7 +5,7 @@ from _agent.jobs.FindService import FindUnitPropertiesJob
 import dbus.mainloop.glib
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
-from _agent.jobs.scheduler import Scheduler
+from _agent.scheduler import Scheduler
 from _utils import JobsConfig, Logger
 
 Logger.configure_logger()
