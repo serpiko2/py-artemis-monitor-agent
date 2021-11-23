@@ -24,16 +24,14 @@ class Publisher:
             callback(message)
 
 
-class _Subscriber(ABC):
+class _Subscriber:
 
     def __init__(self, name):
         self.name = name
 
-    @abstractmethod
     def _update(self, message):
         print('{} got message "{}"'.format(self.name, message))
 
-    @abstractmethod
     def _subscribe(self, event, publisher: Publisher, callback=_update):
         publisher.register(event, self, callback=callback)
 
@@ -41,13 +39,7 @@ class _Subscriber(ABC):
 class Subscriber(_Subscriber):
 
     def update(self, message):
-        print('{} got message "{}"'.format(self.name, message))
-
-    def subscribe(self, event, publisher: Publisher, callback=update):
-        publisher.register(event, self, callback=callback)
-
-    def _update(self, message):
         super()._update(message)
 
-    def _subscribe(self, event, publisher: Publisher, callback=_update):
+    def subscribe(self, event, publisher: Publisher, callback=update):
         super()._subscribe(event, publisher, callback)

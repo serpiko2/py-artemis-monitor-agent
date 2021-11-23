@@ -1,31 +1,23 @@
 import traceback
+
 from gi.repository import GLib
 
-
-class Job:
-
-    def __init__(self, func, delay: int = 0, loop: bool = False, *args):
-        self.func = func
-        self.delay = delay
-        self.args = loop,
-
-    def _add_args(self, *args):
-        self.args += args
-
-    def schedule(self):
-        # hack for args always being an object when passed as argument
-        schedule_function(self.func, self.args, delay=self.delay) \
-            if len(self.args) != 0 else schedule_function(self.func, delay=self.delay)
+from _agent.scheduler.Job import Job
 
 
-def schedule_function(job, args: tuple = None, delay: int = 0):
-    print(f"scheduled: {job}, schedule_function args", args)
-    GLib.timeout_add(delay, job, *args)
+def schedule_function(fun: callable, args: tuple = None, delay: int = 0, loop=False):
+    print(f"scheduled: {fun}, schedule_function args", *(loop, )+args)
+    GLib.timeout_add(delay, fun, *(loop, )+args)
+
+
+def schedule_job(job: Job):
+    # hack for args always being an object when passed as argument
+    schedule_function(job.func, job.args, delay=job.delay)
 
 
 def schedule_jobs(*jobs: Job):
     for job in jobs:
-        job.schedule()
+        schedule_job(job)
 
 
 def run_loop():
