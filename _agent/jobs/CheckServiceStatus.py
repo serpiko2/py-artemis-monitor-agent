@@ -72,12 +72,6 @@ class CheckServiceStatusProcessor:
             self.check_status(message)
         )
 
-    def callback(self, reply):
-        self.publisher.publish(reply.event, reply.data)
-
-    def fallback(self, error):
-        print(f"{error}")
-
     def _set_active_state(self, data):
         self.active_state = data
         return self
