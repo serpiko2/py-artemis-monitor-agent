@@ -3,6 +3,20 @@ from _agent.scheduler import Job
 
 class __JobStub(Job):
 
+    @staticmethod
+    def execute(loop: bool, callback: callable, fallback: callable, params):
+        """ Unimplemented job stub - use this as a reference structure
+            :param:
+                `loop`:`true or false to make it loop`
+                `callback`:`the callback to be executed to handle the non blocking function response`
+                `fallback`:`the fallback to be executed to handle the non blocking function error`
+                `params`:`an object that holds the parameters for the function to run`
+        """
+        print(f"running an unimplemented job stub entrypoint: {loop, callback, fallback, params}")
+        # we should do something awesome and non-blocking here!
+        # return false to not loop
+        return loop
+
     def __init__(self,
                  params,
                  delay: int = 0,
@@ -20,17 +34,3 @@ class __JobStub(Job):
         print(f"{error}")
         self.failed = True
         pass
-
-    @staticmethod
-    def execute(loop: bool, callback: callable, fallback: callable, params):
-        """Find the service unit by it's name.
-            :param:
-                `name`:`the formatted service name as {name}.service`
-                `loop`:`true or false to make it loop`
-            :returns:
-                `service_object_path`:`the service object path reference`
-        """
-        print(f"running an unimplemented job stub entrypoint: {loop, callback, fallback, params}")
-        print(f"we should do something awesome here!")
-        # return false to not loop
-        return loop

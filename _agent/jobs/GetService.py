@@ -14,6 +14,23 @@ class UnitNotFoundException(Exception):
 
 class FindPropertiesJob(Job):
 
+    @staticmethod
+    def execute(loop: bool, callback: callable, fallback: callable, service_name: str):
+        """Find the service unit by it's name.
+            :param:
+                `name`:`the formatted service name as {name}.service`
+                `loop`:`true or false to make it loop`
+            :returns:
+                `service_object_path`:`the service object path reference`
+        """
+        Sysd.get_manager().GetUnit(
+            service_name,
+            reply_handler=callback,
+            error_handler=fallback
+        )
+        # return false to not loop
+        return loop
+
     def __init__(self,
                  publisher: Publisher,
                  service_name: str,
@@ -39,20 +56,3 @@ class FindPropertiesJob(Job):
         print(f"async client {self} status: ExceptionRaise {e}")
         # if an error happens on read i don't need to quit
         # loop.quit()
-
-    @staticmethod
-    def execute(loop: bool, callback: callable, fallback: callable, service_name: str):
-        """Find the service unit by it's name.
-            :param:
-                `name`:`the formatted service name as {name}.service`
-                `loop`:`true or false to make it loop`
-            :returns:
-                `service_object_path`:`the service object path reference`
-        """
-        Sysd.get_manager().GetUnit(
-            service_name,
-            reply_handler=callback,
-            error_handler=fallback
-        )
-        # return false to not loop
-        return loop

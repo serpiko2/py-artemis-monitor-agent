@@ -6,6 +6,7 @@ from _agent import Publishers
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType, get_events
 from _agent.events.StatusAwareProcessor import StatusAwareProcessor
+from _agent.jobs.GetService import FindPropertiesJob
 from _agent.jobs.RestartUnit import RestartUnitJob
 from _agent.models.RestartServiceParameters import RestartServiceParameters
 from _agent.scheduler import Scheduler
@@ -30,7 +31,8 @@ if __name__ == '__main__':
     processor = StatusAwareProcessor(publisher=Publishers.get_publisher("test publisher"),
                                      listener=sub,
                                      service_name=service_name)
-    Scheduler.schedule_job(restart_job)
+    get_service_job = FindPropertiesJob(service_name=service_name, publisher=pub)
+    Scheduler.schedule_job(get_service_job)
     Scheduler.run_loop()
 #     read_properties_publisher = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
 #                      EventsType.ExecStartInfoRead, EventsType.ReadsDone])

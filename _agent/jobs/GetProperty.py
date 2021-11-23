@@ -6,6 +6,18 @@ from _agent.scheduler.Job import Job
 
 class GetPropertyJob(Job):
 
+    @staticmethod
+    def execute(loop: bool, callback: callable, fallback: callable, params: PropertiesServiceParameters):
+        """ Unimplemented job stub - use this as a reference structure
+        """
+        params.service_properties.Get(
+            params.interface, params.name,
+            reply_handler=callback,
+            error_handler=fallback
+        )
+        # return false to not loop
+        return loop
+
     def __init__(self,
                  publisher: Publisher,
                  event: EventsType,
@@ -17,19 +29,7 @@ class GetPropertyJob(Job):
         self.event = event
 
     def callback(self, reply):
-        self.publisher.publish(self.event, reply.data)
+        self.publisher.publish(self.event, reply)
 
     def fallback(self, error):
         print(f"{error}")
-
-    @staticmethod
-    def execute(loop: bool, callback: callable, fallback: callable, params: PropertiesServiceParameters):
-        """entry_point placeholder.
-        """
-        params.service_properties.Get(
-            params.interface, params.name,
-            reply_handler=lambda message: callback,
-            error_handler=fallback
-        )
-        # return false to not loop
-        return loop
