@@ -1,26 +1,26 @@
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
-from _agent.jobs.PropertiesService import RetrievePropertyJob
+from _agent.jobs.GetProperty import GetPropertyJob
 from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
 from _agent.scheduler import Scheduler
 
 
 def _schedule_retrieves(publisher, service_properties):
-    active_state_job = RetrievePropertyJob(
+    active_state_job = GetPropertyJob(
             publisher=publisher,
             event=EventsType.ActiveStateRead,
             params=PropertiesServiceParameters(service_properties,
                                                'org.freedesktop.systemd1.Unit', 'ActiveState'),
             delay=0,
             loop=False)
-    load_state_job = RetrievePropertyJob(
+    load_state_job = GetPropertyJob(
             publisher=publisher,
             event=EventsType.LoadStateRead,
             params=PropertiesServiceParameters(service_properties,
                                                'org.freedesktop.systemd1.Unit', 'LoadState'),
             delay=0,
             loop=False)
-    exec_start_job = RetrievePropertyJob(
+    exec_start_job = GetPropertyJob(
             publisher=publisher,
             event=EventsType.ExecStartInfoRead,
             params=PropertiesServiceParameters(service_properties,
@@ -30,7 +30,7 @@ def _schedule_retrieves(publisher, service_properties):
     Scheduler.schedule_jobs(active_state_job, load_state_job, exec_start_job)
 
 
-class CheckServiceStatusProcessor:
+class StatusAwareProcessor:
 
     def __init__(self,
                  service_name: str,

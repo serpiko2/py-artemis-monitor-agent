@@ -19,3 +19,8 @@ class Job(ABC):
     @abstractmethod
     def fallback(self, error):
         pass
+
+    @staticmethod
+    @abstractmethod
+    def execute(loop: bool, callback: callable, fallback: callable, params):
+        pass

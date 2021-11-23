@@ -1,10 +1,11 @@
 import logging
 
-from _agent.jobs.RestartService import RestartServiceJob, RestartServiceParams
-from _agent.jobs.FindService import FindUnitPropertiesJob
 import dbus.mainloop.glib
+
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
+from _agent.jobs.RestartUnit import RestartUnitJob
+from _agent.models.RestartServiceParameters import RestartServiceParameters
 from _agent.scheduler import Scheduler
 from _utils import JobsConfig, Logger
 
@@ -12,24 +13,16 @@ Logger.configure_logger()
 logger = logging.getLogger("main")
 
 if __name__ == '__main__':
-    logger.info("Starting monitor agent")
+    print("Starting monitor agent")
     service_name = JobsConfig.get("Jobs", "job.service.name")
-    logger.info(f"Monitor for service={service_name}")
+    print(f"Monitor for service={service_name}")
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    logger.info(f"Glib set as main loop for dbus")
+    print(f"Glib set as main loop for dbus")
     pub = Publisher([EventsType.RestartDone, EventsType.UnitFound])
     sub = Subscriber("find_service")
-    find_unit_job = FindUnitPropertiesJob(pub, service_name)
-    sub.subscribe(EventsType.RestartDone, pub,
-                  callback=lambda message: Scheduler.schedule_job(find_unit_job))
-    sub.subscribe(EventsType.UnitFound, pub,
-                  callback=lambda message: print("found items: ", message))
-    pub.publish(EventsType.RestartDone, "publish")
-    restart_service_job = RestartServiceJob(
-        RestartServiceParams(service_name, "replace"),
-        pub
-    )
-    Scheduler.schedule_jobs(restart_service_job)
+    params = RestartServiceParameters(service_name)
+    restart_job = RestartUnitJob(params=params, publisher=pub)
+    Scheduler.schedule_job(restart_job)
     Scheduler.run_loop()
 #     read_properties_publisher = Publisher([EventsType.LoadStateRead, EventsType.ActiveStateRead,
 #                      EventsType.ExecStartInfoRead, EventsType.ReadsDone])

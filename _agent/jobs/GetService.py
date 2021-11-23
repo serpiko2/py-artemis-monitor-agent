@@ -4,7 +4,7 @@ from dbus import Interface
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
 from _agent.manager import Sysd
-from _agent.scheduler import Job
+from _agent.scheduler.Job import Job
 
 
 class UnitNotFoundException(Exception):
@@ -12,32 +12,16 @@ class UnitNotFoundException(Exception):
         self.obj = obj
 
 
-def _find_service_unit(loop: bool, callback: callable, fallback: callable, service_name: str):
-    """Find the service unit by it's name.
-        :param:
-            `name`:`the formatted service name as {name}.service`
-            `loop`:`true or false to make it loop`
-        :returns:
-            `service_object_path`:`the service object path reference`
-    """
-    Sysd.get_manager().GetUnit(
-        service_name,
-        reply_handler=callback,
-        error_handler=fallback
-    )
-    # return false to not loop
-    return loop
-
-
-class FindUnitPropertiesJob(Job):
+class FindPropertiesJob(Job):
 
     def __init__(self,
                  publisher: Publisher,
                  service_name: str,
                  delay: int = 0,
-                 loop=False,
-                 ):
-        super().__init__(_find_service_unit, delay, loop, service_name)
+                 loop: bool = False):
+        super().__init__(FindPropertiesJob.execute,
+                         delay, loop, service_name)
+        self.service_name = service_name
         self.publisher = publisher
 
     def callback(self, unit: dbus.ObjectPath):
@@ -56,3 +40,20 @@ class FindUnitPropertiesJob(Job):
         print(f"async client {self} status: ExceptionRaise {e}")
         # if an error happens on read i don't need to quit
         # loop.quit()
+
+    @staticmethod
+    def execute(loop: bool, callback: callable, fallback: callable, service_name: str):
+        """Find the service unit by it's name.
+            :param:
+                `name`:`the formatted service name as {name}.service`
+                `loop`:`true or false to make it loop`
+            :returns:
+                `service_object_path`:`the service object path reference`
+        """
+        Sysd.get_manager().GetUnit(
+            service_name,
+            reply_handler=callback,
+            error_handler=fallback
+        )
+        # return false to not loop
+        return loop

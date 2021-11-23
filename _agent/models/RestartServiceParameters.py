@@ -1,4 +1,4 @@
-class RestartServiceParams:
+class RestartServiceParameters:
 
     def __init__(self,
                  service_name: str,

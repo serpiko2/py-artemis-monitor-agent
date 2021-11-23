@@ -13,5 +13,6 @@ def get_sys_bus() -> dbus.SystemBus:
     """
     return dbus.SystemBus()
 
+
 def get_sysd_object(item) -> ProxyObject:
     return get_sys_bus().get_object('org.freedesktop.systemd1', item)

@@ -43,9 +43,8 @@ class _Subscriber:
 
 class Subscriber(_Subscriber):
 
-    def __init__(self, name, subscription: Subscription):
+    def __init__(self, name):
         super().__init__(name)
-        self.subscription = subscription
 
     def update(self, message):
         super()._update(message)
