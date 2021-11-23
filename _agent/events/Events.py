@@ -1,4 +1,4 @@
-import logging
+from abc import ABC, abstractmethod
 
 
 class Publisher:
@@ -18,37 +18,35 @@ class Publisher:
         del self.get_subscribers(event)[who]
 
     def publish(self, event, message):
-        logging.debug(f"publishing event {event} with message {message}")
+        print(f"publishing event {event} with message {message}")
         for subscriber, callback in self.get_subscribers(event).items():
             callback(message)
 
 
-class Subscription:
-    def __init__(self, events, publisher):
-        self.events = events
-        self.publisher = publisher
-
-
-class _Subscriber:
+class _Subscriber(ABC):
 
     def __init__(self, name):
         self.name = name
 
+    @abstractmethod
     def _update(self, message):
         print('{} got message "{}"'.format(self.name, message))
 
+    @abstractmethod
     def _subscribe(self, event, publisher: Publisher, callback=_update):
         publisher.register(event, self, callback=callback)
 
 
 class Subscriber(_Subscriber):
 
-    def __init__(self, name, subscription: Subscription):
-        super().__init__(name)
-        self.subscription = subscription
-
     def update(self, message):
-        super()._update(message)
+        print('{} got message "{}"'.format(self.name, message))
 
     def subscribe(self, event, publisher: Publisher, callback=update):
+        publisher.register(event, self, callback=callback)
+
+    def _update(self, message):
+        super()._update(message)
+
+    def _subscribe(self, event, publisher: Publisher, callback=_update):
         super()._subscribe(event, publisher, callback)
