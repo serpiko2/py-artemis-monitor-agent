@@ -1,8 +1,7 @@
-from _agent.manager import Sysd
-from _agent.scheduler.Scheduler import Job
+from _agent.jobs.scheduler import Job
 
 
-def entrypoint(loop: bool, callback: callable, fallback: callable, *items):
+def entrypoint(loop: bool, callback: callable, fallback: callable, items):
     """Find the service unit by it's name.
         :param:
             `name`:`the formatted service name as {name}.service`
@@ -10,11 +9,8 @@ def entrypoint(loop: bool, callback: callable, fallback: callable, *items):
         :returns:
             `service_object_path`:`the service object path reference`
     """
-    Sysd.get_manager().GetUnit(
-        *items,
-        reply_handler=callback,
-        error_handler=fallback
-    )
+    print(f"running an unimplemented job stub entrypoint: {loop, callback, fallback, items}")
+    print(f"we should do something awesome here!")
     # return false to not loop
     return loop
 

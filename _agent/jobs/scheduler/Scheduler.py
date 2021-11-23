@@ -2,7 +2,7 @@ import traceback
 
 from gi.repository import GLib
 
-from _agent.scheduler.Job import Job
+from _agent.jobs.scheduler.Job import Job
 
 
 def schedule_function(fun: callable, args: tuple = None, delay: int = 0, loop=False):

@@ -1,14 +1,11 @@
 import logging
 
-from _agent.RestartService import RestartServiceJob, RestartServiceParams
-from _agent.FindService import FindUnitPropertiesJob
-from _agent.events.RestartServiceSink import RestartServiceSink
+from _agent.jobs.RestartService import RestartServiceJob, RestartServiceParams
+from _agent.jobs.FindService import FindUnitPropertiesJob
 import dbus.mainloop.glib
-import sys
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
-from _agent.events.ServiceStatusProcessor import ServiceStatusProcessor
-from _agent.scheduler import Scheduler
+from _agent.jobs.scheduler import Scheduler
 from _utils import JobsConfig, Logger
 
 Logger.configure_logger()

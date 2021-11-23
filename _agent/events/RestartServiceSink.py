@@ -1,7 +1,6 @@
-from _agent import RestartService
 from _agent.events.Events import Subscriber
 from _agent.events.EventsType import EventsType
-from _agent.scheduler.Scheduler import schedule_job
+from _agent.jobs.scheduler import schedule_job
 
 
 class RestartServiceSink:

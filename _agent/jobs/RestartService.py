@@ -1,15 +1,16 @@
 from _agent.events.EventsType import EventsType
 from _agent.manager import Sysd
-from _agent.scheduler.Scheduler import Job
+from _agent.jobs.scheduler import Job
+from _agent.models.RestartServiceParameters import RestartServiceParams
 
 
-class RestartServiceParams:
-
-    def __init__(self,
-                 service_name: str,
-                 mode: str = 'replace'):
-        self.service_name = service_name
-        self.mode = mode
+def _restart_unit(loop: bool, callback: callable, fallback: callable, params):
+    print("restarting unit")
+    Sysd.get_manager().RestartUnit(params.service_name,
+                                   params.mode,
+                                   reply_handler=callback,
+                                   error_handler=fallback)
+    return loop
 
 
 class RestartServiceJob(Job):
@@ -29,14 +30,4 @@ class RestartServiceJob(Job):
 
     def fallback(self, error):
         print(error)
-
-
-def _restart_unit(loop: bool, callback: callable, fallback: callable, params):
-    print("restarting unit")
-    Sysd.get_manager().RestartUnit(params.service_name,
-                                   params.mode,
-                                   reply_handler=callback,
-                                   error_handler=fallback)
-    return loop
-
 

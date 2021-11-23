@@ -1,17 +1,12 @@
 from _agent.manager import Sysd
-from _agent.scheduler.Scheduler import Job
+from _agent.jobs.scheduler import Job
 
 
 def entrypoint(loop: bool, callback: callable, fallback: callable, items):
-    """Find the service unit by it's name.
-        :param:
-            `name`:`the formatted service name as {name}.service`
-            `loop`:`true or false to make it loop`
-        :returns:
-            `service_object_path`:`the service object path reference`
+    """entry_point placeholder.
     """
     Sysd.get_manager().GetUnit(
-        *items,
+        items,
         reply_handler=callback,
         error_handler=fallback
     )
