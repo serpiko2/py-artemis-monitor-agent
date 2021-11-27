@@ -18,9 +18,9 @@ class Step(ABC):
                 `params`:`an object that holds the parameters for the function to run`
         """
 
-    def before(self, **params):
+    def before(self, *params):
         return params
 
-    def after(self, **params):
+    def after(self, *params):
         """"""
         return params
