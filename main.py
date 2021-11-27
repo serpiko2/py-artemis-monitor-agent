@@ -50,7 +50,7 @@ if __name__ == '__main__':
         Publishers.add_publisher("test publisher", pub)
         unit_object_path = GetServiceStep.get_service(service_name)
         SessionBusSysd.get_sysd_proxy_object().connect_to_signal("UnitNew", lambda m: print(m),
-                                                                 arg0="Hello")
+                                                                 unit=service_name)
         Entrypoint.check_and_restart(service_name)
         Scheduler.run_loop()
 
