@@ -26,6 +26,12 @@ class GracefulKiller:
         signal.signal(signal.SIGTERM, exit_gracefully)
 
 
+def func():
+    Sysd.get_sysd_manager().connect_to_signal("HelloSignal", lambda m: print(m),
+                                              dbus_interface="com.example.TestService",
+                                              arg0="Hello")
+
+
 if __name__ == '__main__':
     killer = GracefulKiller()
     parser = ArgParser.parser
@@ -47,9 +53,9 @@ if __name__ == '__main__':
     if 'SYNC' == mode:
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
-        Sysd.get_sysd_manager().connect_to_signal("HelloSignal", lambda m: print(m),
-                                                  dbus_interface="com.example.TestService",
-                                                  arg0="Hello",
-                                                  mainloop=Scheduler.get_loop())
         Entrypoint.check_and_restart(service_name)
+        Scheduler.schedule_function(func)
         Scheduler.run_loop()
+
+
+
