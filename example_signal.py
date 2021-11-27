@@ -12,18 +12,6 @@ def handle_reply(msg):
 def handle_error(e):
     print("recipient:", str(e))
 
-def emit_signal():
-   #call the emitHelloSignal method
-   object.emitHelloSignal(dbus_interface="com.example.TestService")
-                          #reply_handler = handle_reply, error_handler = handle_error)
-   # exit after waiting a short time for the signal
-   GLib.timeout_add(2000, loop.quit)
-
-   if sys.argv[1:] == ['--exit-service']:
-      object.Exit(dbus_interface='com.example.TestService')
-
-   return False
-
 def hello_signal_handler(hello_string):
     print("recipient: Received signal (by connecting using remote object) and it says: "
            + hello_string)
@@ -56,9 +44,6 @@ if __name__ == '__main__':
 
     #lets make a catchall
     bus.add_signal_receiver(catchall_signal_handler, interface_keyword='dbus_interface', member_keyword='member')
-
-    # Tell the remote object to emit the signal after a short delay
-    GLib.timeout_add(2000, emit_signal)
 
     loop = GLib.MainLoop()
     loop.run()
