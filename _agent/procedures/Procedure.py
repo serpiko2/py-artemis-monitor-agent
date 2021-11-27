@@ -19,11 +19,11 @@ class Procedure:
             for step in self._steps:
                 current_step = step
                 print(f"result{result}")
-                bf = step.before(result)
+                bf = step.before(**result)
                 print(f"before{bf}")
-                app = step.apply(bf)
+                app = step.apply(**bf)
                 print(f"app{app}")
-                result = step.after(app)
+                result = step.after(**app)
                 print(f"final_result{result}")
         except Exception as e:
             print(f"stop on step=[{current_step}] with last result=[{result}] and exception=[{e}]")

@@ -18,10 +18,10 @@ class Step(ABC):
                 `params`:`an object that holds the parameters for the function to run`
         """
 
-    def before(self, *params):
+    def before(self, **params):
         print(f"before.self:{self}, kwargs:{params}")
         return params
 
-    def after(self, *params):
+    def after(self, **params):
         print(f"after.self:{self}, kwargs:{params}")
         return params
