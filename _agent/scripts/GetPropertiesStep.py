@@ -27,6 +27,6 @@ def get_properties_for_restart(service_properties: Interface):
 
 
 def get_service_properties(unit: dbus.ObjectPath):
-    unit_object = Sysd.get_proxy_from_object_path(unit)
-    service_properties = Sysd.get_properties_interface(unit_object)
+    unit_object = SystemBusSysd.get_proxy_from_object_path(unit)
+    service_properties = SystemBusSysd.get_properties_interface(unit_object)
     return service_properties

@@ -13,5 +13,5 @@ def check(load_state, active_state, exec_start):
 
 def restart_unit(properties: CheckRestartProperties, service_name, mode='replace'):
     check(properties.load_state, properties.active_state, properties.exec_start)
-    return Sysd.get_sysd_manager().RestartUnit(service_name, mode)
+    return SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode)
 
