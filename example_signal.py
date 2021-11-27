@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     #lets make a catchall
     print("conntecting to catchall")
-    bus.add_signal_receiver(catchall_signal_handler)
+    bus.add_signal_receiver(catchall_signal_handler, dbus_interface="org.freedesktop.systemd1")
 
     loop = GLib.MainLoop()
     loop.run()
