@@ -49,9 +49,7 @@ if __name__ == '__main__':
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
         SessionBusSysd.get_sysd_proxy_object().connect_to_signal("HelloSignal", lambda m: print(m),
-                                                                 dbus_interface="org.freedesktop.systemd1.Manager",
                                                                  arg0="Hello")
-
         Entrypoint.check_and_restart(service_name)
         Scheduler.run_loop()
 
