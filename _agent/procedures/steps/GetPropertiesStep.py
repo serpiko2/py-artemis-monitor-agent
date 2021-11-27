@@ -2,7 +2,7 @@ import dbus
 from dbus import Interface
 
 from _agent.manager import Sysd
-from _agent.procedures.steps.Step import Step
+from _agent.procedures.Step import Step
 
 
 class Interfaces:

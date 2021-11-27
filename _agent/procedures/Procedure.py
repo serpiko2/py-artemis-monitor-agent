@@ -1,9 +1,10 @@
-from _agent.procedures.steps.Step import Step
+from _agent.procedures.Step import Step
 
 
-def _run(step, **params):
+def _run(step, *params):
     print(f"step: {step}, params:{params}")
-    return step.after(step.apply(**step.before(**params)))
+    result = step.after(*step.apply(*step.before(*params)))
+    return (result, )
 
 
 class Procedure:
@@ -17,12 +18,12 @@ class Procedure:
         self._steps.append(step)
         return self
 
-    def run(self, **params):
+    def run(self, *params):
         current_step = None
         result = params
         try:
             for step in self._steps:
                 current_step = step
-                result = _run(step, **result)
+                result = _run(step, *result)
         except Exception as e:
             print(f"stop on step=[{current_step}] with exception=[{e}]")
