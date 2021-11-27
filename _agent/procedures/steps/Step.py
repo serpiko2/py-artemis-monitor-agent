@@ -8,7 +8,7 @@ class Step(ABC):
         """"""
 
     @abstractmethod
-    def apply(self, params):
+    def apply(self, **params):
         """ the entrypoint for the step, the scheduler will run it on the event loop,
          it has to be non blocking or you have to delegate it to a secondary thread pool executor
             :param:
@@ -19,7 +19,7 @@ class Step(ABC):
         """
 
     def before(self, **params):
-        print(f"before.self:{self}, kwargs:{params}")
+        print(f"before.self:{self}, kwargs:{params}", **params)
         return params
 
     def after(self, **params):
