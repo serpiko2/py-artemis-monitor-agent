@@ -10,19 +10,19 @@ ISYSD_PROPERTIES_STRING = 'org.freedesktop.DBus.Properties'
 
 
 def get_sysd_proxy() -> ProxyObject:
-    return get_dbus_sys_bus().get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
+    return get_sys_bus().get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
 
 
-def get_dbus_sys_bus() -> dbus.SystemBus:
+def get_sys_bus() -> dbus.SessionBus:
     """ Return a connection to the system bus.
     :returns:
         `system_bus`:`the system bus connection`
     """
-    return dbus.SystemBus()
+    return dbus.SessionBus()
 
 
-def get_sysd_object(bus, item) -> ProxyObject:
-    return bus().get_object('org.freedesktop.systemd1', item)
+def get_sysd_object(item) -> ProxyObject:
+    return get_sys_bus().get_object('org.freedesktop.systemd1', item)
 
 
 def get_sysd_manager() -> Interface:
@@ -47,4 +47,4 @@ def get_properties_interface(item) -> dbus.Interface:
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:
-    return get_sysd_object(get_sysd_manager(), object_path)
+    return get_sysd_object(object_path)
