@@ -1,5 +1,5 @@
 from _agent.procedures.steps.Step import Step
-
+import functools
 
 class Procedure:
     _steps: list
@@ -15,6 +15,7 @@ class Procedure:
     def run(self, *params):
         current_step = None
         result = ()
+
         try:
             for step in self._steps:
                 result = step.after(step.apply(step.before(params)))
