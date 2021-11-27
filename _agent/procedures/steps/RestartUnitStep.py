@@ -8,7 +8,10 @@ class RestartUnitStep(Step):
         self.service_name = service_name
         self.mode = mode
 
-    def apply(self, *args):
+    def __int__(self):
+        return
+
+    def apply(self):
         return Sysd.get_sysd_manager().RestartUnit(self.service_name, self.mode)
 
     def before(self, load_state, active_state, exec_start):
