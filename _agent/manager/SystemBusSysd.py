@@ -47,4 +47,4 @@ def get_properties_interface(item) -> dbus.Interface:
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:
-    return get_sysd_object(get_dbus_sys_bus(), object_path)
+    return get_sysd_object(get_sysd_manager(), object_path)
