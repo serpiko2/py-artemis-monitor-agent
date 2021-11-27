@@ -8,7 +8,7 @@ from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
 from _agent.manager import SessionBusSysd
 from _agent.scheduler import Scheduler
-from _agent.scripts import Entrypoint
+from _agent.scripts import Entrypoint, GetServiceStep
 from _utils import JobsConfig, Logger, ArgParser
 
 from gi.repository import GLib
@@ -48,7 +48,8 @@ if __name__ == '__main__':
     if 'SYNC' == mode:
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
-        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("HelloSignal", lambda m: print(m),
+        unit_object_path = GetServiceStep.get_service(service_name)
+        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("UnitNew", lambda m: print(m),
                                                                  arg0="Hello")
         Entrypoint.check_and_restart(service_name)
         Scheduler.run_loop()
