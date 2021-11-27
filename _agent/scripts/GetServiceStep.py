@@ -1,4 +1,4 @@
-from _agent.manager import Sysd
+from _agent.manager import SystemBusSysd
 
 
 def get_service(service_name: str):

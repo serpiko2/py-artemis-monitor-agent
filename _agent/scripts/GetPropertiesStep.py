@@ -1,7 +1,7 @@
 import dbus
 from dbus import Interface
 
-from _agent.manager import Sysd
+from _agent.manager import SystemBusSysd
 from _agent.scripts.CheckRestartProperties import CheckRestartProperties
 
 
