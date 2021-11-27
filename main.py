@@ -48,4 +48,5 @@ if __name__ == '__main__':
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
         Scheduler.run_loop()
+        Entrypoint.check_and_restart(service_name)
         Sysd.connect_to_signal(signal="Unit", callback=Entrypoint.check_and_restart(service_name))
