@@ -23,5 +23,5 @@ class Step(ABC):
         return params
 
     def after(self, *params):
-        """"""
+        print(f"after.self:{self}, params:{params}")
         return params
