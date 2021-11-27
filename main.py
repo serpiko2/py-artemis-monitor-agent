@@ -49,8 +49,7 @@ if __name__ == '__main__':
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
         unit_object_path = GetServiceStep.get_service(service_name)
-        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("UnitNew", lambda m: print(m),
-                                                                 unit=service_name)
+        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("UnitNew", lambda m: print(m))
         Entrypoint.check_and_restart(service_name)
         Scheduler.run_loop()
 
