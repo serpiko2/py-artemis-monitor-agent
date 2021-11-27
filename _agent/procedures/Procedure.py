@@ -15,10 +15,9 @@ class Procedure:
     def run(self, *params):
         current_step = None
         result = ()
-
         try:
             for step in self._steps:
-                result = step.after(step.apply(step.before(params)))
+                result = step.after(*step.apply(*step.before(params)))
         except Exception as e:
             print(f"stop on step=[{current_step}] with last result=[{result}] and exception=[{e}]")
         return result
