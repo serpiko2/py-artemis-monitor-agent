@@ -10,6 +10,6 @@ class GetServiceStep(Step):
         self.service_name = service_name
 
     def apply(self):
-        return {'Unit', Sysd.get_sysd_manager().GetUnit(
+        return {'unit', Sysd.get_sysd_manager().GetUnit(
             self.service_name
         )}
