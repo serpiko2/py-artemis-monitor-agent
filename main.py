@@ -6,7 +6,7 @@ import dbus.mainloop.glib
 from _agent import Publishers
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
-from _agent.manager import SystemBusSysd
+from _agent.manager import SessionBusSysd
 from _agent.scheduler import Scheduler
 from _agent.scripts import Entrypoint
 from _utils import JobsConfig, Logger, ArgParser
@@ -26,14 +26,6 @@ class GracefulKiller:
     def __init__(self):
         signal.signal(signal.SIGINT, exit_gracefully)
         signal.signal(signal.SIGTERM, exit_gracefully)
-
-
-def func():
-    Sysd.get_sysd_manager().connect_to_signal("HelloSignal", lambda m: print(m),
-                                              dbus_interface="com.example.TestService",
-                                              arg0="Hello")
-    return False
-
 
 if __name__ == '__main__':
     killer = GracefulKiller()
@@ -56,8 +48,11 @@ if __name__ == '__main__':
     if 'SYNC' == mode:
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
+        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("HelloSignal", lambda m: print(m),
+                                                                 dbus_interface="org.freedesktop.systemd1.Manager",
+                                                                 arg0="Hello")
+
         Entrypoint.check_and_restart(service_name)
-        GLib.timeout_add(10, func)
         Scheduler.run_loop()
 
 
