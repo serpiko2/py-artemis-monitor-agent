@@ -12,19 +12,16 @@ class Procedure:
         self._steps.append(step)
         return self
 
-    def run(self):
+    def run(self, *params):
         current_step = None
-        result = {}
+        result = ()
         try:
             for step in self._steps:
-                current_step = step
-                print(f"result{result}")
-                bf = step.before(**result)
-                print(f"before{bf}")
-                app = step.apply(bf)
-                print(f"app{app}")
-                result = step.after(app)
-                print(f"final_result{result}")
+                result = step.after(step.apply(step.before(params)))
         except Exception as e:
             print(f"stop on step=[{current_step}] with last result=[{result}] and exception=[{e}]")
         return result
+
+
+def exec(fun, **params):
+    return fun(params)
