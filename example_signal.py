@@ -57,10 +57,6 @@ if __name__ == '__main__':
     #lets make a catchall
     bus.add_signal_receiver(catchall_signal_handler, interface_keyword='dbus_interface', member_keyword='member')
 
-    bus.add_signal_receiver(catchall_hello_signals_handler, dbus_interface = "com.example.TestService", signal_name = "HelloSignal")
-
-    bus.add_signal_receiver(catchall_testservice_interface_handler, dbus_interface = "com.example.TestService", message_keyword='dbus_message')
-
     # Tell the remote object to emit the signal after a short delay
     GLib.timeout_add(2000, emit_signal)
 
