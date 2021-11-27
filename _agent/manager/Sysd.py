@@ -8,7 +8,7 @@ from dbus.proxies import ProxyObject
 from _agent.manager import _DbusManager
 
 
-def get_manager() -> Interface:
+def get_sysd_manager() -> Interface:
     return get_sysd_interface('org.freedesktop.systemd1.Manager')
 
 
@@ -26,8 +26,15 @@ def get_interface(item, interface) -> dbus.Interface:
 
 
 def get_properties_interface(item) -> dbus.Interface:
-        return get_interface(item, 'org.freedesktop.DBus.Properties')
+    return get_interface(item, 'org.freedesktop.DBus.Properties')
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:
     return _DbusManager.get_sysd_object(object_path)
+
+
+def connect_to_signal():
+    object = bus.get_object("com.example.TestService", "/com/example/TestService/object")
+
+    object.connect_to_signal("HelloSignal", hello_signal_handler, dbus_interface="com.example.TestService",
+                             arg0="Hello")
