@@ -26,7 +26,7 @@ class GracefulKiller:
         signal.signal(signal.SIGTERM, exit_gracefully)
 
 
-def func():
+def func(arg):
     Sysd.get_sysd_manager().connect_to_signal("HelloSignal", lambda m: print(m),
                                               dbus_interface="com.example.TestService",
                                               arg0="Hello")
