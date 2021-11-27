@@ -11,6 +11,8 @@ from _agent.scheduler import Scheduler
 from _agent.scripts import Entrypoint
 from _utils import JobsConfig, Logger, ArgParser
 
+from gi.repository import GLib
+
 Logger.configure_logger()
 logger = logging.getLogger("main")
 
@@ -26,10 +28,11 @@ class GracefulKiller:
         signal.signal(signal.SIGTERM, exit_gracefully)
 
 
-def func(arg):
+def func():
     Sysd.get_sysd_manager().connect_to_signal("HelloSignal", lambda m: print(m),
                                               dbus_interface="com.example.TestService",
                                               arg0="Hello")
+    return False
 
 
 if __name__ == '__main__':
@@ -54,7 +57,7 @@ if __name__ == '__main__':
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
         Entrypoint.check_and_restart(service_name)
-        Scheduler.schedule_function(func, ("test"))
+        GLib.timeout_add(10, func)
         Scheduler.run_loop()
 
 
