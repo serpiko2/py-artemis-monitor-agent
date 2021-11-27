@@ -56,7 +56,7 @@ if __name__ == '__main__':
             GetServiceStep(service_name)).then(
             GetPropertiesStep()).then(
             RestartUnitStep(service_name))
-        test_procedure = procedure.when(GetServiceStep(service_name)).run()
+        test_procedure = procedure.when(GetServiceStep(service_name)).run("Unit")
         print(f"test procedure result: {test_procedure}")
         Sysd.connect_to_signal(signal="Unit", callback=procedure.run())
     Scheduler.run_loop()
