@@ -4,7 +4,7 @@ from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
 from _agent.exception.UnitNotFoundException import UnitNotFoundException
 from _agent.manager import Sysd
-from _agent.jobs.scheduler.Job import Job
+from _agent.scheduler.Job import Job
 
 
 class FindPropertiesJob(Job):

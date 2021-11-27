@@ -23,3 +23,4 @@ class Procedure:
                 result = step.after(app)
         except Exception as e:
             print(f"stop on step=[{current_step}] with last result=[{result}] and exception=[{e}]")
+        return result

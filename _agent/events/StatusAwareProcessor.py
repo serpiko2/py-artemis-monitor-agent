@@ -2,7 +2,7 @@ from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
 from _agent.procedures.steps.GetPropertiesStep import GetPropertyJob
 from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
-from _agent.jobs.scheduler import Scheduler
+from _agent.scheduler import Scheduler
 
 context = {}
 
