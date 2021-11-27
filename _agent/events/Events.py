@@ -2,7 +2,8 @@ import logging
 
 
 class Subscription:
-    def __init__(self, channel_name, event, callback):
+    def __init__(self, subscriber, channel_name, event, callback):
+        self.subscriber = subscriber
         self.channel_name = channel_name
         self.event = event
         self.callback = callback
@@ -19,8 +20,9 @@ class Publisher:
     def get_subscribers(self, event):
         return self.events[event]
 
-    def register(self, event, who, callback):
+    def register(self, event, who, callback) -> Subscription:
         self.get_subscribers(event)[who] = callback
+        return Subscription(who, self.channel_name, event, callback)
 
     def unregister(self, event, who):
         del self.get_subscribers(event)[who]
@@ -39,9 +41,8 @@ class _Subscriber:
     def _update(self, message):
         print('{} got message "{}"'.format(self.name, message))
 
-    def _subscribe(self, event, publisher: Publisher, callback=_update):
-        publisher.register(event, self, callback=callback)
-        return Subscription(publisher.channel_name, event, callback)
+    def _subscribe(self, event, publisher: Publisher, callback=_update) -> Subscription:
+        return publisher.register(event, self, callback=callback)
 
 
 class Subscriber(_Subscriber):
@@ -52,7 +53,7 @@ class Subscriber(_Subscriber):
     def update(self, message):
         super()._update(message)
 
-    def subscribe(self, event, publisher: Publisher, callback=update):
+    def subscribe(self, event, publisher: Publisher, callback=update) -> Subscription:
         return super()._subscribe(event, publisher, callback)
 
 

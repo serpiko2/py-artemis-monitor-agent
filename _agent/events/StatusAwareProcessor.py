@@ -5,6 +5,15 @@ from _agent.models.PropertiesServiceParameters import PropertiesServiceParameter
 from _agent.scheduler import Scheduler
 
 
+context = {}
+
+
+class ServiceContextRestart:
+    active_state = None
+    load_state = None
+    exec_start = None
+
+
 def _schedule_retrieves(publisher, service_properties):
     active_state_job = GetPropertyJob(
             publisher=publisher,
@@ -40,10 +49,8 @@ class StatusAwareProcessor:
         self.service_name = service_name
         self.listener = listener
         self.publisher = publisher
-        self.active_state = None
-        self.load_state = None
-        self.exec_start = None
         self._setup_subscriber()
+        context[service_name, ServiceContextRestart.__name__] = None
 
     def _setup_subscriber(self):
         self.listener.subscribe(
@@ -73,29 +80,33 @@ class StatusAwareProcessor:
         )
 
     def _set_active_state(self, data):
-        self.active_state = data
+        context.get(self.service_name,
+                    ServiceContextRestart.__name__).active_state = data
         return self
 
     def _set_load_state(self, data):
-        self.load_state = data
+        context.get(self.service_name,
+                    ServiceContextRestart.__name__).load_state = data
         return self
 
     def _set_exec_start(self, data):
-        self.exec_start = data
+        context.get(self.service_name,
+                    ServiceContextRestart.__name__).exec_start = data
         return self
 
     def _are_checks_done(self):
-        if self.exec_start and self.load_state and self.active_state:
+        params = context.get(self.service_name)
+        if params.exec_start and params.load_state and params.active_state:
             self.publisher.publish(EventsType.ReadsDone,
-                                   {"LoadState": self.load_state,
-                                    "ActiveState": self.active_state,
-                                    "ExecStart": self.exec_start})
+                                   {"LoadState": params.load_state,
+                                    "ActiveState": params.active_state,
+                                    "ExecStart": params.exec_start})
 
-    def check_status(self, context):
+    def check_status(self, event):
         print("check status")
-        load_state = context["LoadState"]
-        active_state = context["ActiveState"]
-        exec_start = context["ExecStart"]
+        load_state = event["LoadState"]
+        active_state = event["ActiveState"]
+        exec_start = event["ExecStart"]
         status_code = exec_start[0][9]
         print(f"service:, load_state:{load_state}, "
               f"active_state:{active_state}, status_code:{status_code}")
