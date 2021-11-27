@@ -3,7 +3,7 @@ from _agent.procedures.steps.Step import Step
 
 def _run(step, **params):
     print(f"step: {step}, params:{params}")
-    return step.after(step.apply(step.before(params)))
+    return step.after(step.apply(step.before(**params)))
 
 
 class Procedure:
