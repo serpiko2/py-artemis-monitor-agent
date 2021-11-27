@@ -19,8 +19,7 @@ class Step(ABC):
         """
 
     def before(self, *params):
-        print(f"before.self:{self}, kwargs:{params}", *params)
-        return params
+        pass
 
     def after(self, *params):
         print(f"after.self:{self}, kwargs:{params}")
