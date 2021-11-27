@@ -51,4 +51,3 @@ if __name__ == '__main__':
         Scheduler.schedule_function(Sysd.connect_to_signal(signal="Unit", callback=Entrypoint.check_and_restart(service_name)))
         Scheduler.run_loop()
         Entrypoint.check_and_restart(service_name)
-        Scheduler.schedule_function(Sysd.connect_to_signal(signal="Unit", callback=Entrypoint.check_and_restart(service_name)))
