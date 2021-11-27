@@ -4,6 +4,7 @@ from typing import Type
 
 
 class Groups(ABC):
+    """ generic group to represente regex search match result """
     @staticmethod
     @abstractmethod
     def build(*args):

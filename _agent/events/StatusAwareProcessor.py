@@ -1,9 +1,8 @@
 from _agent.events.Events import Publisher, Subscriber
 from _agent.events.EventsType import EventsType
-from _agent.jobs.GetProperty import GetPropertyJob
+from _agent.procedures.steps.GetPropertiesStep import GetPropertyJob
 from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
-from _agent.scheduler import Scheduler
-
+from _agent.jobs.scheduler import Scheduler
 
 context = {}
 
@@ -17,21 +16,21 @@ class ServiceContextRestart:
 def _schedule_retrieves(publisher, service_properties):
     active_state_job = GetPropertyJob(
             publisher=publisher,
-            event=EventsType.ActiveStateRead,
+            event=EventsType.Jobs.ActiveStateRead,
             params=PropertiesServiceParameters(service_properties,
                                                'org.freedesktop.systemd1.Unit', 'ActiveState'),
             delay=0,
             loop=False)
     load_state_job = GetPropertyJob(
             publisher=publisher,
-            event=EventsType.LoadStateRead,
+            event=EventsType.Jobs.LoadStateRead,
             params=PropertiesServiceParameters(service_properties,
                                                'org.freedesktop.systemd1.Unit', 'LoadState'),
             delay=0,
             loop=False)
     exec_start_job = GetPropertyJob(
             publisher=publisher,
-            event=EventsType.ExecStartRead,
+            event=EventsType.Jobs.ExecStartRead,
             params=PropertiesServiceParameters(service_properties,
                                                'org.freedesktop.systemd1.Service', 'ExecStart'),
             delay=0,
@@ -54,27 +53,27 @@ class StatusAwareProcessor:
 
     def _setup_subscriber(self):
         self.listener.subscribe(
-            EventsType.UnitFound, self.publisher,
+            EventsType.Jobs.UnitFound, self.publisher,
             callback=lambda message:
             _schedule_retrieves(self.publisher, message)
         )
         self.listener.subscribe(
-            EventsType.ActiveStateRead, self.publisher,
+            EventsType.Jobs.ActiveStateRead, self.publisher,
             callback=lambda message:
             self._set_active_state(message)._are_checks_done()
         )
         self.listener.subscribe(
-            EventsType.LoadStateRead, self.publisher,
+            EventsType.Jobs.LoadStateRead, self.publisher,
             callback=lambda message:
             self._set_load_state(message)._are_checks_done()
         )
         self.listener.subscribe(
-            EventsType.ExecStartRead, self.publisher,
+            EventsType.Jobs.ExecStartRead, self.publisher,
             callback=lambda message:
             self._set_exec_start(message)._are_checks_done()
         )
         self.listener.subscribe(
-            EventsType.ReadsDone, self.publisher,
+            EventsType.Jobs.ReadsDone, self.publisher,
             callback=lambda message:
             self.check_status(message)
         )
@@ -97,7 +96,7 @@ class StatusAwareProcessor:
     def _are_checks_done(self):
         params = context.get(self.service_name)
         if params.exec_start and params.load_state and params.active_state:
-            self.publisher.publish(EventsType.ReadsDone,
+            self.publisher.publish(EventsType.Jobs.ReadsDone,
                                    {"LoadState": params.load_state,
                                     "ActiveState": params.active_state,
                                     "ExecStart": params.exec_start})
@@ -112,4 +111,4 @@ class StatusAwareProcessor:
               f"active_state:{active_state}, status_code:{status_code}")
         if load_state == 'loaded' and active_state == 'inactive':
             if status_code == 143:
-                self.publisher.publish(EventsType.TriggerRestart, self.service_name)
+                self.publisher.publish(EventsType.Jobs.TriggerRestart, self.service_name)
