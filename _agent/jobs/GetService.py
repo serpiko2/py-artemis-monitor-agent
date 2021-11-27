@@ -1,15 +1,10 @@
 import dbus
-from dbus import Interface
 
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
+from _agent.exception.UnitNotFoundException import UnitNotFoundException
 from _agent.manager import Sysd
-from _agent.scheduler.Job import Job
-
-
-class UnitNotFoundException(Exception):
-    def __init__(self, obj):
-        self.obj = obj
+from _agent.jobs.scheduler.Job import Job
 
 
 class FindPropertiesJob(Job):
@@ -47,8 +42,8 @@ class FindPropertiesJob(Job):
         """
         if unit:
             unit_object = Sysd.get_proxy_from_object_path(unit)
-            service_properties = Interface(unit_object, dbus_interface='org.freedesktop.DBus.Properties')
-            self.publisher.publish(EventsType.UnitFound, service_properties)
+            service_properties = Sysd.get_properties_interface(unit_object)
+            self.publisher.publish(EventsType.Jobs.UnitFound, service_properties)
         else:
             raise UnitNotFoundException(self.__hash__())
 

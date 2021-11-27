@@ -2,7 +2,7 @@ from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
 from _agent.manager import Sysd
 from _agent.models.RestartServiceParameters import RestartServiceParameters
-from _agent.scheduler.Job import Job
+from _agent.jobs.scheduler.Job import Job
 
 
 class RestartUnitJob(Job):
@@ -24,7 +24,7 @@ class RestartUnitJob(Job):
         super().__init__(delay, loop, params)
 
     def callback(self, reply):
-        self.publisher.publish(EventsType.RestartJobQueued, reply)
+        self.publisher.publish(EventsType.Jobs.RestartJobQueued, reply)
 
     def fallback(self, error):
         print(error)

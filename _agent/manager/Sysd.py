@@ -7,9 +7,12 @@ from dbus.proxies import ProxyObject
 
 from _agent.manager import _DbusManager
 
+ISYSD_MANAGER_STRING = 'org.freedesktop.systemd1.Manager'
+ISYSD_PROPERTIES_STRING = 'org.freedesktop.DBus.Properties'
+
 
 def get_sysd_manager() -> Interface:
-    return get_sysd_interface('org.freedesktop.systemd1.Manager')
+    return get_sysd_interface(ISYSD_MANAGER_STRING)
 
 
 def get_sysd_interface(sysd_interface: str) -> Interface:
@@ -26,15 +29,20 @@ def get_interface(item, interface) -> dbus.Interface:
 
 
 def get_properties_interface(item) -> dbus.Interface:
-    return get_interface(item, 'org.freedesktop.DBus.Properties')
+    return get_interface(item, ISYSD_PROPERTIES_STRING)
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:
     return _DbusManager.get_sysd_object(object_path)
 
 
-def connect_to_signal():
-    object = bus.get_object("com.example.TestService", "/com/example/TestService/object")
+def connect_to_signal(signal, callback, interface=None, connect_to=get_sysd_manager(), **parameters):
+    """Arrange for a function to be called when the given signal is
+    emitted.
 
-    object.connect_to_signal("HelloSignal", hello_signal_handler, dbus_interface="com.example.TestService",
-                             arg0="Hello")
+    The parameters and keyword arguments are the same as for
+    `dbus.proxies.ProxyObject.connect_to_signal`, except that if
+    `dbus_interface` is None (the default), the D-Bus interface that
+    was passed to the `Interface` constructor is used.
+    """
+    connect_to.connect_to_signal(signal, callback, dbus_interface=interface, **parameters)

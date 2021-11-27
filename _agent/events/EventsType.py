@@ -1,15 +1,14 @@
 class EventsType:
-    UnitSearch = "UnitSearch"
-    UnitFound = "UnitFound"
-    LoadStateRead = "LoadStateRead"
-    ActiveStateRead = "ActiveStateRead"
-    ExecStartRead = "ExecStartRead"
-    ReadsDone = "ReadsDone"
-    TriggerRestart = "TriggerRestart"
-    RestartJobQueued = "RestartJobQueued"
 
+    class Jobs:
+        UnitSearch = "Jobs.Event.UnitSearch"
+        UnitFound = "Jobs.Event.UnitFound"
+        LoadStateRead = "Jobs.Event.LoadStateRead"
+        ActiveStateRead = "Jobs.Event.ActiveStateRead"
+        ExecStartRead = "Jobs.Event.ExecStartRead"
+        ReadsDone = "Jobs.Event.ReadsDone"
+        TriggerRestart = "Jobs.Event.TriggerRestart"
+        RestartJobQueued = "Jobs.Event.RestartJobQueued"
 
-def get_events():
-    return EventsType.__dict__.values()
-
-    #TODO: separate the list, create a base class and take this out
+    class Dbus:
+        UnitRestarted = "Dbus.Signal.UnitRestarted"
