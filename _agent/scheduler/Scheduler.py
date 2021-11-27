@@ -21,6 +21,10 @@ def schedule_jobs(*jobs: Job):
         schedule_job(job)
 
 
+def get_loop():
+    return GLib.MainLoop()
+
+
 def run_loop():
     loop = GLib.MainLoop()
     try:
