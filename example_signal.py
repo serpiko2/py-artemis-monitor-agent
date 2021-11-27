@@ -36,15 +36,15 @@ if __name__ == '__main__':
     try:
         object  = bus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
         print("conntecting to signal")
-        object.connect_to_signal("HelloSignal", hello_signal_handler, dbus_interface="org.freedesktop.systemd1.Manager", arg0="Hello")
+        object.connect_to_signal("HelloSignal", hello_signal_handler, dbus_interface="org.freedesktop.systemd1", arg0="Hello")
     except dbus.DBusException:
         traceback.print_exc()
         print(usage)
         sys.exit(1)
 
     #lets make a catchall
-    print("conntecting to catchall")
-    bus.add_signal_receiver(catchall_signal_handler, dbus_interface="org.freedesktop.systemd1.Manager")
+
+    bus.add_signal_receiver(catchall_signal_handler, interface_keyword='dbus_interface', member_keyword='member')
 
     loop = GLib.MainLoop()
     loop.run()
