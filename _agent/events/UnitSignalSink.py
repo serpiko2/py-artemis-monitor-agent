@@ -40,7 +40,7 @@ class UnitSignalSink:
     def catchall_hello_signals_handler(self, hello_string):
         print("recipient: Received a hello signal and it says " + hello_string)
 
-    def catchall_testservice_interface_handler(hello_string, dbus_message):
+    def catchall_testservice_interface_handler(self, hello_string, dbus_message):
         print(
             "recipient: com.example.TestService interface says " + hello_string + " when it sent signal " + dbus_message.get_member())
 

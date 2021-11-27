@@ -23,7 +23,7 @@ class FindPropertiesJob(Job):
             :returns:
                 `service_object_path`:`the service object path reference`
         """
-        Sysd.get_manager().GetUnit(
+        Sysd.get_sysd_manager().GetUnit(
             service_name,
             reply_handler=callback,
             error_handler=fallback
