@@ -5,7 +5,7 @@ from typing import overload
 class Step(ABC):
 
     @abstractmethod
-    def __init__(self, *args):
+    def __init__(self, **args):
         """"""
 
     @abstractmethod
@@ -21,7 +21,7 @@ class Step(ABC):
         """
 
     @abstractmethod
-    def apply(self, *args):
+    def apply(self, **args):
         """ the entrypoint for the step, the scheduler will run it on the event loop,
          it has to be non blocking or you have to delegate it to a secondary thread pool executor
             :param:
@@ -36,7 +36,7 @@ class Step(ABC):
         print(f"BEFORE.self:{self}, args:NO_ARGS")
         pass
 
-    def before(self, *args):
+    def before(self, **args):
         print(f"BEFORE.self:{self}, args:{args}")
         return args
 
