@@ -1,6 +1,6 @@
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
-from _agent.manager import SystemBusSysd
+from _agent.manager import SessionBusSysd
 
 
 class UnitSignalSink:
@@ -15,4 +15,4 @@ class UnitSignalSink:
         self._register()
 
     def _register(self):
-        Sysd.connect_to_signal(signal="Unit", callback=self.callback)
+        SessionBusSysd.connect_to_signal(signal="Unit", callback=self.callback)

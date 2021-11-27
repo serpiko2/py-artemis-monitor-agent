@@ -9,10 +9,10 @@ class RestartUnitJob(Job):
 
     @staticmethod
     def execute(loop: bool, callback: callable, fallback: callable, params):
-        Sysd.get_sysd_manager().RestartUnit(params.service_name,
-                                            params.mode,
-                                            reply_handler=callback,
-                                            error_handler=fallback)
+        SystemBusSysd.get_sysd_manager().RestartUnit(params.service_name,
+                                                     params.mode,
+                                                     reply_handler=callback,
+                                                     error_handler=fallback)
         return loop
 
     def __init__(self,

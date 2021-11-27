@@ -18,7 +18,7 @@ class FindPropertiesJob(Job):
             :returns:
                 `service_object_path`:`the service object path reference`
         """
-        Sysd.get_sysd_manager().GetUnit(
+        SystemBusSysd.get_sysd_manager().GetUnit(
             service_name,
             reply_handler=callback,
             error_handler=fallback
@@ -41,8 +41,8 @@ class FindPropertiesJob(Job):
                 `unit`:`the unit object path`
         """
         if unit:
-            unit_object = Sysd.get_proxy_from_object_path(unit)
-            service_properties = Sysd.get_properties_interface(unit_object)
+            unit_object = SystemBusSysd.get_proxy_from_object_path(unit)
+            service_properties = SystemBusSysd.get_properties_interface(unit_object)
             self.publisher.publish(EventsType.Jobs.UnitFound, service_properties)
         else:
             raise UnitNotFoundException(self.__hash__())
