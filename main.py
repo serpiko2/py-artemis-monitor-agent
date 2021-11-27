@@ -56,7 +56,7 @@ if __name__ == '__main__':
             GetServiceStep(service_name)).then(
             GetPropertiesStep()).then(
             RestartUnitStep(service_name))
-        test_procedure = Procedure().when(GetServiceStep(service_name)).run("unit")
+        test_procedure = Procedure().when(GetServiceStep(service_name)).run()
         print(f"test procedure result: {test_procedure}")
         procedure.run("unit")
         Scheduler.run_loop()
