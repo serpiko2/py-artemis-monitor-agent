@@ -14,12 +14,12 @@ class Procedure:
 
     def run(self):
         current_step = None
-        result = None
+        result = {}
         try:
             for step in self._steps:
                 current_step = step
                 print(f"result{result}")
-                bf = step.before(result)
+                bf = step.before(**result)
                 print(f"before{bf}")
                 app = step.apply(bf)
                 print(f"app{app}")
