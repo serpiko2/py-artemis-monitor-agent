@@ -50,8 +50,11 @@ if __name__ == '__main__':
         Publishers.add_publisher("test publisher", pub)
         unit_object_path = GetServiceStep.get_service(service_name)
         SessionBusSysd.get_sysd_proxy_object().connect_to_signal("UnitNew", lambda m: print(m))
+        SessionBusSysd.get_dbus_session_bus().add_signal_receiver(lambda m: print(m), interface_keyword='dbus_interface', member_keyword='member')
+
         Entrypoint.check_and_restart(service_name)
         Scheduler.run_loop()
+
 
 
 
