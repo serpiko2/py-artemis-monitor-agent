@@ -6,13 +6,9 @@ import dbus.mainloop.glib
 from _agent import Publishers
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
-from _agent.events.UnitSignalSink import UnitSignalSink
 from _agent.manager import Sysd
 from _agent.scheduler import Scheduler
-from _agent.procedures.Procedure import Procedure
-from _agent.procedures.steps.GetPropertiesStep import GetPropertiesStep
-from _agent.procedures.steps.GetServiceStep import GetServiceStep
-from _agent.procedures.steps.RestartUnitStep import RestartUnitStep
+from _agent.scripts import Entrypoint
 from _utils import JobsConfig, Logger, ArgParser
 
 Logger.configure_logger()
@@ -51,14 +47,5 @@ if __name__ == '__main__':
     if 'SYNC' == mode:
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
-        procedure = Procedure()
-        procedure = procedure.when(
-            GetServiceStep(service_name)).then(
-            GetPropertiesStep()).then(
-            RestartUnitStep(service_name)
-        )
-        test_procedure = Procedure().when(GetServiceStep(service_name)).run()
-        print(f"test procedure result: {test_procedure}")
-        procedure.run()
         Scheduler.run_loop()
-        Sysd.connect_to_signal(signal="Unit", callback=procedure.run())
+        Sysd.connect_to_signal(signal="Unit", callback=Entrypoint.check_and_restart(service_name))
