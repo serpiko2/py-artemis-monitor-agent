@@ -16,6 +16,7 @@ class Procedure:
         current_step = None
         try:
             for step in self._steps:
+                current_step = step
                 step.after(*step.apply(*step.before(*params)))
         except Exception as e:
             print(f"stop on step=[{current_step}] with exception=[{e}]")
