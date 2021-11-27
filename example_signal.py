@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     bus = dbus.SessionBus()
     try:
-        object  = bus.get_object("com.example.TestService","/com/example/TestService/object")
+        object  = bus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
 
         object.connect_to_signal("HelloSignal", hello_signal_handler, dbus_interface="com.example.TestService", arg0="Hello")
     except dbus.DBusException:
