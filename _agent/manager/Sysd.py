@@ -33,16 +33,4 @@ def get_properties_interface(item) -> dbus.Interface:
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:
-    return _DbusManager.get_sysd_object(object_path)
-
-
-def connect_to_signal(signal, callback, interface=None, connect_to=get_sysd_manager(), **parameters):
-    """Arrange for a function to be called when the given signal is
-    emitted.
-
-    The parameters and keyword arguments are the same as for
-    `dbus.proxies.ProxyObject.connect_to_signal`, except that if
-    `dbus_interface` is None (the default), the D-Bus interface that
-    was passed to the `Interface` constructor is used.
-    """
-    connect_to.connect_to_signal(signal, callback, dbus_interface=interface, **parameters)
+    return _DbusManager.get_sysd_object(_DbusManager.get_dbus_sys_bus(), object_path)
