@@ -6,7 +6,7 @@ import dbus.mainloop.glib
 from _agent import Publishers
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
-from _agent.manager import Sysd
+from _agent.manager import SystemBusSysd
 from _agent.scheduler import Scheduler
 from _agent.scripts import Entrypoint
 from _utils import JobsConfig, Logger, ArgParser

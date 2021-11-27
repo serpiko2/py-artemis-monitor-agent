@@ -5,10 +5,24 @@ import dbus
 from dbus import Interface
 from dbus.proxies import ProxyObject
 
-from _agent.manager import _DbusManager
-
 ISYSD_MANAGER_STRING = 'org.freedesktop.systemd1.Manager'
 ISYSD_PROPERTIES_STRING = 'org.freedesktop.DBus.Properties'
+
+
+def get_sysd_proxy() -> ProxyObject:
+    return get_dbus_sys_bus().get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
+
+
+def get_dbus_sys_bus() -> dbus.SystemBus:
+    """ Return a connection to the system bus.
+    :returns:
+        `system_bus`:`the system bus connection`
+    """
+    return dbus.SystemBus()
+
+
+def get_sysd_object(bus, item) -> ProxyObject:
+    return bus().get_object('org.freedesktop.systemd1', item)
 
 
 def get_sysd_manager() -> Interface:
@@ -17,7 +31,7 @@ def get_sysd_manager() -> Interface:
 
 def get_sysd_interface(sysd_interface: str) -> Interface:
     try:
-        return dbus.Interface(_DbusManager.get_sysd_proxy(),
+        return dbus.Interface(get_sysd_proxy(),
                               dbus_interface=sysd_interface)
     except dbus.DBusException:
         traceback.print_exc()
@@ -33,4 +47,4 @@ def get_properties_interface(item) -> dbus.Interface:
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:
-    return _DbusManager.get_sysd_object(_DbusManager.get_dbus_sys_bus(), object_path)
+    return get_sysd_object(get_dbus_sys_bus(), object_path)

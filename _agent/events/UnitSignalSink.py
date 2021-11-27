@@ -1,6 +1,6 @@
 from _agent.events.Events import Publisher
 from _agent.events.EventsType import EventsType
-from _agent.manager import Sysd
+from _agent.manager import SystemBusSysd
 
 
 class UnitSignalSink:
