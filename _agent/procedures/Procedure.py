@@ -22,6 +22,6 @@ class Procedure:
         try:
             for step in self._steps:
                 current_step = step
-                result = _run(step, *result)
+                result = _run(step, result)
         except Exception as e:
             print(f"stop on step=[{current_step}] with exception=[{e}]")
