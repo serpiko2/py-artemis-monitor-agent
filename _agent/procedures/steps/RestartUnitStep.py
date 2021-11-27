@@ -4,7 +4,7 @@ from _agent.procedures.steps.Step import Step
 
 class RestartUnitStep(Step):
 
-    def __init__(self, service_name, mode = 'replace'):
+    def __init__(self, service_name, mode='replace'):
         self.service_name = service_name
         self.mode = mode
 
