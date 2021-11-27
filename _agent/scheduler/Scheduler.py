@@ -1,8 +1,9 @@
+import sys
 import traceback
 
 from gi.repository import GLib
 
-from _agent.jobs.scheduler.Job import Job
+from _agent.scheduler.Job import Job
 
 
 def schedule_function(fun: callable, args: tuple = None, delay: int = 0, loop=False):
@@ -27,3 +28,11 @@ def run_loop():
     except KeyboardInterrupt:
         traceback.print_exc()
         loop.quit()
+        sys.exit(0)
+
+
+def kill_loop():
+    loop = GLib.MainLoop()
+    traceback.print_exc()
+    loop.quit()
+    sys.exit(0)

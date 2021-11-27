@@ -6,27 +6,24 @@ from gi.repository import GLib
 import dbus
 import dbus.mainloop.glib
 
-
-class UnitSignalSink:
-
-    def hello_signal_handler(self, hello_string):
+def hello_signal_handler(self, hello_string):
         print("recipient: Received signal (by connecting using remote object) and it says: "
               + hello_string)
 
-    def catchall_signal_handler(self, *args, **kwargs):
+def catchall_signal_handler(self, *args, **kwargs):
         print("recipient: Caught signal (in catchall handler) "
               + kwargs['dbus_interface'] + "." + kwargs['member'])
         for arg in args:
             print("        " + str(arg))
 
-    def catchall_hello_signals_handler(self, hello_string):
+def catchall_hello_signals_handler(self, hello_string):
         print("recipient: Received a hello signal and it says " + hello_string)
 
-    def catchall_testservice_interface_handler(self, hello_string, dbus_message):
+def catchall_testservice_interface_handler(self, hello_string, dbus_message):
         print("recipient: com.example.TestService interface says " + hello_string +
               " when it sent signal " + dbus_message.get_member())
 
-    if __name__ == '__main__':
+if __name__ == '__main__':
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
         bus = dbus.SessionBus()
