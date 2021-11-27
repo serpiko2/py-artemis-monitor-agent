@@ -16,7 +16,7 @@ class Procedure:
         self._steps.append(step)
         return self
 
-    def run(self, *params):
+    def run(self, **params):
         current_step = None
         result = params
         try:
