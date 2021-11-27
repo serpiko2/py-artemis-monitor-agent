@@ -22,6 +22,6 @@ class Step(ABC):
         print(f"BEFORE.self:{self}, args:{args}")
         return args
 
-    def after(self, **args):
+    def after(self, *args):
         print(f"AFTER.self:{self}, args:{args}")
         return args
