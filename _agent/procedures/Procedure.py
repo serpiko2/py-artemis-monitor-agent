@@ -14,7 +14,7 @@ class Procedure:
 
     def run(self):
         current_step = None
-        result = None
+        result = ()
         try:
             for step in self._steps:
                 current_step = step
