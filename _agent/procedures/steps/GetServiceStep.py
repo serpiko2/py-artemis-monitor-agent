@@ -1,9 +1,5 @@
-from typing import overload
-
-import dbus
-
 from _agent.manager import Sysd
-from _agent.procedures.steps.Step import Step
+from _agent.procedures.Step import Step
 
 
 class GetServiceStep(Step):
