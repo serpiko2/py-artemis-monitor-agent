@@ -1,3 +1,5 @@
+from typing import overload
+
 import dbus
 
 from _agent.manager import Sysd
