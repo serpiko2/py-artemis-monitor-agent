@@ -42,7 +42,6 @@ if __name__ == '__main__':
     print(f"Monitor for service={service_name} with mode {mode}")
     logger.info(f"Monitor for service={service_name} with mode {mode}")
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    dbus.set_default_main_loop(Scheduler.get_loop())
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
     if 'SYNC' == mode:
