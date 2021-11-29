@@ -46,8 +46,7 @@ class AmqSyncMonitor:
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=filter_unit_signal,
             dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
-            path=self.unit,
-            member_keyword="PropertiesChanged"
+            path=self.unit
         )
 
 
