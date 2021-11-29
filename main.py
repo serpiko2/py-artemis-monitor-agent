@@ -11,11 +11,6 @@ from _agent.scheduler import Scheduler
 from _agent.scripts import Entrypoint, GetServiceStep
 from _utils import JobsConfig, Logger, ArgParser
 
-from gi.repository import GLib
-
-Logger.configure_logger()
-logger = logging.getLogger("main")
-
 
 def exit_gracefully(*args):
     Scheduler.kill_loop()
@@ -27,9 +22,8 @@ class GracefulKiller:
         signal.signal(signal.SIGINT, exit_gracefully)
         signal.signal(signal.SIGTERM, exit_gracefully)
 
-if __name__ == '__main__':
-    killer = GracefulKiller()
-    parser = ArgParser.parser
+
+def main():
     s = parser.parse_args()
     service_name = None
     mode = None
@@ -49,12 +43,17 @@ if __name__ == '__main__':
         pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
         Publishers.add_publisher("test publisher", pub)
         unit_object_path = GetServiceStep.get_service(service_name)
-        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("UnitNew", lambda m: print(m))
-        SessionBusSysd.get_dbus_session_bus().add_signal_receiver(lambda m: print(m), interface_keyword='dbus_interface', member_keyword='member')
-
+        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("Job", lambda m: print(m))
         Entrypoint.check_and_restart(service_name)
         Scheduler.run_loop()
 
+
+if __name__ == '__main__':
+    killer = GracefulKiller()
+    parser = ArgParser.parser
+    Logger.configure_logger()
+    logger = logging.getLogger("main")
+    main()
 
 
 
