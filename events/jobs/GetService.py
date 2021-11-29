@@ -3,8 +3,8 @@ import dbus
 from core.manager import SystemBusSysd
 from events.Job import Job
 from events.exception.UnitNotFoundException import UnitNotFoundException
-from events.observer.Events import Publisher
-from events.observer.EventsType import EventsType
+from events.pubsub.Events import Publisher
+from events.pubsub.EventsType import EventsType
 
 
 class FindPropertiesJob(Job):

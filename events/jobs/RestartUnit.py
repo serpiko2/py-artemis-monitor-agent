@@ -1,8 +1,8 @@
 from core.manager import SystemBusSysd
 from events.Job import Job
 from events.models.RestartServiceParameters import RestartServiceParameters
-from events.observer.Events import Publisher
-from events.observer.EventsType import EventsType
+from events.pubsub.Events import Publisher
+from events.pubsub.EventsType import EventsType
 
 
 class RestartUnitJob(Job):
