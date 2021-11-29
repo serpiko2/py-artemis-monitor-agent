@@ -14,8 +14,7 @@ class AmqSyncMonitor:
         self.service_name = service_name
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=lambda message: print("received signal:", message),
-            dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
-            member_keyword="PropertiesChanged"
+            dbus_interface='org.freedesktop.systemd1.Manager'
         )
 
     def check_from_logs(self):
