@@ -51,8 +51,9 @@ class AmqSyncMonitor:
 
 
 def filter_unit_signal(*args):
-    interface = args[0] + ""
+    interface = args[0]
     message = args[1]
+    ts_event_received = datetime.now()
     if interface == 'org.freedesktop.systemd1.Unit':
-        print(f"SubState: {message['SubState']}")
-        print(f"ActiveState: {message['ActiveState']}")
+        print(f"{ts_event_received} SubState: {message['SubState']}")
+        print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
