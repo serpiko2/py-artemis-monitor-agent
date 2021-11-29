@@ -1,7 +1,4 @@
-from agent.events.Events import Publisher
-from agent.events.EventsType import EventsType
-from agent.models.PropertiesServiceParameters import PropertiesServiceParameters
-from async import Job
+from events import Job
 
 
 class Interfaces:

@@ -4,7 +4,7 @@ import signal
 import dbus.mainloop.glib
 
 from core.scheduler import Scheduler
-from sync.AmqSyncMonitor import AmqSyncMonitor
+from watchdog.AmqSyncMonitor import AmqSyncMonitor
 from utils import JobsConfig, Logger, ArgParser
 
 

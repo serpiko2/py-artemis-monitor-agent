@@ -1,10 +1,10 @@
 import dbus
 
-from agent.events.Events import Publisher
-from agent.events.EventsType import EventsType
-from agent.exception.UnitNotFoundException import UnitNotFoundException
 from core.manager import SystemBusSysd
-from async import Job
+from events.Job import Job
+from events.exception.UnitNotFoundException import UnitNotFoundException
+from events.observer.Events import Publisher
+from events.observer.EventsType import EventsType
 
 
 class FindPropertiesJob(Job):

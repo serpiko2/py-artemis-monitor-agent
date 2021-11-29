@@ -2,7 +2,7 @@ import dbus
 from dbus import Interface
 
 from core.manager import SystemBusSysd
-from sync.steps.CheckRestartProperties import CheckRestartProperties
+from watchdog.steps.CheckRestartProperties import CheckRestartProperties
 
 
 class Interfaces:

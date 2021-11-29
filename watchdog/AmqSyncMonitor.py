@@ -1,7 +1,7 @@
 from core.manager import SystemBusSysd
-from sync.steps.GetPropertiesStep import GetPropertiesStep
-from sync.steps.GetServiceStep import GetServiceStep
-from sync.steps.RestartUnitStep import RestartUnitStep
+from watchdog.steps.GetPropertiesStep import GetPropertiesStep
+from watchdog.steps.GetServiceStep import GetServiceStep
+from watchdog.steps.RestartUnitStep import RestartUnitStep
 
 
 class AmqSyncMonitor:

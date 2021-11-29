@@ -1,5 +1,5 @@
-from async.Job import Job
 from core.scheduler.Scheduler import schedule_function
+from events.Job import Job
 
 
 class AsyncScheduler:
