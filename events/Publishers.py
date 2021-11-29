@@ -1,4 +1,4 @@
-from events.observer.Events import Publisher
+from events.pubsub.Events import Publisher
 
 _publishers = {}
 

@@ -14,6 +14,6 @@ class RestartUnitStep:
                 raise Exception
 
     @staticmethod
-    def restart_unit(service_name, mode='replace'):
-        # RestartUnitStep.check(properties.load_state, properties.active_state, properties.exec_start)
+    def restart_unit(properties: CheckRestartProperties, service_name, mode='replace'):
+        RestartUnitStep.check(properties.load_state, properties.active_state, properties.exec_start)
         return SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode)

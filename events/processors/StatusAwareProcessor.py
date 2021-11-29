@@ -1,8 +1,8 @@
 from events.AsyncScheduler import AsyncScheduler
 from events.jobs.GetProperty import GetPropertyJob
 from events.models.PropertiesServiceParameters import PropertiesServiceParameters
-from events.observer.Events import Publisher, Subscriber
-from events.observer.EventsType import EventsType
+from events.pubsub.Events import Publisher, Subscriber
+from events.pubsub.EventsType import EventsType
 
 context = {}
 

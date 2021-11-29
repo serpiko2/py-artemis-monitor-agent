@@ -1,4 +1,7 @@
 from events import Job
+from events.models.PropertiesServiceParameters import PropertiesServiceParameters
+from events.pubsub.Events import Publisher
+from events.pubsub.EventsType import EventsType
 
 
 class Interfaces:
