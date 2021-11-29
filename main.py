@@ -23,11 +23,13 @@ def main():
     s = parser.parse_args()
     service_name = None
     mode = None
+    monitor_log_path = None
     print(f"Starting monitor agent with arguments: {s}")
     logger.info(f"Starting monitor agent with arguments: {s}")
     try:
         service_name = JobsConfig.get("Jobs", "job.service.name")
         mode = JobsConfig.get("Jobs", "job.service.mode")
+        monitor_log_path = JobsConfig.get("Jobs", "job.service.log_path")
     except Exception:
         pass
     print(f"Monitor for service={service_name} with mode {mode}")
@@ -36,7 +38,7 @@ def main():
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
     if 'SYNC' == mode:
-        AmqSyncMonitor.check_and_restart(service_name)
+        AmqSyncMonitor(monitor_log_path, service_name)
     Scheduler.run_loop()
 
 
