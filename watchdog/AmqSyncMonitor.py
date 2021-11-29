@@ -23,7 +23,7 @@ class AmqSyncMonitor:
         ts = datetime.now()
         print("reading timestamp:", ts)
         for x in MmapReadFileStep.read_file(test_file, MmapReadFileStep.seek_timestamp, ts):
-            return MmapReadFileStep.check_codes(x.message)
+            return MmapReadFileStep.check_codes(x)
 
     def restart(self):
         unit = GetServiceStep.get_service(self.service_name)
