@@ -27,6 +27,7 @@ def check_codes(message):
         return True
     else:
         print("Logs not founds?")
+        return False
 
 
 def read_file(file, callback, *args):
