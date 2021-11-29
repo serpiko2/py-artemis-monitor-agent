@@ -20,6 +20,7 @@ class AmqSyncMonitor:
         except dbus.DBusException as e:
             print("unit not found, ", e)
             Scheduler.kill_loop(1)
+        self._setup_signal_sink()
 
     def check_from_logs(self):
         test_file = MmapReadFileStep.mmap_io_find_and_open(filename=self.logfile)
@@ -40,12 +41,13 @@ class AmqSyncMonitor:
         if self.check_from_logs():
             self.restart()
 
-    def setup_signal_sink(self):
+    def _setup_signal_sink(self):
         print(f"unit object: {self.unit}")
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=filter_unit_signal,
             dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
-            path=self.unit
+            path=self.unit,
+            member_keyword="PropertiesChanged"
         )
 
 
