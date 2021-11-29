@@ -15,7 +15,7 @@ class AmqSyncMonitor:
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=lambda message: print("received signal:", message),
             dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
-            signal_name="PropertiesChanged"
+            member_keyword="PropertiesChanged"
         )
 
     def check_from_logs(self):
