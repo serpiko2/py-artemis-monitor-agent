@@ -1,4 +1,4 @@
-from _utils.parser.Parser import Groups
+from _utils.parser.StringParser import Groups
 from datetime import datetime
 
 

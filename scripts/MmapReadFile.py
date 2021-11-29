@@ -2,7 +2,7 @@ import mmap
 from datetime import datetime
 
 from _utils.parser.LogParser import LogGroups, LogPatterns
-from _utils.parser.Parser import Parser
+from _utils.parser.StringParser import Parser
 
 
 def seek_marker(line: str, marker: LogGroups):
