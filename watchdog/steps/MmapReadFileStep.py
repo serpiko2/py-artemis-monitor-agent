@@ -37,16 +37,4 @@ def read_file(file, callback, *args):
 def mmap_io_find_and_open(filename):
     print("opening filename")
     with open(filename, mode="r", encoding="utf-8") as file_obj:
-        return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ)
-
-
-if __name__ == '__main__':
-    test_file = mmap_io_find_and_open(filename="test_file.log")
-    ts = datetime.strptime("2021-11-23 00:24:32,033", LogPatterns.timestamp_pattern)
-    print("reading timestamp:", ts)
-    for x in read_file(test_file, seek_timestamp, ts):
-        check_codes(x.message)
-    # seek_around_marker("2021-11-23 00:24:32,033 INFO  [org.apache.activemq.hawtio.plugin.PluginContextListener] "
-    #                    "Destroyed artemis-plugin plugin", format_log_pattern, 0, 0)
-    # seek_seconds_around_timestamp("2021-11-23 15:06:05,450", 0, 0)
-    # mmap_io_find_and_seek(filename="test.file")
+        return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ, flags=mmap.MAP_SHARED)
