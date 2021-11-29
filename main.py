@@ -39,8 +39,7 @@ def main():
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
     SystemBusSysd.get_sys_bus().add_signal_receiver(
-        handler_function=lambda message: print("received signal:", message),
-        dbus_interface='org.freedesktop.systemd1.Manager'
+        handler_function=lambda message: print("received signal:", message)
     )
     if 'SYNC' == mode:
         AmqSyncMonitor(monitor_log_path, service_name)
