@@ -17,12 +17,16 @@ class AmqSyncMonitor:
         ts = datetime.now()
         print("reading timestamp:", ts)
         for x in MmapReadFileStep.read_file(test_file, MmapReadFileStep.seek_timestamp, ts):
-            MmapReadFileStep.check_codes(x.message)
+            return MmapReadFileStep.check_codes(x.message)
 
-    def check_and_restart(self):
+    def restart(self):
         unit = GetServiceStep.get_service(self.service_name)
         service_properties = GetPropertiesStep.get_service_properties(unit)
         properties = GetPropertiesStep.get_properties_for_restart(service_properties)
         restart_job = RestartUnitStep.restart_unit(properties, self.service_name)
         # reset restart counter
         return restart_job
+
+    def start(self):
+        if self.check_from_logs():
+            self.restart()

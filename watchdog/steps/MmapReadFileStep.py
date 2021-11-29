@@ -21,8 +21,10 @@ def check_codes(message):
             print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
             print("Connection to database failed while setting up Jdbc Shared "
                   "State NodeId, restarting service")
+            return False
     elif "AMQ221043" in message:
         print("Artemis initialized correctly")
+        return True
     else:
         print("Logs not founds?")
 
