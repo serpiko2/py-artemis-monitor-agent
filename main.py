@@ -3,6 +3,7 @@ import signal
 
 import dbus.mainloop.glib
 
+from core.manager import SystemBusSysd
 from core.scheduler import Scheduler
 from watchdog.AmqSyncMonitor import AmqSyncMonitor
 from utils import JobsConfig, Logger, ArgParser
@@ -37,6 +38,10 @@ def main():
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
+    SystemBusSysd.get_sys_bus().add_signal_receiver(
+        handler_function=lambda message: print("received signal:", message),
+        dbus_interface='org.freedesktop.systemd1.Manager'
+    )
     if 'SYNC' == mode:
         AmqSyncMonitor(monitor_log_path, service_name)
         pass
