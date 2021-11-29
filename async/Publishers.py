@@ -1,4 +1,4 @@
-from _agent.events.Events import Publisher
+from agent.events.Events import Publisher
 
 _publishers = {}
 

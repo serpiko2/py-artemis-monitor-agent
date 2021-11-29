@@ -1,7 +1,7 @@
-from _agent.events.Events import Publisher
-from _agent.events.EventsType import EventsType
-from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
-from _agent.scheduler.Job import Job
+from agent.events.Events import Publisher
+from agent.events.EventsType import EventsType
+from agent.models.PropertiesServiceParameters import PropertiesServiceParameters
+from async import Job
 
 
 class Interfaces:
