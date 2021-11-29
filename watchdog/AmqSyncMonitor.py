@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from core.manager import SystemBusSysd
 from watchdog.steps import MmapReadFileStep
 from watchdog.steps.GetPropertiesStep import GetPropertiesStep
 from watchdog.steps.GetServiceStep import GetServiceStep
@@ -11,6 +12,11 @@ class AmqSyncMonitor:
     def __init__(self, logfile, service_name):
         self.logfile = logfile
         self.service_name = service_name
+        SystemBusSysd.get_sys_bus().add_signal_receiver(
+            handler_function=lambda message: print("received signal:", message),
+            dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
+            signal_name="PropertiesChanged"
+        )
 
     def check_from_logs(self):
         test_file = MmapReadFileStep.mmap_io_find_and_open(filename=self.logfile)
