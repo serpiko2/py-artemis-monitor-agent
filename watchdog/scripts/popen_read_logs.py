@@ -13,8 +13,8 @@ proxy = bus.get_object('org.freedesktop.DBus', '/org/freedesktop/systemd1')
 args = sys.argv
 artemis_log_file_path = str(args[1])
 
-logging.basicConfig(filename="amq-async-control.log")
-logger = logging.getLogger("amq-async-control")
+logging.basicConfig(filename="amq-events-control.log")
+logger = logging.getLogger("amq-events-control")
 tailArgs = ["tail", "-F", "-n", "1"]
 
 print(

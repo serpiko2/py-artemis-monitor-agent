@@ -1,8 +1,8 @@
-from agent.events.Events import Publisher, Subscriber
-from agent.events.EventsType import EventsType
-from agent.jobs.GetProperty import GetPropertyJob
-from agent.models.PropertiesServiceParameters import PropertiesServiceParameters
-from core.scheduler import Scheduler
+from events.AsyncScheduler import AsyncScheduler
+from events.jobs.GetProperty import GetPropertyJob
+from events.models.PropertiesServiceParameters import PropertiesServiceParameters
+from events.observer.Events import Publisher, Subscriber
+from events.observer.EventsType import EventsType
 
 context = {}
 
@@ -35,7 +35,7 @@ def _schedule_retrieves(publisher, service_properties):
                                                'org.freedesktop.systemd1.Service', 'ExecStart'),
             delay=0,
             loop=False)
-    Scheduler.schedule_jobs(active_state_job, load_state_job, exec_start_job)
+    AsyncScheduler.schedule_jobs(active_state_job, load_state_job, exec_start_job)
 
 
 class StatusAwareProcessor:

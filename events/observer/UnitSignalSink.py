@@ -1,6 +1,6 @@
-from agent.events.Events import Publisher
-from agent.events.EventsType import EventsType
 from core.manager import SessionBusSysd
+from events.observer.Events import Publisher
+from events.observer.EventsType import EventsType
 
 
 class UnitSignalSink:
