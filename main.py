@@ -39,6 +39,7 @@ def main():
     logger.info(f"Glib set as main loop for dbus")
     if 'SYNC' == mode:
         # AmqSyncMonitor(monitor_log_path, service_name).check_from_logs()
+        pass
     Scheduler.run_loop()
 
 
