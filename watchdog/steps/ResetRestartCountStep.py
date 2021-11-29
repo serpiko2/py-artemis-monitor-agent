@@ -1,4 +1,4 @@
-class ReserRestartCountStep:
+class ResetRestartCountStep:
 
     @staticmethod
     def method():
