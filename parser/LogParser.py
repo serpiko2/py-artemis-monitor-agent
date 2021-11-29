@@ -1,4 +1,4 @@
-from utils.parser.StringParser import Groups
+from parser.StringParser import Groups
 from datetime import datetime
 
 
@@ -23,10 +23,10 @@ class LogGroups(Groups):
 
     def partial_eq(self, other):
         if isinstance(other, LogGroups):
-            return self.timestamp == other.timestamp if other.timestamp else True \
-                   and self.log_level == other.log_level if other.log_level else True \
-                   and self.logging_class == other.logging_class if other.logging_class else True \
-                   and self.message == other.message if other.message else True
+            return self.timestamp == other.timestamp \
+                   or self.log_level == other.log_level \
+                   or self.logging_class == other.logging_class \
+                   or self.message == other.message
 
     def __eq__(self, other):
         if isinstance(other, LogGroups):
