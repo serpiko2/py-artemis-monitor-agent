@@ -17,8 +17,8 @@ def run_loop():
         kill_loop()
 
 
-def kill_loop():
+def kill_loop(error_code=0):
     loop = GLib.MainLoop()
     traceback.print_exc()
     loop.quit()
-    sys.exit(0)
+    sys.exit(error_code)

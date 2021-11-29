@@ -40,17 +40,13 @@ def main():
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
     print(GetServiceStep.get_service(service_name))
-    SystemBusSysd.get_sys_bus().add_signal_receiver(
-        handler_function=lambda *args: print("received signal:", *args),
-        dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING
-    )
     if 'SYNC' == mode:
         AmqSyncMonitor(monitor_log_path, service_name)
         pass
     Scheduler.run_loop()
 
 
-def dostuff(*args):
+def dostuff(filter, *args):
     pass
 
 
