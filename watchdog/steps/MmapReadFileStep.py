@@ -37,4 +37,4 @@ def read_file(file, callback, *args):
 def mmap_io_find_and_open(filename):
     print("opening filename")
     with open(filename, mode="r", encoding="utf-8") as file_obj:
-        return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ, flags=mmap.MAP_SHARED)
+        return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ)
