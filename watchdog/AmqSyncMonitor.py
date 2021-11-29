@@ -50,10 +50,8 @@ class AmqSyncMonitor:
         )
 
 
-def filter_unit_signal(*args):
-    print(f"received signal: {args}")
-    object = args[0]
-    properties = args[1]
+def filter_unit_signal(interface: str, message):
+    print(f"received signal: {interface}, with message {message}")
     if object is "org.freedesktop.systemd1.Unit":
-        print(f"those are the properties: {properties}")
-        print(f"and since it-s an asrraay this is the first slice {properties}")
+        print(f"those are the properties: {message}")
+        print(f"and since it-s an asrraay this is the first slice {message}")
