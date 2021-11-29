@@ -47,7 +47,7 @@ class AmqSyncMonitor:
             handler_function=filter_unit_signal,
             dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
             path=self.unit,
-            member="PropertiesChanged"
+            member_keyword="Properties"
         )
 
 
