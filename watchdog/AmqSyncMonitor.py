@@ -51,8 +51,8 @@ class AmqSyncMonitor:
 
 
 def filter_unit_signal(*args):
-    interface = args[0]
+    interface = args[0] + ""
     message = args[1]
-    if interface is "org.freedesktop.systemd1.Unit":
+    if interface is 'org.freedesktop.systemd1.Unit':
         print(f"those are the properties: {message}")
         print(f"and since it-s an asrraay this is the first slice {message[0]}")
