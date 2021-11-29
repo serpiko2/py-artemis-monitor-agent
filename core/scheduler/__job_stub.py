@@ -1,4 +1,4 @@
-from _agent.scheduler import Job
+from async import Job
 
 
 class __JobStub(Job):

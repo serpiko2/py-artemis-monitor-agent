@@ -1,8 +1,8 @@
-from _agent.events.Events import Publisher, Subscriber
-from _agent.events.EventsType import EventsType
-from _agent.jobs.GetProperty import GetPropertyJob
-from _agent.models.PropertiesServiceParameters import PropertiesServiceParameters
-from _agent.scheduler import Scheduler
+from agent.events.Events import Publisher, Subscriber
+from agent.events.EventsType import EventsType
+from agent.jobs.GetProperty import GetPropertyJob
+from agent.models.PropertiesServiceParameters import PropertiesServiceParameters
+from core.scheduler import Scheduler
 
 context = {}
 

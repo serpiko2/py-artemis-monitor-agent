@@ -3,13 +3,9 @@ import signal
 
 import dbus.mainloop.glib
 
-from _agent import Publishers
-from _agent.events.Events import Publisher
-from _agent.events.EventsType import EventsType
-from _agent.manager import SessionBusSysd
-from _agent.scheduler import Scheduler
-from _agent.scripts import Entrypoint, GetServiceStep
-from _utils import JobsConfig, Logger, ArgParser
+from core.scheduler import Scheduler
+from sync.AmqSyncMonitor import AmqSyncMonitor
+from utils import JobsConfig, Logger, ArgParser
 
 
 def exit_gracefully(*args):
@@ -40,12 +36,8 @@ def main():
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
     if 'SYNC' == mode:
-        pub = Publisher(EventsType.Dbus.UnitRestarted, "test_publisher")
-        Publishers.add_publisher("test publisher", pub)
-        unit_object_path = GetServiceStep.get_service(service_name)
-        SessionBusSysd.get_sysd_proxy_object().connect_to_signal("Job", lambda m: print(m))
-        Entrypoint.check_and_restart(service_name)
-        Scheduler.run_loop()
+        AmqSyncMonitor.check_and_restart(service_name)
+    Scheduler.run_loop()
 
 
 if __name__ == '__main__':

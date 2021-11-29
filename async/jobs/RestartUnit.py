@@ -1,8 +1,8 @@
-from _agent.events.Events import Publisher
-from _agent.events.EventsType import EventsType
-from _agent.manager import SystemBusSysd
-from _agent.models.RestartServiceParameters import RestartServiceParameters
-from _agent.scheduler.Job import Job
+from agent.events.Events import Publisher
+from agent.events.EventsType import EventsType
+from core.manager import SystemBusSysd
+from agent.models.RestartServiceParameters import RestartServiceParameters
+from async import Job
 
 
 class RestartUnitJob(Job):
