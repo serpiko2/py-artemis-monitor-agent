@@ -15,13 +15,13 @@ def seek_timestamp(line: str, timestamp: datetime):
     return seek_marker(line, LogGroups(timestamp=timestamp))
 
 
-def check_codes(line):
-    if "AMQ224097" in line:
-        if "FAILED TO SETUP the JDBC Shared State NodeId" in line:
+def check_codes(message):
+    if "AMQ224097" in message:
+        if "FAILED TO SETUP the JDBC Shared State NodeId" in message:
             print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
             print("Connection to database failed while setting up Jdbc Shared "
                   "State NodeId, restarting service")
-    elif "AMQ221043" in line:
+    elif "AMQ221043" in message:
         print("Artemis initialized correctly")
     else:
         print("Logs not founds?")

@@ -6,5 +6,4 @@ def check_and_restart(service_name: str):
     service_properties = GetPropertiesStep.get_service_properties(unit)
     properties = GetPropertiesStep.get_properties_for_restart(service_properties)
     restart_job = RestartUnitStep.restart_unit(properties, service_name)
-    print(restart_job)
     return restart_job
