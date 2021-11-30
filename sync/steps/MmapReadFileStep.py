@@ -30,7 +30,8 @@ class FileHandler:
         print(f"scheduled function run, status: _force_exit={self._force_exit}, "
               f"_is_active={self._is_active}")
         if not self._force_exit:
-            return self.read_line_from_file(loop, file)
+            self._is_active = self.read_line_from_file(loop, file)
+            return self._is_active
         else:
             print(f"Exit Forced {self._force_exit}, with active state {self._is_active}")
             self._force_exit = False
