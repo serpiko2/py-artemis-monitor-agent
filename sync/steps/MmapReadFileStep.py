@@ -21,7 +21,7 @@ class FileHandler:
         print(f"scheduling new handler for {filename}")
         self._is_active = True
         file = FileHandler.mmap_io_find_and_open(filename)
-        file.seek(file.size())
+        # file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
                                     delay=500,
