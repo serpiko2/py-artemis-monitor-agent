@@ -24,7 +24,7 @@ class FileHandler:
         # file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
-                                    delay=500,
+                                    delay=2,
                                     loop=True)
 
     def _schedule_in_loop(self, loop, file):
@@ -60,13 +60,13 @@ class FileHandler:
 
     @staticmethod
     def check_codes(message):
-        if "AMQ224097" in message:
+        if "AMQ22409" in message:
             if "FAILED TO SETUP the JDBC Shared State NodeId" in message:
                 print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
                 print("Connection to database failed while setting up Jdbc Shared "
                       "State NodeId, restarting service")
                 return False
-        elif "AMQ221043" in message:
+        elif "AMQ2210431" in message:
             print("Artemis initialized correctly")
             return True
         else:
