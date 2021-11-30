@@ -5,9 +5,9 @@ import dbus.mainloop.glib
 
 from core.manager import SystemBusSysd
 from core.scheduler import Scheduler
-from watchdog.AmqSyncMonitor import AmqSyncMonitor
+from sync.AmqSyncMonitor import AmqSyncMonitor
 from utils import JobsConfig, Logger, ArgParser
-from watchdog.steps.GetServiceStep import GetServiceStep
+from sync.steps.GetServiceStep import GetServiceStep
 
 
 def exit_gracefully(*args):

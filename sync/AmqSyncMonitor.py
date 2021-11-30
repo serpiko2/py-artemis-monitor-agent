@@ -3,11 +3,12 @@ from datetime import datetime
 import dbus
 
 from core.manager import SystemBusSysd
+from core.manager.SystemdNames import SystemdNames
 from core.scheduler import Scheduler
-from watchdog.steps import MmapReadFileStep
-from watchdog.steps.GetPropertiesStep import GetPropertiesStep
-from watchdog.steps.GetServiceStep import GetServiceStep
-from watchdog.steps.RestartUnitStep import RestartUnitStep
+from sync.steps.MmapReadFileStep import FileHandler
+from sync.steps.GetPropertiesStep import GetPropertiesStep
+from sync.steps.GetServiceStep import GetServiceStep
+from sync.steps.RestartUnitStep import RestartUnitStep
 
 
 class AmqSyncMonitor:
@@ -23,11 +24,11 @@ class AmqSyncMonitor:
         self._setup_signal_sink()
 
     def check_from_logs(self):
-        test_file = MmapReadFileStep.mmap_io_find_and_open(filename=self.logfile)
+        test_file = FileHandler.mmap_io_find_and_open(filename=self.logfile)
         ts = datetime.now()
         print("reading timestamp:", ts)
-        for x in MmapReadFileStep.read_file(test_file, MmapReadFileStep.seek_timestamp, ts):
-            return MmapReadFileStep.check_codes(x)
+        for x in FileHandler.read_line_from_file(test_file, FileHandler.compare_line_timestamp, ts):
+            return FileHandler.check_codes(x)
 
     def restart(self):
         unit = GetServiceStep.get_service(self.service_name)
@@ -45,7 +46,7 @@ class AmqSyncMonitor:
         print(f"unit object: {self.unit}")
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=filter_unit_signal,
-            dbus_interface=SystemBusSysd.ISYSD_PROPERTIES_STRING,
+            dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
             path=self.unit
         )
 
@@ -55,5 +56,8 @@ def filter_unit_signal(*args):
     message = args[1]
     ts_event_received = datetime.now()
     if interface == 'org.freedesktop.systemd1.Unit':
+        sub_state = message['SubState']
+        active_state = message['ActiveState']
         print(f"{ts_event_received} SubState: {message['SubState']}")
         print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
+
