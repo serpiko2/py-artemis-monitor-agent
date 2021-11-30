@@ -28,12 +28,13 @@ class AmqSyncMonitor:
         print(f"unit object: {self.unit}")
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=lambda *signal:
-                self._filter_unit_signal(*signal),
+            self._filter_unit_signal(*signal),
             dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
             path=self.unit
         )
 
     def _filter_unit_signal(self, *args):
+        print("signal received")
         interface = args[0]
         message = args[1]
         ts_event_received = datetime.now()
@@ -43,7 +44,7 @@ class AmqSyncMonitor:
             print(f"{ts_event_received} SubState: {message['SubState']}")
             print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
             if active_state == "inactive" and sub_state == "dead":
-                self.file_handler.force_exit = True
+                self.file_handler.force_exit()
                 self.check_from_logs()
 
     def check_from_logs(self):

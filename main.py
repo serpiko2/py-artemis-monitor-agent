@@ -34,7 +34,7 @@ def main():
         monitor_log_path = JobsConfig.get("Jobs", "job.service.log_path")
     except Exception:
         pass
-    print(f"Monitor for service={service_name} with mode {mode}")
+    print(f"Monitor for service={service_name} with mode {mode} and path for log {monitor_log_path}")
     logger.info(f"Monitor for service={service_name} with mode {mode}")
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     print(f"Glib set as main loop for dbus")
@@ -44,10 +44,6 @@ def main():
         AmqSyncMonitor(monitor_log_path, service_name)
         pass
     Scheduler.run_loop()
-
-
-def dostuff(filter, *args):
-    pass
 
 
 if __name__ == '__main__':
