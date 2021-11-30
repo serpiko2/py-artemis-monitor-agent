@@ -13,12 +13,12 @@ class FileHandler:
         self._is_active = False
 
     def force_exit(self):
-        print(f"forcing exit {self._force_exit}, with active state {self._is_active}")
         if self._is_active:
             self._force_exit = True
             print(f"forcing exit {self._force_exit}, with active state {self._is_active}")
 
     def seek_to_end_and_tail(self, filename):
+        print(f"scheduling new handler for {filename}")
         self._is_active = True
         file = FileHandler.mmap_io_find_and_open(filename)
         file.seek(file.size())
@@ -28,11 +28,12 @@ class FileHandler:
                                     loop=True)
 
     def _schedule_in_loop(self, loop, file):
-        print(f"forcing exit {self._force_exit}, with active state {self._is_active}")
+        print(f"scheduled function run, status: _force_exit={self._force_exit}, "
+              f"_is_active={self._is_active}")
         if not self._force_exit:
             return self.read_line_from_file(loop, file)
         else:
-            print(f"forcing exit {self._force_exit}, with active state {self._is_active}")
+            print(f"Exit Forced {self._force_exit}, with active state {self._is_active}")
             self._force_exit = False
             self._is_active = False
             return False
