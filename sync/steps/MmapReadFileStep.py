@@ -26,6 +26,10 @@ class FileHandler:
     def _force_exit(self):
         print(f"forcing exit {self.force_exit}")
 
+    def _schedule_in_loop(self, loop, file):
+        print("scheduling with force exit")
+        return self._read_line_from_file(loop, file)
+
     @_check_force_exit
     def _read_line_from_file(self, loop, file):
         print("read_file")
