@@ -36,8 +36,8 @@ class FileHandler:
     @staticmethod
     def _read_line_from_file(loop, file):
         print("read_file")
-        print(f"is looping: {loop} - counter: {counter}")
         counter = 5
+        print(f"is looping: {loop} - counter: {counter}")
         line = file.readline(b"")
         counter = counter - 1
         print(f"is looping: {loop} - counter: {counter}")
