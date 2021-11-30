@@ -27,7 +27,8 @@ class AmqSyncMonitor:
     def _setup_signal_sink(self):
         print(f"unit object: {self.unit}")
         SystemBusSysd.get_sys_bus().add_signal_receiver(
-            handler_function=self._filter_unit_signal,
+            handler_function=lambda *signal:
+                self._filter_unit_signal(*signal),
             dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
             path=self.unit
         )
@@ -42,6 +43,7 @@ class AmqSyncMonitor:
             print(f"{ts_event_received} SubState: {message['SubState']}")
             print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
             if active_state == "inactive" and sub_state == "dead":
+                self.file_handler.force_exit = True
                 self.start()
 
     def check_from_logs(self):
