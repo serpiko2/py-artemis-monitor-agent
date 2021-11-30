@@ -12,12 +12,15 @@ class FileHandler:
         self.force_exit = False
 
     def _check_force_exit(self, *args):
+        print(f"args {args}")
+
         def check_force_exit(fn, **kwargs):
             print(f"arguments: {fn}, {kwargs}")
             if self.force_exit:
                 return fn(*args)
             else:
                 return FileHandler._force_exit
+
         return check_force_exit
 
     def _force_exit(self):
@@ -71,4 +74,3 @@ class FileHandler:
         print("opening filename")
         with open(filename, mode="r", encoding="utf-8") as file_obj:
             return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ)
-
