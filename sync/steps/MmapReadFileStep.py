@@ -13,6 +13,7 @@ class FileHandler:
         self._is_active = False
 
     def force_exit(self):
+        print(f"forcing exit {self._force_exit}")
         if not self._force_exit:
             self._force_exit = True
 
