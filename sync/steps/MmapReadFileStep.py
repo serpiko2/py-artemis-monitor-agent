@@ -9,17 +9,17 @@ from parser.StringParser import Parser
 class FileHandler:
 
     @staticmethod
-    def compare_line_marker(line: str, marker: LogGroups):
+    def _compare_line_marker(line: str, marker: LogGroups):
         log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
         if marker.partial_eq(log_groups):
             return log_groups
 
     @staticmethod
-    def compare_line_timestamp(line: str, timestamp: datetime):
-        return FileHandler.compare_line_marker(line, LogGroups(timestamp=timestamp))
+    def _compare_line_timestamp(line: str, timestamp: datetime):
+        return FileHandler._compare_line_marker(line, LogGroups(timestamp=timestamp))
 
     @staticmethod
-    def check_codes(message):
+    def _check_codes(message):
         if "AMQ224097" in message:
             if "FAILED TO SETUP the JDBC Shared State NodeId" in message:
                 print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
@@ -34,7 +34,7 @@ class FileHandler:
             return False
 
     @staticmethod
-    def read_line_from_file(loop, file, counter=10):
+    def _read_line_from_file(loop, file, counter=10):
         print("read_file")
         print(f"is looping: {loop} - counter: {counter}")
         counter = counter - 1
@@ -55,7 +55,7 @@ class FileHandler:
     def seek_to_end_and_tail(filename):
         file = FileHandler._mmap_io_find_and_open(filename)
         file.seek(file.size())
-        Scheduler.schedule_function(FileHandler.read_line_from_file,
+        Scheduler.schedule_function(FileHandler._read_line_from_file,
                                     file,
                                     delay=5,
                                     loop=True)
