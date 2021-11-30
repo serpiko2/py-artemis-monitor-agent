@@ -16,6 +16,7 @@ class FileHandler:
         print(f"forcing exit {self._force_exit}")
         if not self._force_exit:
             self._force_exit = True
+            print(f"forcing exit post {self._force_exit}")
 
     def seek_to_end_and_tail(self, filename):
         self._is_active = True
