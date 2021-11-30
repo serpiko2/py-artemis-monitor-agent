@@ -40,7 +40,8 @@ class AmqSyncMonitor:
             active_state = message['ActiveState']
             print(f"{ts_event_received} SubState: {message['SubState']}")
             print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
-            self.start()
+            if active_state == "inactive" and sub_state == "dead":
+                self.start()
 
     def check_from_logs(self):
         FileHandler.seek_to_end_and_tail(filename=self.logfile)
