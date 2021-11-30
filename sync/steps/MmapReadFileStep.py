@@ -20,8 +20,7 @@ class FileHandler:
                 return fn(*nargs)
             else:
                 return FileHandler._force_exit
-
-        return (check_force_exit, ) + args
+        return check_force_exit
 
     def _force_exit(self):
         print(f"forcing exit {self.force_exit}")
