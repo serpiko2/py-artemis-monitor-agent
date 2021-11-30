@@ -24,7 +24,7 @@ class FileHandler:
         # file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
-                                    delay=2,
+                                    delay=10,
                                     loop=True)
 
     def _schedule_in_loop(self, loop, file):
