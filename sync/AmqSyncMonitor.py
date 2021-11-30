@@ -16,6 +16,7 @@ class AmqSyncMonitor:
     def __init__(self, logfile, service_name):
         self.logfile = logfile
         self.service_name = service_name
+        self.file_handler = FileHandler()
         try:
             self.unit = GetServiceStep.get_service(self.service_name)
         except dbus.DBusException as e:
@@ -44,7 +45,7 @@ class AmqSyncMonitor:
                 self.start()
 
     def check_from_logs(self):
-        FileHandler.seek_to_end_and_tail(filename=self.logfile)
+        self.file_handler.seek_to_end_and_tail(filename=self.logfile)
 
     def restart(self):
         unit = GetServiceStep.get_service(self.service_name)
