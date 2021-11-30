@@ -14,7 +14,7 @@ class FileHandler:
 
     def force_exit(self):
         print(f"forcing exit {self._force_exit}")
-        if not self._force_exit:
+        if self._is_active:
             self._force_exit = True
             print(f"forcing exit post {self._force_exit}")
 
