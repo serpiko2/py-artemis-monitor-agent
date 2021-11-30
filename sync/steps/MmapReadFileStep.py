@@ -34,9 +34,8 @@ class FileHandler:
             return False
 
     @staticmethod
-    def _read_line_from_file(loop, file):
+    def _read_line_from_file(loop, file, counter):
         print("read_file")
-        counter = 5
         print(f"is looping: {loop} - counter: {counter}")
         line = file.readline()
         counter = counter - 1
@@ -58,6 +57,6 @@ class FileHandler:
         file = FileHandler._mmap_io_find_and_open(filename)
         file.seek(file.size())
         Scheduler.schedule_function(FileHandler._read_line_from_file,
-                                    file,
+                                    file, 5,
                                     delay=200,
                                     loop=True)
