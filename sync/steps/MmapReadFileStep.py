@@ -38,7 +38,7 @@ class FileHandler:
         print("read_file")
         counter = 5
         print(f"is looping: {loop} - counter: {counter}")
-        line = file.readline(b"")
+        line = file.readline()
         counter = counter - 1
         print(f"is looping: {loop} - counter: {counter}")
         print(f"reading line {line}")
