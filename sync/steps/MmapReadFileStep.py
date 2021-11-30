@@ -40,6 +40,7 @@ class FileHandler:
         counter = 5
         for line in iter(file.readline, b""):
             counter = counter - 1
+            print(f"is looping: {loop} - counter: {counter}")
             print(f"reading line {line}")
             if counter == 0:
                 loop = False
@@ -58,5 +59,5 @@ class FileHandler:
         file.seek(file.size())
         Scheduler.schedule_function(FileHandler._read_line_from_file,
                                     file,
-                                    delay=5,
+                                    delay=200,
                                     loop=True)
