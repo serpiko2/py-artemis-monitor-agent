@@ -44,7 +44,7 @@ class AmqSyncMonitor:
             print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
             if active_state == "inactive" and sub_state == "dead":
                 self.file_handler.force_exit = True
-                self.start()
+                self.check_from_logs()
 
     def check_from_logs(self):
         self.file_handler.seek_to_end_and_tail(filename=self.logfile)
@@ -56,6 +56,3 @@ class AmqSyncMonitor:
         restart_job = RestartUnitStep.restart_unit(properties, self.service_name)
         # reset restart counter
         return restart_job
-
-    def start(self):
-        self.check_from_logs()
