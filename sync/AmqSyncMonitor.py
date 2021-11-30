@@ -23,12 +23,27 @@ class AmqSyncMonitor:
             Scheduler.kill_loop(1)
         self._setup_signal_sink()
 
+    def _setup_signal_sink(self):
+        print(f"unit object: {self.unit}")
+        SystemBusSysd.get_sys_bus().add_signal_receiver(
+            handler_function=self._filter_unit_signal,
+            dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
+            path=self.unit
+        )
+
+    def _filter_unit_signal(self, *args):
+        interface = args[0]
+        message = args[1]
+        ts_event_received = datetime.now()
+        if interface == 'org.freedesktop.systemd1.Unit':
+            sub_state = message['SubState']
+            active_state = message['ActiveState']
+            print(f"{ts_event_received} SubState: {message['SubState']}")
+            print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
+            self.start()
+
     def check_from_logs(self):
-        test_file = FileHandler.mmap_io_find_and_open(filename=self.logfile)
-        ts = datetime.now()
-        print("reading timestamp:", ts)
-        for x in FileHandler.read_line_from_file(test_file, FileHandler.compare_line_timestamp, ts):
-            return FileHandler.check_codes(x)
+        FileHandler.seek_to_end_and_tail(filename=self.logfile)
 
     def restart(self):
         unit = GetServiceStep.get_service(self.service_name)
@@ -39,25 +54,5 @@ class AmqSyncMonitor:
         return restart_job
 
     def start(self):
-        if self.check_from_logs():
-            self.restart()
-
-    def _setup_signal_sink(self):
-        print(f"unit object: {self.unit}")
-        SystemBusSysd.get_sys_bus().add_signal_receiver(
-            handler_function=filter_unit_signal,
-            dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
-            path=self.unit
-        )
-
-
-def filter_unit_signal(*args):
-    interface = args[0]
-    message = args[1]
-    ts_event_received = datetime.now()
-    if interface == 'org.freedesktop.systemd1.Unit':
-        sub_state = message['SubState']
-        active_state = message['ActiveState']
-        print(f"{ts_event_received} SubState: {message['SubState']}")
-        print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
-
+        self.check_from_logs()
+        self.restart()
