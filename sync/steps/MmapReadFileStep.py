@@ -7,9 +7,10 @@ from parser.StringParser import Parser
 
 class FileHandler:
 
-    def __init__(self):
+    def __init__(self, callback):
         self._force_exit = False
         self._is_active = False
+        self.callback = callback
 
     def force_exit(self):
         if self._is_active:
@@ -19,7 +20,7 @@ class FileHandler:
     def seek_to_end_and_tail(self, filename):
         print(f"scheduling new handler for {filename}")
         self._is_active = True
-        file = FileHandler.mmap_io_find_and_open(filename)
+        file = FileHandler.find_and_open(filename)
         # file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
@@ -38,14 +39,17 @@ class FileHandler:
             self._is_active = False
             return False
 
-    @staticmethod
-    def read_line_from_file(loop, file):
+    def read_line_from_file(self, loop, file):
         print(f"read_file {file}")
         line = file.readline()
         print(f"reading line {line}")
-        if FileHandler.check_codes(str(line)):
+        if FileHandler.check_codes(line) == "Failed":
             loop = False
-            print(f"ending loop on")
+            print(f"ending loop on failure, restarting")
+            self.callback()
+        elif FileHandler.check_codes(line) == "Success":
+            loop = False
+            print(f"ending loop on success, doing nothing")
         return loop
 
     @staticmethod
@@ -65,13 +69,13 @@ class FileHandler:
                 print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
                 print("Connection to database failed while setting up Jdbc Shared "
                       "State NodeId, restarting service")
-                return False
+                return "Failed"
         elif "AMQ221043" in message:
             print("Artemis initialized correctly")
-            return True
+            return "Success"
         else:
-            return False
+            return ""
 
     @staticmethod
-    def mmap_io_find_and_open(filename):
+    def find_and_open(filename):
         return open(filename, mode="r", encoding="utf-8")

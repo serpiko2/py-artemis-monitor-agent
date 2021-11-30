@@ -16,7 +16,7 @@ class AmqSyncMonitor:
     def __init__(self, logfile, service_name):
         self.logfile = logfile
         self.service_name = service_name
-        self.file_handler = FileHandler()
+        self.file_handler = FileHandler(self.restart)
         try:
             self.unit = GetServiceStep.get_service(self.service_name)
         except dbus.DBusException as e:
