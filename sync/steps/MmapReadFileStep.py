@@ -38,13 +38,13 @@ class FileHandler:
         print("read_file")
         print(f"is looping: {loop} - counter: {counter}")
         counter = 5
-        for line in iter(file.readline, b""):
-            counter = counter - 1
-            print(f"is looping: {loop} - counter: {counter}")
-            print(f"reading line {line}")
-            if counter == 0:
-                loop = False
-                print(f"ending loop on - counter: {counter}")
+        line = file.readline(b"")
+        counter = counter - 1
+        print(f"is looping: {loop} - counter: {counter}")
+        print(f"reading line {line}")
+        if counter == 0:
+            loop = False
+            print(f"ending loop on - counter: {counter}")
         return loop
 
     @staticmethod
