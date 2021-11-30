@@ -55,5 +55,5 @@ class FileHandler:
         file.seek(file.size())
         Scheduler.schedule_function(FileHandler._read_line_from_file,
                                     file, 5,
-                                    delay=200,
+                                    delay=500,
                                     loop=True)
