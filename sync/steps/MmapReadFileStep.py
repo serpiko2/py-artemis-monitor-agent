@@ -9,11 +9,14 @@ from parser.StringParser import Parser
 class FileHandler:
 
     def __init__(self):
-        self.force_exit = False
-        self.is_active = False
+        self._force_exit = False
+        self._is_active = False
+
+    def force_exit(self):
+        self._force_exit = True
 
     def seek_to_end_and_tail(self, filename):
-        self.is_active = True
+        self._is_active = True
         file = FileHandler.mmap_io_find_and_open(filename)
         file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
@@ -23,11 +26,11 @@ class FileHandler:
 
     def _schedule_in_loop(self, loop, file):
         print("scheduling with force exit")
-        if self.force_exit:
+        if self._force_exit:
             return self.read_line_from_file(loop, file)
         else:
-            self.force_exit = True
-            self.is_active = False
+            self._force_exit = True
+            self._is_active = False
             return False
 
     @staticmethod
@@ -35,7 +38,7 @@ class FileHandler:
         print("read_file")
         line = file.readline()
         print(f"reading line {line}")
-        if FileHandler.check_codes(line):
+        if FileHandler.check_codes(str(line)):
             loop = False
             print(f"ending loop on")
         return loop
