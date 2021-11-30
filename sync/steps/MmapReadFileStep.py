@@ -29,6 +29,7 @@ class FileHandler:
         if not self._force_exit:
             return self.read_line_from_file(loop, file)
         else:
+            print(f"forced exit for {self}")
             self._force_exit = True
             self._is_active = False
             return False
