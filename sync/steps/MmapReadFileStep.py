@@ -12,12 +12,9 @@ class FileHandler:
         self.force_exit = False
 
     def _check_force_exit(self, *args):
-        print(f"args {args}")
-
-        def check_force_exit(fn, *nargs):
-            print(f"arguments: {fn}, {nargs}")
+        def check_force_exit(fn):
             if self.force_exit:
-                return fn(*nargs)
+                return fn(*args)
             else:
                 return FileHandler._force_exit
         return check_force_exit
