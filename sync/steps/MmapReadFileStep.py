@@ -11,54 +11,43 @@ class FileHandler:
     def __init__(self):
         self.force_exit = False
 
-    def _check_force_exit(self, *args):
-        force_exit = self.force_exit
-
-        def check_force_exit(fn, arg1, arg2):
-            print(f"arg1{arg1}, arg2{arg2}")
-            if force_exit:
-                return fn(*args)
-            else:
-                return FileHandler._force_exit
-        return check_force_exit
-
-    def _force_exit(self):
-        print(f"forcing exit {self.force_exit}")
-
-    def _schedule_in_loop(self, loop, file):
-        print("scheduling with force exit")
-        return self._read_line_from_file(loop, file)
-
-    @_check_force_exit
-    def _read_line_from_file(self, loop, file):
-        print("read_file")
-        line = file.readline()
-        print(f"reading line {line}")
-        if FileHandler._check_codes(line):
-            loop = False
-            print(f"ending loop on")
-        return loop
-
     def seek_to_end_and_tail(self, filename):
-        file = FileHandler._mmap_io_find_and_open(filename)
+        file = FileHandler.mmap_io_find_and_open(filename)
         file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
                                     delay=500,
                                     loop=True)
 
+    def _schedule_in_loop(self, loop, file):
+        print("scheduling with force exit")
+        if self.force_exit:
+            return self.read_line_from_file(loop, file)
+        else:
+            return False
+
     @staticmethod
-    def _compare_line_marker(line: str, marker: LogGroups):
+    def read_line_from_file(loop, file):
+        print("read_file")
+        line = file.readline()
+        print(f"reading line {line}")
+        if FileHandler.check_codes(line):
+            loop = False
+            print(f"ending loop on")
+        return loop
+
+    @staticmethod
+    def compare_line_marker(line: str, marker: LogGroups):
         log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
         if marker.partial_eq(log_groups):
             return log_groups
 
     @staticmethod
-    def _compare_line_timestamp(line: str, timestamp: datetime):
-        return FileHandler._compare_line_marker(line, LogGroups(timestamp=timestamp))
+    def compare_line_timestamp(line: str, timestamp: datetime):
+        return FileHandler.compare_line_marker(line, LogGroups(timestamp=timestamp))
 
     @staticmethod
-    def _check_codes(message):
+    def check_codes(message):
         if "AMQ224097" in message:
             if "FAILED TO SETUP the JDBC Shared State NodeId" in message:
                 print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
@@ -73,7 +62,7 @@ class FileHandler:
             return False
 
     @staticmethod
-    def _mmap_io_find_and_open(filename):
+    def mmap_io_find_and_open(filename):
         print("opening filename")
         with open(filename, mode="r", encoding="utf-8") as file_obj:
             return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ)
