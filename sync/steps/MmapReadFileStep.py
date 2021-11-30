@@ -34,16 +34,13 @@ class FileHandler:
             return False
 
     @staticmethod
-    def _read_line_from_file(loop, file, counter):
+    def _read_line_from_file(loop, file):
         print("read_file")
-        print(f"is looping: {loop} - counter: {counter}")
         line = file.readline()
-        counter = counter - 1
-        print(f"is looping: {loop} - counter: {counter}")
         print(f"reading line {line}")
-        if counter == 0:
+        if FileHandler._check_codes(line):
             loop = False
-            print(f"ending loop on - counter: {counter}")
+            print(f"ending loop on")
         return loop
 
     @staticmethod
