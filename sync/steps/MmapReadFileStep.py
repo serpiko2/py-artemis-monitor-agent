@@ -13,7 +13,8 @@ class FileHandler:
         self._is_active = False
 
     def force_exit(self):
-        self._force_exit = True
+        if not self._force_exit:
+            self._force_exit = True
 
     def seek_to_end_and_tail(self, filename):
         self._is_active = True
