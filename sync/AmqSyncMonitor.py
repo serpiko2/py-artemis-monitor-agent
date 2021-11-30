@@ -55,4 +55,3 @@ class AmqSyncMonitor:
 
     def start(self):
         self.check_from_logs()
-        self.restart()
