@@ -26,7 +26,7 @@ class FileHandler:
                                     loop=True)
 
     def _schedule_in_loop(self, loop, file):
-        print("scheduling with force exit")
+        print(f"scheduling with force exit {self._force_exit}")
         if not self._force_exit:
             return self.read_line_from_file(loop, file)
         else:
