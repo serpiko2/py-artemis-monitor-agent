@@ -43,7 +43,7 @@ class FileHandler:
     def seek_to_end_and_tail(self, filename):
         file = FileHandler._mmap_io_find_and_open(filename)
         file.seek(file.size())
-        Scheduler.schedule_function(self._read_line_from_file,
+        Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
                                     delay=500,
                                     loop=True)
