@@ -40,14 +40,14 @@ class FileHandler:
             return False
 
     def read_line_from_file(self, loop, file):
-        print(f"read_file {file}")
         line = file.readline()
         print(f"reading line {line}")
-        if FileHandler.check_codes(line) == "Failed":
+        result = FileHandler.check_codes(line)
+        if result == "Failed":
             loop = False
             print(f"ending loop on failure, restarting")
             self.callback()
-        elif FileHandler.check_codes(line) == "Success":
+        elif result == "Success":
             loop = False
             print(f"ending loop on success, doing nothing")
         return loop
