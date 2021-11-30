@@ -1,4 +1,3 @@
-import mmap
 from datetime import datetime
 
 from core.scheduler import Scheduler
@@ -74,6 +73,4 @@ class FileHandler:
 
     @staticmethod
     def mmap_io_find_and_open(filename):
-        print("opening filename")
-        with open(filename, mode="r", encoding="utf-8") as file_obj:
-            return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ)
+        return open(filename, mode="r", encoding="utf-8")
