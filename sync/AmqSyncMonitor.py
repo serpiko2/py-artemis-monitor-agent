@@ -41,6 +41,8 @@ class AmqSyncMonitor:
             active_state = message['ActiveState']
             print(f"{ts_event_received} SubState: {message['SubState']}")
             print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
+            if active_state == "active" and sub_state == "running":
+                self.file_handler.force_exit()
             if active_state == "inactive" and sub_state == "dead":
                 self.file_handler.force_exit()
                 self.check_from_logs()
