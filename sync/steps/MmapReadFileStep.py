@@ -65,7 +65,6 @@ class FileHandler:
             print("Logs not founds?")
             return False
 
-
     @staticmethod
     def _mmap_io_find_and_open(filename):
         print("opening filename")
