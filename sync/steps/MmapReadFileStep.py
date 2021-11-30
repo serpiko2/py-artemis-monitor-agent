@@ -54,6 +54,6 @@ class FileHandler:
         file = FileHandler._mmap_io_find_and_open(filename)
         file.seek(file.size())
         Scheduler.schedule_function(FileHandler._read_line_from_file,
-                                    file, 5,
+                                    file,
                                     delay=500,
                                     loop=True)
