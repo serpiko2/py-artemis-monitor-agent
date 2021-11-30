@@ -1,5 +1,7 @@
 import dbus
 
+from core.manager.SystemdNames import SystemdNames
+
 
 def get_dbus_session_bus() -> dbus.SessionBus:
     """ Return a connection to the system bus.
@@ -10,4 +12,4 @@ def get_dbus_session_bus() -> dbus.SessionBus:
 
 
 def get_sysd_proxy_object():
-    return get_dbus_session_bus().get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
+    return get_dbus_session_bus().get_object(SystemdNames.SYSTEMD_NAME, SystemdNames.SYSTEMD_PATH)

@@ -5,12 +5,12 @@ import dbus
 from dbus import Interface
 from dbus.proxies import ProxyObject
 
-ISYSD_MANAGER_STRING = 'org.freedesktop.systemd1.Manager'
-ISYSD_PROPERTIES_STRING = 'org.freedesktop.DBus.Properties'
+from core.manager.SystemdNames import SystemdNames
 
 
 def get_sysd_proxy() -> ProxyObject:
-    return get_sys_bus().get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
+    return get_sys_bus().get_object(SystemdNames.SYSTEMD_NAME,
+                                    SystemdNames.SYSTEMD_PATH)
 
 
 def get_sys_bus() -> dbus.SystemBus:
@@ -22,11 +22,11 @@ def get_sys_bus() -> dbus.SystemBus:
 
 
 def get_sysd_object(item) -> ProxyObject:
-    return get_sys_bus().get_object('org.freedesktop.systemd1', item)
+    return get_sys_bus().get_object(SystemdNames.SYSTEMD_NAME, item)
 
 
 def get_sysd_manager() -> Interface:
-    return get_sysd_interface(ISYSD_MANAGER_STRING)
+    return get_sysd_interface(SystemdNames.Interfaces.ISYSD_MANAGER_STRING)
 
 
 def get_sysd_interface(sysd_interface: str) -> Interface:
@@ -43,7 +43,7 @@ def get_interface(item, interface) -> dbus.Interface:
 
 
 def get_properties_interface(item) -> dbus.Interface:
-    return get_interface(item, ISYSD_PROPERTIES_STRING)
+    return get_interface(item, SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING)
 
 
 def get_proxy_from_object_path(object_path) -> ProxyObject:

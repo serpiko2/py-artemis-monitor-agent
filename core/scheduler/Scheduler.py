@@ -4,7 +4,7 @@ import traceback
 from gi.repository import GLib
 
 
-def schedule_function(fun: callable, args: tuple = None, delay: int = 0, loop=False):
+def schedule_function(fun: callable, *args, delay: int = 0, loop=False):
     print(f"scheduled: {fun}, schedule_function args", *(loop, )+args)
     GLib.timeout_add(delay, fun, *(loop, )+args)
 
