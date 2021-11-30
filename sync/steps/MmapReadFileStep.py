@@ -40,7 +40,7 @@ class FileHandler:
 
     @staticmethod
     def read_line_from_file(loop, file):
-        print("read_file")
+        print(f"read_file {file}")
         line = file.readline()
         print(f"reading line {line}")
         if FileHandler.check_codes(str(line)):
@@ -70,7 +70,6 @@ class FileHandler:
             print("Artemis initialized correctly")
             return True
         else:
-            print("Logs not founds?")
             return False
 
     @staticmethod
