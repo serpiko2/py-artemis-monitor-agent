@@ -59,13 +59,13 @@ class FileHandler:
 
     @staticmethod
     def check_codes(message):
-        if "AMQ22409" in message:
+        if "AMQ224097" in message:
             if "FAILED TO SETUP the JDBC Shared State NodeId" in message:
                 print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
                 print("Connection to database failed while setting up Jdbc Shared "
                       "State NodeId, restarting service")
                 return False
-        elif "AMQ2210431" in message:
+        elif "AMQ221043" in message:
             print("Artemis initialized correctly")
             return True
         else:
