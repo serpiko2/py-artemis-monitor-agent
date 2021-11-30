@@ -14,14 +14,14 @@ class FileHandler:
     def _check_force_exit(self, *args):
         print(f"args {args}")
 
-        def check_force_exit(fn, **kwargs):
-            print(f"arguments: {fn}, {kwargs}")
+        def check_force_exit(fn, *nargs):
+            print(f"arguments: {fn}, {nargs}")
             if self.force_exit:
-                return fn(*args)
+                return fn(*nargs)
             else:
                 return FileHandler._force_exit
 
-        return check_force_exit
+        return check_force_exit(*args)
 
     def _force_exit(self):
         print(f"forcing exit {self.force_exit}")
