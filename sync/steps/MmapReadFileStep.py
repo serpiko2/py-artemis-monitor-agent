@@ -34,7 +34,7 @@ class FileHandler:
             return False
 
     @staticmethod
-    def _read_line_from_file(loop, file, counter):
+    def _read_line_from_file(loop, file):
         print("read_file")
         print(f"is looping: {loop} - counter: {counter}")
         counter = 5
