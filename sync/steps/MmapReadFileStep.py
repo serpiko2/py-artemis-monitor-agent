@@ -8,6 +8,38 @@ from parser.StringParser import Parser
 
 class FileHandler:
 
+    def __init__(self):
+        self.force_exit = False
+
+    def _check_force_exit(self, *args):
+        def check_force_exit(fn):
+            if self.force_exit:
+                return fn(*args)
+            else:
+                return FileHandler._force_exit
+        return check_force_exit
+
+    def _force_exit(self):
+        print(f"forcing exit {self.force_exit}")
+
+    @_check_force_exit
+    def _read_line_from_file(self, loop, file):
+        print("read_file")
+        line = file.readline()
+        print(f"reading line {line}")
+        if FileHandler._check_codes(line):
+            loop = False
+            print(f"ending loop on")
+        return loop
+
+    def seek_to_end_and_tail(self, filename):
+        file = FileHandler._mmap_io_find_and_open(filename)
+        file.seek(file.size())
+        Scheduler.schedule_function(self._read_line_from_file,
+                                    file,
+                                    delay=500,
+                                    loop=True)
+
     @staticmethod
     def _compare_line_marker(line: str, marker: LogGroups):
         log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
@@ -33,15 +65,6 @@ class FileHandler:
             print("Logs not founds?")
             return False
 
-    @staticmethod
-    def _read_line_from_file(loop, file):
-        print("read_file")
-        line = file.readline()
-        print(f"reading line {line}")
-        if FileHandler._check_codes(line):
-            loop = False
-            print(f"ending loop on")
-        return loop
 
     @staticmethod
     def _mmap_io_find_and_open(filename):
@@ -49,11 +72,3 @@ class FileHandler:
         with open(filename, mode="r", encoding="utf-8") as file_obj:
             return mmap.mmap(file_obj.fileno(), length=0, access=mmap.ACCESS_READ)
 
-    @staticmethod
-    def seek_to_end_and_tail(filename):
-        file = FileHandler._mmap_io_find_and_open(filename)
-        file.seek(file.size())
-        Scheduler.schedule_function(FileHandler._read_line_from_file,
-                                    file,
-                                    delay=500,
-                                    loop=True)
