@@ -1,7 +1,6 @@
 import io
 
 from core.scheduler import Scheduler
-from core.utils.parser.StringParser import Parser
 
 
 class FileHandler:
