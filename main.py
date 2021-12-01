@@ -4,8 +4,10 @@ import signal
 import dbus.mainloop.glib
 
 from core.scheduler import Scheduler
+from core.utils import Logger
+from core.utils.ArgumentParser import ArgumentParser
+from core.utils.ConfigurationProperties import ConfigurationProperties
 from sync.AmqSyncMonitor import AmqSyncMonitor
-from utils import JobsConfig, Logger, ArgParser
 from sync.steps.GetServiceStep import GetServiceStep
 
 
@@ -20,6 +22,10 @@ class GracefulKiller:
         signal.signal(signal.SIGTERM, exit_gracefully)
 
 
+class ConfigurationException(Exception):
+    """"""
+
+
 def main():
     s = parser.parse_args()
     service_name = None
@@ -28,10 +34,10 @@ def main():
     print(f"Starting monitor agent with arguments: {s}")
     logger.info(f"Starting monitor agent with arguments: {s}")
     try:
-        service_name = JobsConfig.get("Jobs", "job.service.name")
-        mode = JobsConfig.get("Jobs", "job.service.mode")
-        monitor_log_path = JobsConfig.get("Jobs", "job.service.log_path")
-    except Exception:
+        service_name = ConfigurationProperties.get("Jobs", "job.service.name")
+        mode = ConfigurationProperties.get("Jobs", "job.service.mode")
+        monitor_log_path = ConfigurationProperties.get("Jobs", "job.service.log_path")
+    except ConfigurationException:
         pass
     print(f"Monitor for service={service_name} with mode {mode} and path for log {monitor_log_path}")
     logger.info(f"Monitor for service={service_name} with mode {mode}")
@@ -47,7 +53,7 @@ def main():
 
 if __name__ == '__main__':
     killer = GracefulKiller()
-    parser = ArgParser.parser
+    parser = ArgumentParser.get_parser()
     Logger.configure_logger()
     logger = logging.getLogger("main")
     main()

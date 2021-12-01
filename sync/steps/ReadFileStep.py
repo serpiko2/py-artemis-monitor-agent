@@ -1,9 +1,7 @@
 import io
-from datetime import datetime
 
 from core.scheduler import Scheduler
-from parser.LogParser import LogGroups, LogPatterns
-from parser.StringParser import Parser
+from core.utils.parser.StringParser import Parser
 
 
 class FileHandler:
@@ -53,30 +51,3 @@ class FileHandler:
             print(f"ending loop on success, doing nothing")
         return loop
 
-    @staticmethod
-    def compare_line_marker(line: str, marker: LogGroups):
-        log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
-        if marker.partial_eq(log_groups):
-            return log_groups
-
-    @staticmethod
-    def compare_line_timestamp(line: str, timestamp: datetime):
-        return FileHandler.compare_line_marker(line, LogGroups(timestamp=timestamp))
-
-    @staticmethod
-    def check_codes(message):
-        if "AMQ224097" in message:
-            if "FAILED TO SETUP the JDBC Shared State NodeId" in message:
-                print("Connection to database failed while setting up Jdbc Shared State NodeId, restarting service")
-                print("Connection to database failed while setting up Jdbc Shared "
-                      "State NodeId, restarting service")
-                return "Failed"
-        elif "AMQ221000" in message:
-            print("Artemis initialized correctly")
-            return "Success"
-        else:
-            return "Pass"
-
-    @staticmethod
-    def find_and_open(filename):
-        return open(filename, mode="r", encoding="utf-8")

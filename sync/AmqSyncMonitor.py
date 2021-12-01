@@ -5,7 +5,7 @@ import dbus
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler import Scheduler
-from sync.steps.MmapReadFileStep import FileHandler
+from sync.steps.ReadFileStep import FileHandler
 from sync.steps.GetPropertiesStep import GetPropertiesStep
 from sync.steps.GetServiceStep import GetServiceStep
 from sync.steps.RestartUnitStep import RestartUnitStep

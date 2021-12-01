@@ -1,4 +1,4 @@
-from parser.StringParser import Groups
+from core.utils.parser.StringParser import Groups
 from datetime import datetime
 
 
@@ -13,6 +13,18 @@ class LogPatterns:
     regex_pattern = timestamp_regex + log_level_regex + logging_class_regex + message_regex
 
 
+class LogComparable:
+    def __init__(self,
+                 timestamps: () = (),
+                 log_levels: () = (),
+                 logging_classes: () = (),
+                 labels: () = ()):
+        self.timestamps = timestamps
+        self.log_levels = log_levels
+        self.logging_classes = logging_classes
+        self.labels = labels
+
+
 class LogGroups(Groups):
 
     def __init__(self, timestamp: datetime = None, log_level=None, logging_class=None, message=None):
@@ -20,6 +32,9 @@ class LogGroups(Groups):
         self.log_level = log_level
         self.logging_class = logging_class
         self.message = message
+
+    def filter_for(self, other: LogComparable, callback):
+        return callback(self, other)
 
     def partial_eq(self, other):
         if isinstance(other, LogGroups):
