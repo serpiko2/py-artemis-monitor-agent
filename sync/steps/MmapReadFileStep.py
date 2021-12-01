@@ -21,7 +21,6 @@ class FileHandler:
         print(f"scheduling new handler for {filename}")
         self._is_active = True
         file = FileHandler.find_and_open(filename)
-        # file.seek(file.size())
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
                                     delay=10,
@@ -74,8 +73,8 @@ class FileHandler:
             print("Artemis initialized correctly")
             return "Success"
         else:
-            return ""
+            return "Pass"
 
     @staticmethod
     def find_and_open(filename):
-        return open(filename, mode="r", encoding="utf-8")
+        return open(filename, mode="a", encoding="utf-8")
