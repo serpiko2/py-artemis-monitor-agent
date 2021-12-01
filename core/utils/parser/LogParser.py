@@ -15,10 +15,10 @@ class LogPatterns:
 
 class LogComparable:
     def __init__(self,
-                 timestamps: () = (),
-                 log_levels: () = (),
-                 logging_classes: () = (),
-                 labels: () = ()):
+                 timestamps: () = None,
+                 log_levels: () = None,
+                 logging_classes: () = None,
+                 labels: () = None):
         self.timestamps = timestamps
         self.log_levels = log_levels
         self.logging_classes = logging_classes
@@ -27,7 +27,11 @@ class LogComparable:
 
 class LogGroups(Groups):
 
-    def __init__(self, timestamp: datetime = None, log_level=None, logging_class=None, message=None):
+    def __init__(self,
+                 timestamp: datetime = None,
+                 log_level: str = None,
+                 logging_class: str = None,
+                 message: str = None):
         self.timestamp = timestamp
         self.log_level = log_level
         self.logging_class = logging_class
@@ -54,3 +58,10 @@ class LogGroups(Groups):
     def build(time_str: str, log_level: str, logging_class: str, message: str):
         timestamp = datetime.strptime(time_str, LogPatterns.timestamp_pattern)
         return LogGroups(timestamp, log_level, logging_class, message)
+
+
+class Compares:
+    @staticmethod
+    def compare_labels(group: LogGroups, comparable: LogComparable) -> bool:
+        if comparable.labels in group.message:
+            return True
