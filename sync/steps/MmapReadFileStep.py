@@ -71,7 +71,7 @@ class FileHandler:
                 print("Connection to database failed while setting up Jdbc Shared "
                       "State NodeId, restarting service")
                 return "Failed"
-        elif "AMQ221043" in message:
+        elif "AMQ221000" in message:
             print("Artemis initialized correctly")
             return "Success"
         else:
