@@ -10,7 +10,7 @@ from events.pubsub.EventsType import EventsType
 class FindPropertiesJob(Job):
 
     @staticmethod
-    def execute(loop: bool, callback: callable, fallback: callable, service_name: str):
+    def execute(loop: bool, callback: callable, fallback: callable, service_name : str):
         """Find the service unit by it's name.
             :param:
                 `name`:`the formatted service name as {name}.service`

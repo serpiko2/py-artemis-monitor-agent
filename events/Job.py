@@ -30,7 +30,7 @@ class Job(ABC):
         """
     @staticmethod
     @abstractmethod
-    def execute(loop: bool, callback: callable, fallback: callable, params):
+    def execute(loop: bool, callback: callable, fallback: callable, *params):
         """ the entrypoint for the job, the scheduler will run it on the event loop,
          it has to be non blocking or you have to delegate it to a secondary thread pool executor
             :param:
