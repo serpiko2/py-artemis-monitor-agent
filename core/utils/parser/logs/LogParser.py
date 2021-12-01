@@ -1,4 +1,4 @@
-from typing import Type, re
+import re
 
 from core.utils.parser.StringParser import Parser, Groups
 from core.utils.parser.comparables.LogComparable import LogComparable
