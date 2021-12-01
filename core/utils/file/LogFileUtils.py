@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from core.utils.parser.LogParser import LogGroups, LogPatterns
+from core.utils.parser.logs.LogParser import LogGroups, LogPatterns
 from core.utils.parser.StringParser import Parser
 
 
@@ -17,7 +17,7 @@ class LogFilesUtils:
         return LogFilesUtils.compare_line_marker(line, LogGroups(timestamp=timestamp))
 
     @staticmethod
-    def check_codes(line: str):
+    def compare_labels(line: str, labels):
         marker = LogGroups(message="")
         log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
         log_groups.filter_for(marker, lambda item, comparable: comparable)
