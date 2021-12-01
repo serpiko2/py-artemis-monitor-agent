@@ -1,14 +1,26 @@
 from datetime import datetime
 
-from core.utils.parser.logs.LogParser import LogGroups, LogPatterns
 from core.utils.parser.StringParser import Parser
+from core.utils.parser.logs.LogParser import LogGroups, LogPatterns, LogParser
 
 
 class LogFilesUtils:
 
     @staticmethod
+    def elaborate_line(looping: bool, line: str):
+        print(f"reading line {line}")
+        result = LogParser.parse(line)
+        if result == "Failed":
+            looping = False
+            print(f"ending loop on failure, restarting")
+        elif result == "Success":
+            looping = False
+            print(f"ending loop on success, doing nothing")
+        return looping
+
+    @staticmethod
     def compare_line_marker(line: str, marker: LogGroups):
-        log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
+        log_groups = Parser.parse(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
         if marker.partial_eq(log_groups):
             return log_groups
 
@@ -19,7 +31,7 @@ class LogFilesUtils:
     @staticmethod
     def compare_labels(line: str, labels):
         marker = LogGroups(message="")
-        log_groups = Parser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
+        log_groups = LogParser.parse_string(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
         log_groups.filter_for(marker, lambda item, comparable: comparable)
         if "AMQ224097" in line:
             if "FAILED TO SETUP the JDBC Shared State NodeId" in line:
@@ -32,7 +44,3 @@ class LogFilesUtils:
             return "Success"
         else:
             return "Pass"
-
-    @staticmethod
-    def find_and_open(filename):
-        return open(filename, mode="r", encoding="utf-8")

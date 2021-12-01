@@ -14,5 +14,5 @@ class Parser(ABC):
 
     @staticmethod
     @abstractmethod
-    def parse(to_parse: object, clazz: Groups, regex: str) -> Groups:
+    def parse(to_parse: object, clazz: Type[Groups], regex: str) -> Groups:
         """ generic parse interface """
