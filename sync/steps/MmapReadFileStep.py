@@ -1,5 +1,5 @@
+import io
 from datetime import datetime
-from typing import io
 
 from core.scheduler import Scheduler
 from parser.LogParser import LogGroups, LogPatterns
