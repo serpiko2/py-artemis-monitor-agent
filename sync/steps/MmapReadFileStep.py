@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import io
 
 from core.scheduler import Scheduler
 from parser.LogParser import LogGroups, LogPatterns
@@ -21,6 +22,7 @@ class FileHandler:
         print(f"scheduling new handler for {filename}")
         self._is_active = True
         file = FileHandler.find_and_open(filename)
+        file.seek(0, io.SEEK_END)
         Scheduler.schedule_function(self._schedule_in_loop,
                                     file,
                                     delay=10,
@@ -77,4 +79,4 @@ class FileHandler:
 
     @staticmethod
     def find_and_open(filename):
-        return open(filename, mode="a", encoding="utf-8")
+        return open(filename, mode="r", encoding="utf-8")
