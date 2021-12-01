@@ -5,7 +5,7 @@ import dbus
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler import Scheduler
-from sync.steps.ReadFileStep import FileHandler
+from sync.steps.MonitorLogFileProcess import MonitorLogFileProcess
 from sync.steps.GetPropertiesStep import GetPropertiesStep
 from sync.steps.GetServiceStep import GetServiceStep
 from sync.steps.RestartUnitStep import RestartUnitStep
@@ -16,7 +16,7 @@ class AmqSyncMonitor:
     def __init__(self, logfile, service_name):
         self.logfile = logfile
         self.service_name = service_name
-        self.file_handler = FileHandler(self.restart)
+        self.file_handler = MonitorLogFileProcess(self.restart)
         try:
             self.unit = GetServiceStep.get_service(self.service_name)
         except dbus.DBusException as e:
@@ -48,7 +48,7 @@ class AmqSyncMonitor:
                 self.check_from_logs()
 
     def check_from_logs(self):
-        self.file_handler.seek_to_end_and_tail(filename=self.logfile)
+        self.file_handler.seek_to_end_and_tail(file_path=self.logfile)
 
     def restart(self):
         unit = GetServiceStep.get_service(self.service_name)

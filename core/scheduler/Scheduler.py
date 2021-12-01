@@ -4,21 +4,22 @@ import traceback
 from gi.repository import GLib
 
 
-def schedule_function(fun: callable, *args, delay: int = 0, loop=False):
-    print(f"scheduled: {fun}, schedule_function args", *(loop, )+args)
-    GLib.timeout_add(delay, fun, *(loop, )+args)
+class Scheduler:
+    _main_loop = GLib.MainLoop()
 
+    @staticmethod
+    def schedule_function(fun: callable, delay: int = 0, *args):
+        GLib.timeout_add(delay, fun, args)
 
-def run_loop():
-    loop = GLib.MainLoop()
-    try:
-        loop.run()
-    except KeyboardInterrupt:
-        kill_loop()
+    @staticmethod
+    def run_loop():
+        try:
+            Scheduler._main_loop.run()
+        except KeyboardInterrupt:
+            Scheduler.kill_loop()
 
-
-def kill_loop(error_code=0):
-    loop = GLib.MainLoop()
-    traceback.print_exc()
-    loop.quit()
-    sys.exit(error_code)
+    @staticmethod
+    def kill_loop(error_code=0):
+        traceback.print_exc()
+        Scheduler._main_loop.quit()
+        sys.exit(error_code)
