@@ -51,6 +51,3 @@ if __name__ == '__main__':
     Logger.configure_logger()
     logger = logging.getLogger("main")
     main()
-
-
-

@@ -19,8 +19,6 @@ class GetPropertyJob(Job):
 
     @staticmethod
     def execute(loop: bool, callback: callable, fallback: callable, params: PropertiesServiceParameters):
-        """ Unimplemented job stub - use this as a reference structure
-        """
         params.service_properties.Get(
             params.interface, params.name,
             reply_handler=callback,

@@ -1,0 +1,78 @@
+2021-12-01 13:41:45,456 WARN  [org.apache.activemq.artemis.core.server] AMQ222010: Critical IO Error, shutting down the server. file=NULL, message=Lost NodeManager lock: java.io.IOException: lost lock
+        at org.apache.activemq.artemis.core.server.impl.SharedStoreLiveActivation.lambda$registerActiveLockListener$0(SharedStoreLiveActivation.java:123) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.NodeManager.lambda$notifyLostLock$0(NodeManager.java:143) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at java.base/java.lang.Iterable.forEach(Iterable.java:75) [java.base:]
+        at org.apache.activemq.artemis.core.server.NodeManager.notifyLostLock(NodeManager.java:141) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager.notifyLostLock(JdbcNodeManager.java:154) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.ActiveMQScheduledLeaseLock.run(ActiveMQScheduledLeaseLock.java:114) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.ActiveMQScheduledComponent.runForExecutor(ActiveMQScheduledComponent.java:313) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.ActiveMQScheduledComponent.lambda$bookedRunForScheduler$2(ActiveMQScheduledComponent.java:320) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.utils.actors.OrderedExecutor.doTask(OrderedExecutor.java:42) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.utils.actors.OrderedExecutor.doTask(OrderedExecutor.java:31) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.utils.actors.ProcessorBase.executePendingTasks(ProcessorBase.java:65) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) [java.base:]
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) [java.base:]
+        at org.apache.activemq.artemis.utils.ActiveMQThreadFactory$1.run(ActiveMQThreadFactory.java:118) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+
+2021-12-01 13:42:33,565 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: 08006 ErrorCode: 17002 Message: IO Error: Socket read timed out, Authentication lapse 0 ms.
+2021-12-01 13:42:33,566 WARN  [org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager] Stopping node manager has errored on lost lock notification: java.lang.IllegalStateException: java.sql.SQLRecoverableException: IO Error: Socket read timed out, Authentication lapse 0 ms.
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcLeaseLock.release(JdbcLeaseLock.java:333) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcLeaseLock.close(JdbcLeaseLock.java:340) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcSharedStateManager.stop(JdbcSharedStateManager.java:366) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcSharedStateManager.close(JdbcSharedStateManager.java:374) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager.stop(JdbcNodeManager.java:198) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager.notifyLostLock(JdbcNodeManager.java:162) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.ActiveMQScheduledLeaseLock.run(ActiveMQScheduledLeaseLock.java:114) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.ActiveMQScheduledComponent.runForExecutor(ActiveMQScheduledComponent.java:313) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.ActiveMQScheduledComponent.lambda$bookedRunForScheduler$2(ActiveMQScheduledComponent.java:320) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.utils.actors.OrderedExecutor.doTask(OrderedExecutor.java:42) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.utils.actors.OrderedExecutor.doTask(OrderedExecutor.java:31) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.utils.actors.ProcessorBase.executePendingTasks(ProcessorBase.java:65) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) [java.base:]
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) [java.base:]
+        at org.apache.activemq.artemis.utils.ActiveMQThreadFactory$1.run(ActiveMQThreadFactory.java:118) [artemis-commons-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+Caused by: java.sql.SQLRecoverableException: IO Error: Socket read timed out, Authentication lapse 0 ms.
+        at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:878) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:793) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:57) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:747) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:562) [ojdbc10.jar:19.3.0.0.0]
+        at org.apache.commons.dbcp2.DriverConnectionFactory.createConnection(DriverConnectionFactory.java:55) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.PoolableConnectionFactory.makeObject(PoolableConnectionFactory.java:355) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:889) [commons-pool2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:424) [commons-pool2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:349) [commons-pool2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.PoolingDataSource.getConnection(PoolingDataSource.java:134) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.BasicDataSource.getConnection(BasicDataSource.java:753) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider.getConnection(JDBCConnectionProvider.java:61) [artemis-jdbc-store-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcLeaseLock.release(JdbcLeaseLock.java:307) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        ... 14 more
+Caused by: java.io.IOException: Socket read timed out, Authentication lapse 0 ms.
+        at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:874) [ojdbc10.jar:19.3.0.0.0]
+        ... 27 more
+Caused by: oracle.net.nt.TimeoutInterruptHandler$IOReadTimeoutException: Socket read timed out
+        at oracle.net.nt.TimeoutSocketChannel.handleInterrupt(TimeoutSocketChannel.java:254) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.net.nt.TimeoutSocketChannel.read(TimeoutSocketChannel.java:180) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.net.ns.NSProtocolNIO.doSocketRead(NSProtocolNIO.java:555) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.net.ns.NIOPacket.readNIOPacket(NIOPacket.java:403) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:127) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.net.ns.NSProtocol.connect(NSProtocol.java:340) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1600) [ojdbc10.jar:19.3.0.0.0]
+        at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:592) [ojdbc10.jar:19.3.0.0.0]
+        ... 27 more
+
+2021-12-01 13:42:33,571 ERROR [org.apache.activemq.artemis.core.server.impl.jdbc.ActiveMQScheduledLeaseLock] live lock failed renew tooks 216254 ms, while is supposed to take <4000 ms
+2021-12-01 13:42:33,572 ERROR [org.apache.activemq.artemis.core.server] AMQ224068: Unable to stop component: org.apache.activemq.artemis.core.server.impl.SharedStoreLiveActivation: java.lang.IllegalStateException: the node manager is supposed to be started
+        at org.apache.activemq.artemis.core.server.NodeManager.checkStarted(NodeManager.java:133) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager.crashLiveServer(JdbcNodeManager.java:539) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.SharedStoreLiveActivation.close(SharedStoreLiveActivation.java:149) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.stop(ActiveMQServerImpl.java:1361) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.stop(ActiveMQServerImpl.java:1165) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.stop(ActiveMQServerImpl.java:1158) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl$5.run(ActiveMQServerImpl.java:930) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+
+2021-12-01 13:42:33,648 INFO  [org.apache.activemq.hawtio.plugin.PluginContextListener] Destroyed artemis-plugin plugin
+2021-12-01 13:42:33,653 INFO  [org.apache.amq.hawtio.branding.PluginContextListener] Destroyed amq-broker-redhat-branding plugin
+2021-12-01 13:42:33,682 INFO  [org.apache.activemq.artemis.core.server] AMQ221002: Apache ActiveMQ Artemis Message Broker version 2.16.0.redhat-00012 [afe03d56-b8b2-11eb-a0bd-005056ab1783] stopped, uptime 2 hours 50 minutes

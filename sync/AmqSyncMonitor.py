@@ -54,6 +54,6 @@ class AmqSyncMonitor:
         unit = GetServiceStep.get_service(self.service_name)
         service_properties = GetPropertiesStep.get_service_properties(unit)
         properties = GetPropertiesStep.get_properties_for_restart(service_properties)
-        restart_job = RestartUnitStep.restart_unit(properties, self.service_name)
+        restart_job_result = RestartUnitStep.restart_unit(properties, self.service_name)
         # reset restart counter
-        return restart_job
+        return restart_job_result
