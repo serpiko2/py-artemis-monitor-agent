@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from core.utils.parser.StringParser import Parser
+from core.utils.parser.Parser import Parser
 from core.utils.parser.logs.LogParser import LogGroups, LogPatterns, LogParser
 
 

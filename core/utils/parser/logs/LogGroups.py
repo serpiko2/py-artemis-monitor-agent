@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from core.utils.parser.StringParser import Groups
+from core.utils.parser.Parser import Groups
 
 
 class LogTimestampPattern:
@@ -10,11 +10,11 @@ class LogTimestampPattern:
 class LogGroups(Groups):
 
     def __init__(self,
-                 timestamp: datetime,
-                 log_level: str,
-                 logging_class: str,
-                 message: str,
-                 line: str):
+                 timestamp: datetime = None,
+                 log_level: str = None,
+                 logging_class: str = None,
+                 message: str = None,
+                 line: str = None):
         self.timestamp = timestamp
         self.log_level = log_level
         self.logging_class = logging_class
