@@ -1,8 +1,8 @@
 import re
 from typing import Type
 
-from core.utils.parser.Parser import Parser
-from core.utils.parser.logs.LogGroup import LogGroups
+from core.utils.parser.StringParser import StringParser
+from core.utils.parser.logs.LogGroup import LogGroup
 
 
 class LogPatterns:
@@ -13,12 +13,12 @@ class LogPatterns:
     regex_pattern = timestamp_regex + log_level_regex + logging_class_regex + message_regex
 
 
-class LogParser(Parser):
+class LogStringParser(StringParser):
 
     @staticmethod
     def parse(line: str,
-              clazz: LogGroups = Type[LogGroups],
+              clazz: LogGroup = Type[LogGroup],
               regex: str = LogPatterns.regex_pattern
-              ) -> LogGroups:
+              ) -> LogGroup:
         groups = re.search(regex, line).groups()
         return clazz.build(*groups)

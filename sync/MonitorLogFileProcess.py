@@ -2,7 +2,7 @@ import io
 
 from core.scheduler.Scheduler import Scheduler
 from core.utils.parser.comparables.LogComparable import LogComparable, LogCompareOperations
-from core.utils.parser.logs.LogParser import LogParser
+from core.utils.parser.logs.LogParser import LogStringParser
 from sync.steps.RestartUnitStep import RestartUnitStep
 
 
@@ -44,7 +44,7 @@ class MonitorLogFileProcess:
     def _process(self):
         if not self._is_stopping:
             line = self.file.readline()
-            log_groups = LogParser.parse(line)
+            log_groups = LogStringParser.parse(line)
             if self._check_for_failure(log_groups):
                 # fail flow - try a restart
                 RestartUnitStep.restart_unit_non_blocking(self.service_name)
