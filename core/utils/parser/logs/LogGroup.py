@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from core.utils.parser.Parser import Groups
+from core.utils.parser.RegexGroup import RegexGroup
 
 
 class LogTimestampPattern:
     pattern = "%Y-%m-%d %H:%M:%S,%f"
 
 
-class LogGroups(Groups):
+class LogGroup(RegexGroup):
 
     def __init__(self,
                  timestamp: datetime = None,
@@ -22,14 +22,14 @@ class LogGroups(Groups):
         self.line = line
 
     def partial_eq(self, other):
-        if isinstance(other, LogGroups):
+        if isinstance(other, LogGroup):
             return self.timestamp == other.timestamp \
                    or self.log_level == other.log_level \
                    or self.logging_class == other.logging_class \
                    or self.message == other.message
 
     def __eq__(self, other):
-        if isinstance(other, LogGroups):
+        if isinstance(other, LogGroup):
             return self.timestamp == other.timestamp \
                    and self.log_level == other.log_level \
                    and self.logging_class == other.logging_class \
@@ -42,4 +42,4 @@ class LogGroups(Groups):
               message: str,
               line: str):
         timestamp = datetime.strptime(time_str, LogTimestampPattern.pattern)
-        return LogGroups(timestamp, log_level, logging_class, message, line)
+        return LogGroup(timestamp, log_level, logging_class, message, line)

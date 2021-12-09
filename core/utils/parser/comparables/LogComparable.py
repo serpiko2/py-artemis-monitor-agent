@@ -1,7 +1,7 @@
 from typing import List
 
 from core.utils.parser.comparables.TimestampComparable import TimestampComparable
-from core.utils.parser.logs.LogGroup import LogGroups
+from core.utils.parser.logs.LogGroup import LogGroup
 
 
 class LogComparable:
@@ -19,11 +19,11 @@ class LogComparable:
 class LogCompareOperations:
 
     @staticmethod
-    def is_timestamp_in_range(comparable: LogComparable, group: LogGroups) -> ():
+    def is_timestamp_in_range(comparable: LogComparable, group: LogGroup) -> ():
         raise NotImplemented
 
     @staticmethod
-    def get_labels_in_message(comparable: LogComparable, group: LogGroups) -> List[str]:
+    def get_labels_in_message(comparable: LogComparable, group: LogGroup) -> List[str]:
         found_labels = []
         for label in comparable.labels:
             if label.find(group.message):
@@ -31,7 +31,7 @@ class LogCompareOperations:
         return found_labels
 
     @staticmethod
-    def is_labels_in_message(group: LogGroups, comparable: LogComparable) -> bool:
+    def is_labels_in_message(group: LogGroup, comparable: LogComparable) -> bool:
         for label in comparable.labels:
             if not label.find(group.message):
                 return False
