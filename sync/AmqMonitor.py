@@ -27,11 +27,10 @@ class AmqMonitor:
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=self._filter_unit_signal,
             dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
-            path=self.unit
+            path=self.unit  # todo check if i can filter the sender interface from here
         )
 
     def _filter_unit_signal(self, *args):
-        # TODO: cleanup this
         interface = args[0]
         message = args[1]
         ts_event_received = datetime.now()
@@ -46,10 +45,9 @@ class AmqMonitor:
                 self.file_handler.stop()
                 self.file_handler.start()
 
-    def restart_on_demand(self):
+    def blocking_restart_on_demand(self):
         unit = GetServiceStep.get_service(self.service_name)
         service_properties = GetPropertiesStep.get_service_properties(unit)
         properties = GetPropertiesStep.get_properties_for_restart(service_properties)
-        restart_job_result = RestartUnitStep.restart_unit_sync(properties, self.service_name)
-        # reset restart counter
+        restart_job_result = RestartUnitStep.restart_unit_blocking(properties, self.service_name)
         return restart_job_result
