@@ -18,6 +18,12 @@ class RestartUnitStep:
                 raise UserStop
 
     @staticmethod
+    def restart_unit_sync(service_name, mode='replace', properties: CheckRestartProperties = None):
+        if properties:
+            RestartUnitStep.check(properties.load_state, properties.active_state, properties.exec_start)
+        return SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode)
+
+    @staticmethod
     def restart_unit_async(service_name, mode='replace', properties: CheckRestartProperties = None):
         if properties:
             RestartUnitStep.check(properties.load_state, properties.active_state, properties.exec_start)
