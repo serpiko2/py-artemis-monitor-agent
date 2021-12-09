@@ -8,8 +8,8 @@ class Scheduler:
     _main_loop = GLib.MainLoop()
 
     @staticmethod
-    def schedule_function(fun: callable, delay: int = 0, *args):
-        GLib.timeout_add(delay, fun, args)
+    def schedule_function(fun: callable, *args, poll: int = 10):
+        GLib.timeout_add(poll, fun, args)
 
     @staticmethod
     def run_loop():

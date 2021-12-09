@@ -3,11 +3,11 @@ import signal
 
 import dbus.mainloop.glib
 
-from core.scheduler import Scheduler
-from core.utils import Logger
-from core.utils.ArgumentParser import ArgumentParser
-from core.utils.ConfigurationProperties import ConfigurationProperties
-from sync.AmqSyncMonitor import AmqSyncMonitor
+from core import Logger
+from core.ArgumentParser import ArgumentParser
+from core.ConfigurationProperties import ConfigurationProperties
+from core.scheduler.Scheduler import Scheduler
+from sync.AmqMonitor import AmqMonitor
 from sync.steps.GetServiceStep import GetServiceStep
 
 
@@ -44,10 +44,8 @@ def main():
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     print(f"Glib set as main loop for dbus")
     logger.info(f"Glib set as main loop for dbus")
-    print(GetServiceStep.get_service(service_name))
     if 'SYNC' == mode:
-        AmqSyncMonitor(monitor_log_path, service_name)
-        pass
+        AmqMonitor(monitor_log_path, service_name)
     Scheduler.run_loop()
 
 

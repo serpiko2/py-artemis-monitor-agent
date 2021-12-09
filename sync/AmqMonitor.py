@@ -4,28 +4,26 @@ import dbus
 
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
-from core.scheduler import Scheduler
-from sync.steps.MonitorLogFileProcess import MonitorLogFileProcess
+from core.scheduler.Scheduler import Scheduler
+from sync.MonitorLogFileProcess import MonitorLogFileProcess
 from sync.steps.GetPropertiesStep import GetPropertiesStep
 from sync.steps.GetServiceStep import GetServiceStep
 from sync.steps.RestartUnitStep import RestartUnitStep
 
 
-class AmqSyncMonitor:
+class AmqMonitor:
 
-    def __init__(self, logfile, service_name):
-        self.logfile = logfile
+    def __init__(self, log_path, service_name):
         self.service_name = service_name
-        self.file_handler = MonitorLogFileProcess(self.restart)
+        self.file_handler = MonitorLogFileProcess(log_path, service_name)
         try:
             self.unit = GetServiceStep.get_service(self.service_name)
+            self._setup_signal_sink()
         except dbus.DBusException as e:
             print("unit not found, ", e)
             Scheduler.kill_loop(1)
-        self._setup_signal_sink()
 
     def _setup_signal_sink(self):
-        print(f"unit object: {self.unit}")
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=self._filter_unit_signal,
             dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
@@ -42,13 +40,10 @@ class AmqSyncMonitor:
             print(f"{ts_event_received} SubState: {message['SubState']}")
             print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
             if active_state == "active" and sub_state == "running":
-                self.file_handler.force_exit()
+                self.file_handler.stop()
             if active_state == "inactive" and sub_state == "dead":
-                self.file_handler.force_exit()
-                self.check_from_logs()
-
-    def check_from_logs(self):
-        self.file_handler.seek_to_end_and_tail(file_path=self.logfile)
+                self.file_handler.stop()
+                self.file_handler.start()
 
     def restart(self):
         unit = GetServiceStep.get_service(self.service_name)

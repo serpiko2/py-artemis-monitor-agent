@@ -1,7 +1,7 @@
 import re
 from typing import Type
 
-from core.utils.parser.StringParser import Parser, Groups
+from core.utils.parser.Parser import Parser, Groups
 from core.utils.parser.comparables.LogComparable import LogComparable
 from core.utils.parser.logs.LogGroups import LogGroups
 
@@ -20,7 +20,7 @@ class LogParser(Parser):
     def parse(line: str,
               clazz: LogGroups = Type[LogGroups],
               regex: str = LogPatterns.regex_pattern
-              ) -> Groups:
+              ) -> LogGroups:
         groups = re.search(regex, line).groups()
         return clazz.build(*groups)
 
