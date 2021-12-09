@@ -18,15 +18,19 @@ class RestartUnitStep:
                 raise UserStop
 
     @staticmethod
-    def restart_unit_sync(service_name, mode='replace', properties: CheckRestartProperties = None):
+    def restart_unit_blocking(service_name, mode='replace', properties: CheckRestartProperties = None):
         if properties:
             RestartUnitStep.check(properties.load_state, properties.active_state, properties.exec_start)
         return SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode)
 
     @staticmethod
-    def restart_unit_async(service_name, mode='replace', properties: CheckRestartProperties = None):
+    def restart_unit_non_blocking(service_name,
+                                  mode='replace',
+                                  properties: CheckRestartProperties = None,
+                                  callback: callable = lambda job: print(f"restart job scheduled: {job}"),
+                                  fallback: callable = lambda error: print(f"restart job error: {error} ")):
         if properties:
             RestartUnitStep.check(properties.load_state, properties.active_state, properties.exec_start)
         SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode,
-                                                     reply_handler=lambda job: print(f"restart job scheduled: {job}"),
-                                                     error_handler=lambda error: print(f"restart job error: {error} "))
+                                                     reply_handler=callback,
+                                                     error_handler=fallback)
