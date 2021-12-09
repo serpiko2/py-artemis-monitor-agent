@@ -1,9 +1,8 @@
 import re
 from typing import Type
 
-from core.utils.parser.Parser import Parser, Groups
-from core.utils.parser.comparables.LogComparable import LogComparable
-from core.utils.parser.logs.LogGroups import LogGroups
+from core.utils.parser.Parser import Parser
+from core.utils.parser.logs.LogGroup import LogGroups
 
 
 class LogPatterns:
@@ -23,21 +22,3 @@ class LogParser(Parser):
               ) -> LogGroups:
         groups = re.search(regex, line).groups()
         return clazz.build(*groups)
-
-    @staticmethod
-    def search_timestamps(group: LogGroups,
-                          comparable: LogComparable) -> ():
-        found_labels = []
-        for label in comparable.labels:
-            if label in group.message:
-                found_labels.append(label)
-        return found_labels
-
-    @staticmethod
-    def search_message_for_labels(group: LogGroups,
-                                  comparable: LogComparable) -> ():
-        found_labels = []
-        for label in comparable.labels:
-            if label in group.message:
-                found_labels.append(label)
-        return found_labels

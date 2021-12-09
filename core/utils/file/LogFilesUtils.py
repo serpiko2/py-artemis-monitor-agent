@@ -1,32 +1,7 @@
-from datetime import datetime
-
-from core.utils.parser.Parser import Parser
 from core.utils.parser.logs.LogParser import LogGroups, LogPatterns, LogParser
 
 
 class LogFilesUtils:
-
-    @staticmethod
-    def elaborate_line(looping: bool, line: str):
-        print(f"reading line {line}")
-        result = LogParser.parse(line)
-        if result == "Failed":
-            looping = False
-            print(f"ending loop on failure, restarting")
-        elif result == "Success":
-            looping = False
-            print(f"ending loop on success, doing nothing")
-        return looping
-
-    @staticmethod
-    def compare_line_marker(line: str, marker: LogGroups):
-        log_groups = Parser.parse(line, clazz=LogGroups, regex=LogPatterns.regex_pattern)
-        if marker.partial_eq(log_groups):
-            return log_groups
-
-    @staticmethod
-    def compare_line_timestamp(line: str, timestamp: datetime):
-        return LogFilesUtils.compare_line_marker(line, LogGroups(timestamp=timestamp))
 
     @staticmethod
     def compare_labels(line: str, labels):

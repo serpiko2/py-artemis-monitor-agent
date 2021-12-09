@@ -1,10 +1,18 @@
 import io
 
 from core.scheduler.Scheduler import Scheduler
+from core.utils.parser.comparables.LogComparable import LogComparable, LogCompareOperations
 from core.utils.parser.logs.LogParser import LogParser
 
 
+class ProcessStoppingException(Exception):
+    """"""
+
+
 class MonitorLogFileProcess:
+
+    fail_strings = ["AMQ224097", "FAILED TO SETUP the JDBC Shared State NodeId"]
+    success_strings = ["AMQ221000"]
 
     def __init__(self,
                  filepath: str,
@@ -25,19 +33,23 @@ class MonitorLogFileProcess:
             return self._is_stopping
 
     def start(self):
-        self._is_stopping = False
-        self.file.seek(0, io.SEEK_END)
-        self._is_active = True
-        Scheduler.schedule_function(self._process, poll=self.poll_rate)
+        if not self._is_stopping:
+            self._is_stopping = False
+            self.file.seek(0, io.SEEK_END)
+            self._is_active = True
+            Scheduler.schedule_function(self._process, poll=self.poll_rate)
+        else:
+            raise ProcessStoppingException
 
     def _process(self):
-        if self._is_stopping:
+        if not self._is_stopping:
             line = self.file.readline()
             log_groups = LogParser.parse(line)
-            log_groups.message
+            fail_log_comparable = LogComparable(labels=self.fail_strings)
+            success_log_comparable = LogComparable(labels=self.success_strings)
+            LogCompareOperations.
         else:
             self._is_stopping = False
             self._is_active = False
-        if not self._is_active:
             print(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
         return self._is_active
