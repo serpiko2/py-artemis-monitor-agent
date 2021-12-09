@@ -3,6 +3,7 @@ import io
 from core.scheduler.Scheduler import Scheduler
 from core.utils.parser.comparables.LogComparable import LogComparable, LogCompareOperations
 from core.utils.parser.logs.LogParser import LogParser
+from sync.steps.RestartUnitStep import RestartUnitStep
 
 
 class ProcessStoppingException(Exception):
@@ -30,7 +31,6 @@ class MonitorLogFileProcess:
         print(f"Stopping monitoring for service={self.service_name} on filepath={self.filepath}")
         if self._is_active:
             self._is_stopping = True
-            return self._is_stopping
 
     def start(self):
         if not self._is_stopping:
@@ -45,11 +45,22 @@ class MonitorLogFileProcess:
         if not self._is_stopping:
             line = self.file.readline()
             log_groups = LogParser.parse(line)
-            fail_log_comparable = LogComparable(labels=self.fail_strings)
-            success_log_comparable = LogComparable(labels=self.success_strings)
-            LogCompareOperations.
+            if self._check_for_failure(log_groups):
+                RestartUnitStep.restart_unit_async(self.service_name)
+                self.stop()
+            elif self._check_for_success(log_groups):
+                self.stop()
+                # success flow - do nothing
         else:
             self._is_stopping = False
             self._is_active = False
             print(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
         return self._is_active
+
+    def _check_for_failure(self, log_groups):
+        fail_log_comparable = LogComparable(labels=self.fail_strings)
+        return LogCompareOperations.is_labels_in_message(log_groups, fail_log_comparable)
+
+    def _check_for_success(self, log_groups):
+        success_log_comparable = LogComparable(labels=self.success_strings)
+        return LogCompareOperations.is_labels_in_message(log_groups, success_log_comparable)
