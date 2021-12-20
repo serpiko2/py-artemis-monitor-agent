@@ -1,11 +1,17 @@
 import sys
 import traceback
+from typing import overload
 
 from gi.repository import GLib
 
 
 class Scheduler:
     _main_loop = GLib.MainLoop()
+
+    @staticmethod
+    @overload
+    def schedule_function(fun: callable, poll: int = 10):
+        GLib.timeout_add(poll, fun)
 
     @staticmethod
     def schedule_function(fun: callable, *args, poll: int = 10):
