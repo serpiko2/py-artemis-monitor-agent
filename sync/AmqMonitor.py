@@ -2,7 +2,7 @@ from datetime import datetime
 
 import dbus
 
-from core.Logger import get_logger
+from core.Logger import Loggable
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler.Scheduler import Scheduler
@@ -14,6 +14,7 @@ from sync.steps.RestartUnitStep import RestartUnitStep
 
 class AmqMonitor:
 
+    @Loggable()
     def __init__(self, log_path, service_name):
         self.service_name = service_name
         self.file_handler = MonitorLogFileProcess(log_path, service_name)
@@ -21,7 +22,7 @@ class AmqMonitor:
             self.unit = GetServiceStep.get_service(self.service_name)
             self._setup_signal_sink()
         except dbus.DBusException as e:
-            get_logger().exception("unit not found, ", e)
+            self.logger.exception("unit not found, ", e)
             Scheduler.kill_loop(1)
 
     def _setup_signal_sink(self):
@@ -38,8 +39,8 @@ class AmqMonitor:
         if interface == 'org.freedesktop.systemd1.Unit':
             sub_state = message['SubState']
             active_state = message['ActiveState']
-            get_logger().log(f"{ts_event_received} SubState: {message['SubState']}")
-            get_logger().log(f"{ts_event_received} ActiveState: {message['ActiveState']}")
+            self.logger.log(f"{ts_event_received} SubState: {message['SubState']}")
+            self.logger.log(f"{ts_event_received} ActiveState: {message['ActiveState']}")
             if active_state == "active" and sub_state == "running":
                 self.file_handler.stop()
             if active_state == "inactive" and sub_state == "dead":
