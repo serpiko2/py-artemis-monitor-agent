@@ -39,6 +39,9 @@ class MonitorLogFileProcess:
             self._is_stopping = False
             self.file.seek(0, io.SEEK_END)
             self._is_active = True
+            self.logger.info(f"Scheduling monitoring for service={self.service_name} "
+                             f"on filepath={self.filepath} "
+                             f"with pollrate={self.poll_rate}")
             Scheduler.schedule_function(self._process, poll=self.poll_rate)
         else:
             raise ProcessStoppingException
