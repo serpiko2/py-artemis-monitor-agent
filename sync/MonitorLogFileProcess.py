@@ -1,5 +1,7 @@
 import io
 
+from core import Logger
+from core.Logger import get_logger
 from core.scheduler.Scheduler import Scheduler
 from core.utils.parser.comparables.LogComparable import LogComparable, LogCompareOperations
 from core.utils.parser.logs.LogParser import LogStringParser
@@ -28,7 +30,7 @@ class MonitorLogFileProcess:
         self.file = open(filepath, mode="r", encoding=encoding)
 
     def stop(self):
-        print(f"Stopping monitoring for service={self.service_name} on filepath={self.filepath}")
+        get_logger().log(f"Stopping monitoring for service={self.service_name} on filepath={self.filepath}")
         if self._is_active:
             self._is_stopping = True
 
@@ -55,7 +57,7 @@ class MonitorLogFileProcess:
         else:
             self._is_stopping = False
             self._is_active = False
-            print(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
+            get_logger().log(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
         return self._is_active
 
     def _check_for_failure(self, log_groups):

@@ -1,11 +1,12 @@
+from logging import handlers
 import logging
 
 
-def configure_logger():
-
-    log_mapping = {"INFO": 20, "DEBUG": 10, "WARN": 30, "ERROR": 40, "CRITICAL": 50}
-
-    logging.basicConfig(format='%(asctime)s %(message)s',
-                        datefmt='%m/%d/%Y %I:%M:%S %p',
-                        filename="sync.log",
-                        level=log_mapping.get("DEBUG"))
+def get_logger(name=None, level=logging.INFO):
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    handler = handlers.TimedRotatingFileHandler(filename="", when="midnight")
+    handler.setFormatter(formatter)
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+    return logger
