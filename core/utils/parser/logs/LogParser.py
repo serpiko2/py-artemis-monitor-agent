@@ -24,4 +24,4 @@ class LogStringParser(StringParser):
             groups = re.search(regex, line).groups()
             return clazz.build(*groups)
         except AttributeError:
-            return LogGroup()
+            return None

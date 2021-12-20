@@ -51,13 +51,14 @@ class MonitorLogFileProcess:
             line = self.file.readline()
             self.logger.info(f"parsing line: {line}")
             log_groups = LogStringParser.parse(line)
-            if self._check_for_failure(log_groups):
-                # fail flow - try a restart
-                RestartUnitStep.restart_unit_non_blocking(self.service_name)
-                self.stop()
-            elif self._check_for_success(log_groups):
-                # success flow - do nothing
-                self.stop()
+            if log_groups:
+                if self._check_for_failure(log_groups):
+                    # fail flow - try a restart
+                    RestartUnitStep.restart_unit_non_blocking(self.service_name)
+                    self.stop()
+                elif self._check_for_success(log_groups):
+                    # success flow - do nothing
+                    self.stop()
         else:
             self._is_stopping = False
             self._is_active = False
