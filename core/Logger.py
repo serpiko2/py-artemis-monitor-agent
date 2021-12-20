@@ -16,11 +16,3 @@ class Logger:
         logger.addHandler(handler)
         logger.addHandler(logging.StreamHandler(sys.stdout))
         return logger
-
-
-class Loggable:
-    def __call__(self, f):
-        def wrap(init_self, *args, **kwargs):
-            init_self = Logger.get_logger(init_self.__class__.__name__)
-            f(init_self, *args, **kwargs)
-        return wrap

@@ -2,7 +2,7 @@ from datetime import datetime
 
 import dbus
 
-from core.Logger import Loggable
+from core.Logger import Loggable, Logger
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler.Scheduler import Scheduler
@@ -14,8 +14,8 @@ from sync.steps.RestartUnitStep import RestartUnitStep
 
 class AmqMonitor:
 
-    @Loggable()
     def __init__(self, log_path, service_name):
+        self.logger = Logger.get_logger(self.__class__.__name__)
         self.service_name = service_name
         self.file_handler = MonitorLogFileProcess(log_path, service_name)
         try:
