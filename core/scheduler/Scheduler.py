@@ -12,15 +12,8 @@ class Scheduler:
     _logger = Logger.get_logger("Scheduler")
 
     @staticmethod
-    @overload
-    def schedule_function(fun: callable, poll: int = 10):
-        Scheduler._logger.info("No arg call for function")
-        GLib.timeout_add(poll, fun)
-
-    @staticmethod
-    def schedule_function(fun: callable, *args, poll: int = 10):
-        Scheduler._logger.info("Multi arg call for function")
-        GLib.timeout_add(poll, fun, args)
+    def schedule_function(fun: callable, poll: int = 10, *args):
+        GLib.timeout_add(poll, fun, *args)
 
     @staticmethod
     def run_loop():
