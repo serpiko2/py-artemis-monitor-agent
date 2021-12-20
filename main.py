@@ -2,7 +2,7 @@ import signal
 import dbus.mainloop.glib
 from core.ArgumentParser import ArgumentParser
 from core.ConfigurationProperties import ConfigurationProperties
-from core.Logger import get_logger
+from core.Logger import Logger
 from core.scheduler.Scheduler import Scheduler
 from sync.AmqMonitor import AmqMonitor
 
@@ -45,5 +45,5 @@ def main():
 if __name__ == '__main__':
     killer = GracefulKiller()
     parser = ArgumentParser.get_parser()
-    logger = get_logger("MAIN")
+    logger = Logger.get_logger('__main__')
     main()
