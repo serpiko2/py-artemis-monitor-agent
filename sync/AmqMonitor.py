@@ -9,7 +9,7 @@ from core.scheduler.Scheduler import Scheduler
 from sync.MonitorLogFileProcess import MonitorLogFileProcess
 from sync.steps.GetPropertiesStep import GetPropertiesStep
 from sync.steps.GetServiceStep import GetServiceStep
-from sync.steps.RestartUnitStep import RestartUnitStep
+from sync.steps.RestartUnitStep import RestartUnitStep, UserStop
 
 
 class AmqMonitor:
@@ -18,6 +18,7 @@ class AmqMonitor:
         self.logger = Logger.get_logger(self.__class__.__name__)
         self.service_name = service_name
         self.file_handler = MonitorLogFileProcess(log_path, service_name)
+        self.unit_object_path = GetServiceStep.get_service(self.service_name)
         try:
             self.unit = GetServiceStep.get_service(self.service_name)
             self._setup_signal_sink()
@@ -45,7 +46,15 @@ class AmqMonitor:
                 self.file_handler.stop()
             if active_state == "inactive" and sub_state == "dead":
                 self.file_handler.stop()
-                self.file_handler.start()
+                service_properties = GetPropertiesStep.get_service_properties(self.unit_object_path)
+                properties = GetPropertiesStep.get_properties_for_restart(service_properties)
+                try:
+                    RestartUnitStep.check_user_interruption(properties.load_state,
+                                                            properties.active_state,
+                                                            properties.exec_start)
+                    self.file_handler.start()
+                except UserStop:
+                    self.logger.error(f"Service {self.service_name} stopped by user")
 
     def blocking_restart_on_demand(self):
         unit = GetServiceStep.get_service(self.service_name)
