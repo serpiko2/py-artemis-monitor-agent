@@ -12,9 +12,9 @@ from sync.steps.GetServiceStep import GetServiceStep
 from sync.steps.RestartUnitStep import RestartUnitStep
 
 
+@Loggable()
 class AmqMonitor:
 
-    @Loggable()
     def __init__(self, log_path, service_name):
         self.service_name = service_name
         self.file_handler = MonitorLogFileProcess(log_path, service_name)
