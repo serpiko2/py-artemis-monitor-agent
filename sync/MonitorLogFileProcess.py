@@ -11,7 +11,7 @@ class ProcessStoppingException(Exception):
     """"""
 
 
-@Loggable
+@Loggable()
 class MonitorLogFileProcess:
 
     fail_strings = ["AMQ224097", "FAILED TO SETUP the JDBC Shared State NodeId"]
