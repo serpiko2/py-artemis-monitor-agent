@@ -1,6 +1,5 @@
 import sys
 import traceback
-from typing import overload
 
 from gi.repository import GLib
 

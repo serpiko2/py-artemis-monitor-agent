@@ -18,9 +18,9 @@ class AmqMonitor:
         self.logger = Logger.get_logger(self.__class__.__name__)
         self.service_name = service_name
         self.file_handler = MonitorLogFileProcess(log_path, service_name)
-        self.unit_object_path = GetServiceStep.get_service(self.service_name)
         try:
-            self.unit = GetServiceStep.get_service(self.service_name)
+            self.unit_object_path = GetServiceStep.get_service(self.service_name)
+            self.logger.info(f"unit={self.service_name} found with object_path={self.unit_object_path}")
             self._setup_signal_sink()
         except dbus.DBusException as e:
             self.logger.exception("unit not found, ", e)
@@ -30,7 +30,7 @@ class AmqMonitor:
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=self._filter_unit_signal,
             dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
-            path=self.unit  # todo check if i can filter the sender interface from here
+            path=self.unit_object_path  # todo check if i can filter the sender interface from here
         )
 
     def _filter_unit_signal(self, *args):
@@ -52,9 +52,10 @@ class AmqMonitor:
                 except UserStop:
                     self.logger.warn(f"Service {self.service_name} stopped by user")
 
-    def blocking_restart_on_demand(self):
-        unit = GetServiceStep.get_service(self.service_name)
+    @staticmethod
+    def blocking_restart_on_demand(service_name):
+        unit = GetServiceStep.get_service(service_name)
         service_properties = GetPropertiesStep.get_service_properties(unit)
         properties = GetPropertiesStep.get_properties_for_restart(service_properties)
-        restart_job_result = RestartUnitStep.restart_unit_blocking(properties, self.service_name)
+        restart_job_result = RestartUnitStep.restart_unit_blocking(properties, service_name)
         return restart_job_result

@@ -1,3 +1,4 @@
+from core.Logger import Logger
 from core.manager import SystemBusSysd
 from sync.steps.CheckRestartProperties import CheckRestartProperties
 
@@ -7,6 +8,8 @@ class UserStop(Exception):
 
 
 class RestartUnitStep:
+
+    _logger = Logger.get_logger("RestartUnitStep")
 
     @staticmethod
     def check_user_interruption(properties: CheckRestartProperties):
@@ -27,11 +30,11 @@ class RestartUnitStep:
         return SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode)
 
     @staticmethod
-    def restart_unit_non_blocking(service_name,
-                                  mode='replace',
-                                  properties: CheckRestartProperties = None,
-                                  callback: callable = lambda job: print(f"restart job scheduled: {job}"),
-                                  fallback: callable = lambda error: print(f"restart job error: {error} ")):
+    def restart_unit_non_blocking(service_name, mode='replace', properties: CheckRestartProperties = None,
+                                  callback: callable =
+                                  lambda job: RestartUnitStep._logger.info(f"restart job scheduled: {job}"),
+                                  fallback: callable =
+                                  lambda error: RestartUnitStep._logger.error(f"restart job error: {error}")):
         if properties:
             RestartUnitStep.check_user_interruption(properties)
         SystemBusSysd.get_sysd_manager().RestartUnit(service_name, mode,

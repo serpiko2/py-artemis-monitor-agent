@@ -13,7 +13,9 @@ class ProcessStoppingException(Exception):
 
 class MonitorLogFileProcess:
 
-    fail_strings = ["AMQ224097", "FAILED TO SETUP the JDBC Shared State NodeId"]
+    fail_strings = ["AMQ224097",
+                    "FAILED TO SETUP the JDBC Shared State NodeId"]
+
     success_strings = ["AMQ221000"]
 
     def __init__(self,
