@@ -1,7 +1,7 @@
-from datetime import datetime
-
 import dbus
 
+from core.Logger import Logger
+from core.exception.UserStopException import UserStopException
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler.Scheduler import Scheduler
@@ -14,40 +14,47 @@ from sync.steps.RestartUnitStep import RestartUnitStep
 class AmqMonitor:
 
     def __init__(self, log_path, service_name):
+        self.logger = Logger.get_logger(self.__class__.__name__)
         self.service_name = service_name
         self.file_handler = MonitorLogFileProcess(log_path, service_name)
         try:
-            self.unit = GetServiceStep.get_service(self.service_name)
+            self.unit_object_path = GetServiceStep.get_service(self.service_name)
+            self.logger.info(f"unit={self.service_name} found with object_path={self.unit_object_path}")
             self._setup_signal_sink()
         except dbus.DBusException as e:
-            print("unit not found, ", e)
+            self.logger.exception("unit not found, ", e)
             Scheduler.kill_loop(1)
 
     def _setup_signal_sink(self):
         SystemBusSysd.get_sys_bus().add_signal_receiver(
             handler_function=self._filter_unit_signal,
             dbus_interface=SystemdNames.Interfaces.ISYSD_PROPERTIES_STRING,
-            path=self.unit  # todo check if i can filter the sender interface from here
+            path=self.unit_object_path  # todo check if i can filter the sender interface from here
         )
 
     def _filter_unit_signal(self, *args):
         interface = args[0]
         message = args[1]
-        ts_event_received = datetime.now()
+        self.logger.debug(f"interface={interface} , message={message}")
         if interface == 'org.freedesktop.systemd1.Unit':
             sub_state = message['SubState']
             active_state = message['ActiveState']
-            print(f"{ts_event_received} SubState: {message['SubState']}")
-            print(f"{ts_event_received} ActiveState: {message['ActiveState']}")
             if active_state == "active" and sub_state == "running":
                 self.file_handler.stop()
             if active_state == "inactive" and sub_state == "dead":
                 self.file_handler.stop()
-                self.file_handler.start()
+                service_properties = GetPropertiesStep.get_service_properties(self.unit_object_path)
+                properties = GetPropertiesStep.get_properties_for_restart(service_properties)
+                try:
+                    RestartUnitStep.check_user_interruption(properties)
+                    self.file_handler.start()
+                except UserStopException:
+                    self.logger.warn(f"Service {self.service_name} stopped by user")
 
-    def blocking_restart_on_demand(self):
-        unit = GetServiceStep.get_service(self.service_name)
+    @staticmethod
+    def blocking_restart_on_demand(service_name):
+        unit = GetServiceStep.get_service(service_name)
         service_properties = GetPropertiesStep.get_service_properties(unit)
         properties = GetPropertiesStep.get_properties_for_restart(service_properties)
-        restart_job_result = RestartUnitStep.restart_unit_blocking(properties, self.service_name)
+        restart_job_result = RestartUnitStep.restart_unit_blocking(properties, service_name)
         return restart_job_result

@@ -20,5 +20,8 @@ class LogStringParser(StringParser):
               clazz: LogGroup = Type[LogGroup],
               regex: str = LogPatterns.regex_pattern
               ) -> LogGroup:
-        groups = re.search(regex, line).groups()
-        return clazz.build(*groups)
+        try:
+            groups = re.search(regex, line).groups()
+            return clazz.build(*groups)
+        except AttributeError:
+            return None

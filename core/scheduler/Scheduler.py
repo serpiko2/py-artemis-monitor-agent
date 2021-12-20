@@ -3,13 +3,16 @@ import traceback
 
 from gi.repository import GLib
 
+from core.Logger import Logger
+
 
 class Scheduler:
     _main_loop = GLib.MainLoop()
+    _logger = Logger.get_logger("Scheduler")
 
     @staticmethod
-    def schedule_function(fun: callable, *args, poll: int = 10):
-        GLib.timeout_add(poll, fun, args)
+    def schedule_function(fun: callable, poll: int = 10, *args):
+        GLib.timeout_add(poll, fun, *args)
 
     @staticmethod
     def run_loop():

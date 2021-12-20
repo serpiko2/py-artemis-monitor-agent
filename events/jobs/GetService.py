@@ -2,7 +2,7 @@ import dbus
 
 from core.manager import SystemBusSysd
 from events.Job import Job
-from events.exception.UnitNotFoundException import UnitNotFoundException
+from core.exception.UnitNotFoundException import UnitNotFoundException
 from events.pubsub.Events import Publisher
 from events.pubsub.EventsType import EventsType
 

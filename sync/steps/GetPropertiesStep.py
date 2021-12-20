@@ -21,9 +21,9 @@ class GetPropertiesStep:
     @staticmethod
     def get_properties_for_restart(service_properties: Interface):
         return CheckRestartProperties(service_properties.Get(
-            Interfaces.Unit, Properties.ActiveState
-        ), service_properties.Get(
             Interfaces.Unit, Properties.LoadState
+        ), service_properties.Get(
+            Interfaces.Unit, Properties.ActiveState
         ), service_properties.Get(
             Interfaces.Service, Properties.ExecStart
         ))
