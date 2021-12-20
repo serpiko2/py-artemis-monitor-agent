@@ -1,10 +1,7 @@
 from core.Logger import Logger
+from core.exception.UserStopException import UserStopException
 from core.manager import SystemBusSysd
 from sync.steps.CheckRestartProperties import CheckRestartProperties
-
-
-class UserStop(Exception):
-    """"""
 
 
 class RestartUnitStep:
@@ -21,7 +18,7 @@ class RestartUnitStep:
               f"active_state:{active_state}, status_code:{status_code}")
         if load_state == 'loaded' and active_state == 'inactive':
             if status_code == 143:
-                raise UserStop
+                raise UserStopException
 
     @staticmethod
     def restart_unit_blocking(service_name, mode='replace', properties: CheckRestartProperties = None):

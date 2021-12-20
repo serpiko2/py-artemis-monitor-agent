@@ -1,15 +1,14 @@
-from datetime import datetime
-
 import dbus
 
 from core.Logger import Logger
+from core.exception.UserStopException import UserStopException
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler.Scheduler import Scheduler
 from sync.MonitorLogFileProcess import MonitorLogFileProcess
 from sync.steps.GetPropertiesStep import GetPropertiesStep
 from sync.steps.GetServiceStep import GetServiceStep
-from sync.steps.RestartUnitStep import RestartUnitStep, UserStop
+from sync.steps.RestartUnitStep import RestartUnitStep
 
 
 class AmqMonitor:
@@ -49,7 +48,7 @@ class AmqMonitor:
                 try:
                     RestartUnitStep.check_user_interruption(properties)
                     self.file_handler.start()
-                except UserStop:
+                except UserStopException:
                     self.logger.warn(f"Service {self.service_name} stopped by user")
 
     @staticmethod
