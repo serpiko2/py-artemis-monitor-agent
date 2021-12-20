@@ -29,8 +29,8 @@ def main():
     monitor_log_path = None
     logger.info(f"Starting monitor agent with arguments: {s}")
     try:
-        service_name = ConfigurationProperties.get("Jobs", "job.service.name")
-        mode = ConfigurationProperties.get("Jobs", "job.service.mode")
+        service_name = ConfigurationProperties.get("JOBS", "job.service.name")
+        mode = ConfigurationProperties.get("JOBS", "job.service.mode")
         monitor_log_path = ConfigurationProperties.get("Jobs", "job.service.log_path")
     except ConfigurationException:
         pass
