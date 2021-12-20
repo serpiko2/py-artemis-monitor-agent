@@ -44,6 +44,7 @@ class AmqMonitor:
             if active_state == "active" and sub_state == "running":
                 self.file_handler.stop()
             if active_state == "inactive" and sub_state == "dead":
+                self.file_handler.stop()
                 self.file_handler.start()
 
     def blocking_restart_on_demand(self):
