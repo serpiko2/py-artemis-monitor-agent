@@ -4,17 +4,22 @@ from typing import overload
 
 from gi.repository import GLib
 
+from core.Logger import Logger
+
 
 class Scheduler:
     _main_loop = GLib.MainLoop()
+    _logger = Logger.get_logger("Scheduler")
 
     @staticmethod
     @overload
     def schedule_function(fun: callable, poll: int = 10):
+        Scheduler._logger.info("No arg call for function")
         GLib.timeout_add(poll, fun)
 
     @staticmethod
     def schedule_function(fun: callable, *args, poll: int = 10):
+        Scheduler._logger.info("Multi arg call for function")
         GLib.timeout_add(poll, fun, args)
 
     @staticmethod
