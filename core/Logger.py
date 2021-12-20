@@ -2,14 +2,20 @@ import sys
 from logging import handlers
 import logging
 
+from core.ConfigurationProperties import ConfigurationProperties
+
 
 class Logger:
 
+    log_mapping = {"INFO": 20, "DEBUG": 10, "WARN": 30, "ERROR": 40, "CRITICAL": 50}
+    _log_level = log_mapping.get(ConfigurationProperties.get('LOGGER', 'logger.level'))
+    _log_file = ConfigurationProperties.get('LOGGER', 'logger.file')
+
     @staticmethod
-    def get_logger(name=None, level=logging.INFO):
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(threadName) - %(levelname) - %(message)s',
+    def get_logger(name=None, level=_log_level):
+        formatter = logging.Formatter('[ %(asctime)s ] [ %(name)s ] [ %(threadName) ] [ %(levelname) ] - %(message)s',
                                       datefmt='%Y-%m-%d %H:%M:%S')
-        handler = handlers.TimedRotatingFileHandler(filename="agent.log", when="midnight")
+        handler = handlers.TimedRotatingFileHandler(filename=Logger._log_file, when="midnight")
         handler.setFormatter(formatter)
         logger = logging.getLogger(name)
         logger.setLevel(level)
