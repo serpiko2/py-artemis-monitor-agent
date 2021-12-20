@@ -1,6 +1,5 @@
 import io
 
-from core import Logger
 from core.Logger import get_logger
 from core.scheduler.Scheduler import Scheduler
 from core.utils.parser.comparables.LogComparable import LogComparable, LogCompareOperations
