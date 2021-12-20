@@ -35,12 +35,12 @@ class AmqMonitor:
     def _filter_unit_signal(self, *args):
         interface = args[0]
         message = args[1]
-        ts_event_received = datetime.now()
+        self.logger.info(f"interface={interface} , message={message}")
         if interface == 'org.freedesktop.systemd1.Unit':
             sub_state = message['SubState']
             active_state = message['ActiveState']
-            self.logger.info(f"{ts_event_received} SubState: {message['SubState']}")
-            self.logger.info(f"{ts_event_received} ActiveState: {message['ActiveState']}")
+            self.logger.info(f"SubState: {message['SubState']}")
+            self.logger.info(f"ActiveState: {message['ActiveState']}")
             if active_state == "active" and sub_state == "running":
                 self.file_handler.stop()
             if active_state == "inactive" and sub_state == "dead":
