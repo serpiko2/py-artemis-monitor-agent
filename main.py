@@ -31,7 +31,7 @@ def main():
     try:
         service_name = ConfigurationProperties.get("JOBS", "job.service.name")
         mode = ConfigurationProperties.get("JOBS", "job.service.mode")
-        monitor_log_path = ConfigurationProperties.get("Jobs", "job.service.log_path")
+        monitor_log_path = ConfigurationProperties.get("JOBS", "job.service.log_path")
     except ConfigurationException:
         pass
     logger.info(f"Monitor for service={service_name} with mode {mode} and path for log {monitor_log_path}")
