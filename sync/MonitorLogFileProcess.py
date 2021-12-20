@@ -50,13 +50,14 @@ class MonitorLogFileProcess:
             if self._check_for_failure(log_groups):
                 # fail flow - try a restart
                 RestartUnitStep.restart_unit_non_blocking(self.service_name)
-                self.stop()
+                self._is_active = False
             elif self._check_for_success(log_groups):
                 # success flow - do nothing
-                self.stop()
+                self._is_active = False
         else:
             self._is_stopping = False
             self._is_active = False
+        if not self._is_active:
             self.logger.info(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
         return self._is_active
 
