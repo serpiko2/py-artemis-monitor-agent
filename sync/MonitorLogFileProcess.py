@@ -49,7 +49,7 @@ class MonitorLogFileProcess:
     def _process(self):
         if not self._is_stopping:
             line = self.file.readline()
-            self.logger.debug(f"parsing line: {line}")
+            self.logger.info(f"parsing line: {line}")
             log_groups = LogStringParser.parse(line)
             if self._check_for_failure(log_groups):
                 # fail flow - try a restart
