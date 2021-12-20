@@ -30,7 +30,7 @@ class MonitorLogFileProcess:
         self.file = open(filepath, mode="r", encoding=encoding)
 
     def stop(self):
-        self.logger.log(f"Stopping monitoring for service={self.service_name} on filepath={self.filepath}")
+        self.logger.info(f"Stopping monitoring for service={self.service_name} on filepath={self.filepath}")
         if self._is_active:
             self._is_stopping = True
 
@@ -57,7 +57,7 @@ class MonitorLogFileProcess:
         else:
             self._is_stopping = False
             self._is_active = False
-            self.logger.log(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
+            self.logger.info(f"Stopped monitoring for service={self.service_name} on filepath={self.filepath}")
         return self._is_active
 
     def _check_for_failure(self, log_groups):
