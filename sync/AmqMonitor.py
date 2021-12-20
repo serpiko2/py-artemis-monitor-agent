@@ -2,7 +2,7 @@ from datetime import datetime
 
 import dbus
 
-from core.Logger import Loggable, Logger
+from core.Logger import Logger
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
 from core.scheduler.Scheduler import Scheduler
