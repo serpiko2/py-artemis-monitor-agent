@@ -13,7 +13,7 @@ class Logger:
 
     @staticmethod
     def get_logger(name=None, level=_log_level):
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(threadName) - %(levelname) - %(message)s',
+        formatter = logging.Formatter('[%(asctime)s] - [%(name)s] - [%(threadName)s] - [%(levelname)s] - %(message)s',
                                       datefmt='%Y-%m-%d %H:%M:%S')
         handler = handlers.TimedRotatingFileHandler(filename=Logger._log_file, when="midnight")
         handler.setFormatter(formatter)
