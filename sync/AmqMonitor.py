@@ -49,9 +49,7 @@ class AmqMonitor:
                 service_properties = GetPropertiesStep.get_service_properties(self.unit_object_path)
                 properties = GetPropertiesStep.get_properties_for_restart(service_properties)
                 try:
-                    RestartUnitStep.check_user_interruption(properties.load_state,
-                                                            properties.active_state,
-                                                            properties.exec_start)
+                    RestartUnitStep.check_user_interruption(properties)
                     self.file_handler.start()
                 except UserStop:
                     self.logger.error(f"Service {self.service_name} stopped by user")
