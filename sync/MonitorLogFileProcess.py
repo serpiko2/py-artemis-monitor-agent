@@ -11,12 +11,12 @@ class ProcessStoppingException(Exception):
     """"""
 
 
-@Loggable()
 class MonitorLogFileProcess:
 
     fail_strings = ["AMQ224097", "FAILED TO SETUP the JDBC Shared State NodeId"]
     success_strings = ["AMQ221000"]
 
+    @Loggable()
     def __init__(self,
                  filepath: str,
                  service_name: str,
