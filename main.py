@@ -3,6 +3,7 @@ import dbus.mainloop.glib
 from core.ArgumentParser import ArgumentParser
 from core.ConfigurationProperties import ConfigurationProperties
 from core.Logger import Logger
+from core.exception.ApplicationException import ApplicationException
 from core.scheduler.Scheduler import Scheduler
 from sync.AmqMonitor import AmqMonitor
 
@@ -34,12 +35,16 @@ def main():
         monitor_log_path = ConfigurationProperties.get("JOBS", "job.service.log_path")
     except ConfigurationException:
         pass
-    logger.info(f"Monitor for service={service_name} with mode {mode} and path for log {monitor_log_path}")
-    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    logger.info(f"Glib set as main loop for dbus")
-    if 'SYNC' == mode:
-        AmqMonitor(monitor_log_path, service_name)
-    Scheduler.run_loop()
+    try:
+        logger.info(f"Monitor for service={service_name} with mode {mode} and path for log {monitor_log_path}")
+        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+        logger.info(f"Glib set as main loop for dbus")
+        if 'SYNC' == mode:
+            AmqMonitor(monitor_log_path, service_name)
+        Scheduler.run_loop()
+    except ApplicationException as ex:
+        if ex.critical:
+            exit_gracefully()
 
 
 if __name__ == '__main__':
