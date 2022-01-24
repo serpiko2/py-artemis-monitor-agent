@@ -1,6 +1,7 @@
 import dbus
 
 from core.Logger import Logger
+from core.exception.ApplicationException import ApplicationException
 from core.exception.UserStopException import UserStopException
 from core.manager import SystemBusSysd
 from core.manager.SystemdNames import SystemdNames
@@ -24,6 +25,8 @@ class AmqMonitor:
         except dbus.DBusException as e:
             self.logger.exception("unit not found, ", e)
             Scheduler.kill_loop(1)
+        except Exception as e:
+            raise ApplicationException(message=e.__cause__, obj=None, critical=True)
 
     def _setup_signal_sink(self):
         SystemBusSysd.get_sys_bus().add_signal_receiver(
