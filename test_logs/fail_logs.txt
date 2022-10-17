@@ -1,0 +1,79 @@
+2021-11-29 15:27:19,637 INFO  [org.apache.activemq.artemis.integration.bootstrap] AMQ101000: Starting ActiveMQ Artemis Server
+2021-11-29 15:27:19,673 INFO  [org.apache.activemq.artemis.jdbc.store.drivers.JDBCDataSourceUtils] Initialising JDBC data source: org.apache.commons.dbcp2.BasicDataSource {connectionProperties=oracle.net.CONNECT_TIMEOUT=2000;oracle.jdbc.ReadTimeout=2000, maxWaitMillis=4000, password=JARVIS_AMQ1, validationQuery=SELECT 1 FROM DUAL, maxTotal=-1, driverClassName=oracle.jdbc.driver.OracleDriver, poolPreparedStatements=true, url=jdbc:oracle:thin:@(DESCRIPTION_LIST=(LOAD_BALANCE=off)(FAILOVER=on)(DESCRIPTION=(ENABLE=BROKEN)(CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=sflnx000658-vscan01.utenze.bankit.it)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=JARVISSS)))(DESCRIPTION=(ENABLE=BROKEN)(CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=sflnx000670-vscan01.utenze.bankit.it)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=JARVISSS)))), username=JARVIS_AMQ1, validationQueryTimeout=4}
+2021-11-29 15:28:08,155 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:28:08,156 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:28:56,300 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:29:44,449 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:30:32,584 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:30:32,585 ERROR [org.apache.activemq.artemis.core.server.impl.jdbc.JdbcSharedStateManager] Unable to setup a NodeId on the JDBC shared state: java.sql.SQLException: Cannot create Poolable
+ConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+        at org.apache.commons.dbcp2.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:669) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.BasicDataSource.createDataSource(BasicDataSource.java:544) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.BasicDataSource.getConnection(BasicDataSource.java:753) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider.getConnection(JDBCConnectionProvider.java:61) [artemis-jdbc-store-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcSharedStateManager.setup(JdbcSharedStateManager.java:219) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager.start(JdbcNodeManager.java:177) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.internalStart(ActiveMQServerImpl.java:615) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.start(ActiveMQServerImpl.java:558) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.integration.FileBroker.start(FileBroker.java:64) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.commands.Run.execute(Run.java:115) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.Artemis.internalExecute(Artemis.java:153) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.Artemis.execute(Artemis.java:101) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.Artemis.execute(Artemis.java:128) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) [java.base:]
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) [java.base:]
+        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) [java.base:]
+        at java.base/java.lang.reflect.Method.invoke(Method.java:566) [java.base:]
+        at org.apache.activemq.artemis.boot.Artemis.execute(Artemis.java:134) [artemis-boot.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.boot.Artemis.main(Artemis.java:50) [artemis-boot.jar:2.16.0.redhat-00012]
+2021-11-29 15:27:19,637 INFO  [org.apache.activemq.artemis.integration.bootstrap] AMQ101000: Starting ActiveMQ Artemis Server
+2021-11-29 15:27:19,673 INFO  [org.apache.activemq.artemis.jdbc.store.drivers.JDBCDataSourceUtils] Initialising JDBC data source: org.apache.commons.dbcp2.BasicDataSource {connectionProperties=oracle.net.CONNECT_TIMEOUT=2000;oracle.jdbc.ReadTimeout=2000, maxWaitMillis=4000, password=JARVIS_AMQ1, validationQuery=SELECT 1 FROM DUAL, maxTotal=-1, driverClassName=oracle.jdbc.driver.OracleDriver, poolPreparedStatements=true, url=jdbc:oracle:thin:@(DESCRIPTION_LIST=(LOAD_BALANCE=off)(FAILOVER=on)(DESCRIPTION=(ENABLE=BROKEN)(CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=sflnx000658-vscan01.utenze.bankit.it)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=JARVISSS)))(DESCRIPTION=(ENABLE=BROKEN)(CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=sflnx000670-vscan01.utenze.bankit.it)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=JARVISSS)))), username=JARVIS_AMQ1, validationQueryTimeout=4}2021-11-29 15:28:08,155 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:28:08,156 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:28:56,300 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:29:44,449 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:30:32,584 ERROR [org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider]
+SQL EXCEPTIONS:
+SQLState: null ErrorCode: 0 Message: Cannot create PoolableConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+2021-11-29 15:30:32,585 ERROR [org.apache.activemq.artemis.core.server.impl.jdbc.JdbcSharedStateManager] Unable to setup a NodeId on the JDBC shared state: java.sql.SQLException: Cannot create Poolable
+ConnectionFactory (IO Error: Socket read timed out, Authentication lapse 0 ms.)
+        at org.apache.commons.dbcp2.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:669) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.BasicDataSource.createDataSource(BasicDataSource.java:544) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.commons.dbcp2.BasicDataSource.getConnection(BasicDataSource.java:753) [commons-dbcp2-2.7.0.redhat-00001.jar:2.7.0.redhat-00001]
+        at org.apache.activemq.artemis.jdbc.store.drivers.JDBCConnectionProvider.getConnection(JDBCConnectionProvider.java:61) [artemis-jdbc-store-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcSharedStateManager.setup(JdbcSharedStateManager.java:219) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.jdbc.JdbcNodeManager.start(JdbcNodeManager.java:177) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.internalStart(ActiveMQServerImpl.java:615) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl.start(ActiveMQServerImpl.java:558) [artemis-server-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.integration.FileBroker.start(FileBroker.java:64) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.commands.Run.execute(Run.java:115) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.Artemis.internalExecute(Artemis.java:153) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.Artemis.execute(Artemis.java:101) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.cli.Artemis.execute(Artemis.java:128) [artemis-cli-2.16.0.redhat-00012.jar:2.16.0.redhat-00012]
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) [java.base:]
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) [java.base:]
+        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) [java.base:]
+        at java.base/java.lang.reflect.Method.invoke(Method.java:566) [java.base:]
+        at org.apache.activemq.artemis.boot.Artemis.execute(Artemis.java:134) [artemis-boot.jar:2.16.0.redhat-00012]
+        at org.apache.activemq.artemis.boot.Artemis.main(Artemis.java:50) [artemis-boot.jar:2.16.0.redhat-00012]
+		
+2021-11-29 15:30:32,909 INFO  [org.apache.amq.hawtio.branding.PluginContextListener] Initialized amq-broker-redhat-branding plugin
+2021-11-29 15:30:32,963 INFO  [org.apache.activemq.hawtio.plugin.PluginContextListener] Initialized artemis-plugin plugin
+2021-11-29 15:30:34,315 INFO  [org.apache.activemq.artemis] AMQ241001: HTTP Server started at https://0.0.0.0:8443

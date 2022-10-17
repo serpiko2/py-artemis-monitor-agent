@@ -1,0 +1,15 @@
+[Unit]
+Description=AMQ 7 Health monitor service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User={{ amq_sys_user_name }}
+Group={{ amq_sys_group_name }}
+ExecStart=/bin/python3 {{ amq_path_tools }}/amq-health/main.py -c {{ amq_tools_health_path }}
+
+[Install]
+WantedBy=multi-user.target

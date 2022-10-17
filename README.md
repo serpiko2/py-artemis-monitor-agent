@@ -1,8 +1,23 @@
 # py-artemis-monitor-agent
-Python monitoring agent for Artemis
+Python monitoring agent for RedHat AMQ - Artemis
 
-Case: when an artemis cluster is setted up with jdbc persistance and the database goes down the broker shutsdown with exit code 0 and remains down.
-When server restarts, artemis broker gets down but the server stays up.
+#Arguments
+-c, --config, help=configuration file location
 
-Consideration:
-log messages are one way to identify the issue, but i think that an actual call to the broker would be better.
+#USAGE
+python3 main.py -c config.properties
+
+#Requirements
+python36-gobject
+
+python36-dbus
+
+gtk3
+
+
+
+Note:
+Controllare stop con comando kill (-9)
+
+Creazione archivio zip:
+git archive --prefix amq-health/ -o amq-health-0.2.zip HEAD && sha1sum amq-health-0.2.zip | awk -F ' ' '{ print "sha1:" $1 }' > amq-health-0.2.zip.checksum
